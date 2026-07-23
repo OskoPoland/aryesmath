@@ -49,13 +49,5 @@
             "category",
             "functor"
         ]
-    },
-    {
-        "title": "test1",
-        "slug": "test1",
-        "file": "./notecards/test1.html",
-        "tags": [
-            "test"
-        ]
     }
 ]
