@@ -3,13 +3,13 @@
         "title" : "Delta Complex",
         "slug" : "delta_complex",
         "file" : "./notecards/deltacomplex.html",
-        "tags" : ["Delta Complex", "Complex"]
+        "tags" : ["ADC", "Delta Complex", "Complex"]
     },
     {
         "title" : "Symmetric Delta Complex",
         "slug" : "test2",
         "file" : "./notecards/test.html",
-        "tags" : ["Delta Complex", "Geometric Realization", "Categories", "Functors"]
+        "tags" : ["SDC","Delta Complex", "Geometric Realization", "Categories", "Functors"]
     },
     {
         "title" : "Simplicial Complex",
@@ -21,6 +21,6 @@
 	"title" : "Abstract Simplicial Complex",
 	"slug" : "abstract_simplicial_complex",
 	"file" : "./notecards/abstractsimplicialcomplex.html",
-	"tags" : ["Complex"]
+	"tags" : ["Complex", "ASC"]
 	}
 ]
