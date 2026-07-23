@@ -1,0 +1,9 @@
+<section>
+	<h1>The Geometric Realization of a <a href="#/notes/SDC">Symmetric Delta Complex</a></h2>
+	<p>
+		The geometric realization is defined by gluing simplices $D_k$ to their corresponding standard simplices $\Delta_k$. More precisely it is defined as follows:
+		$$|D| = \left( \bigsqcup_{k\geq 0} (D_k \times \Delta_k) \right) / \sim$$
+		In order to define the relation $\sim$ observe that an inclusion $\sigma : [\ell] \hookrightarrow [k]$ where $l \leq k$ induces a morphism via the SDC functor and an inclusion in standard simplices
+		$$\sigma^* : D_k \rightarrow D_\ell \quad\text{and}\quad \sigma_*: \Delta_\ell \rightarrow \Delta_k$$
+		Then we define $(x, \sigma_* a) \sim (\sigma^* x, a)$ for all $x \in D_k$ and $a \in \Delta_\ell$.
+</section>
