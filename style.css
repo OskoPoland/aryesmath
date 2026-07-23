@@ -146,3 +146,23 @@ footer {
 .WRITINGS a:hover {
   text-decoration: underline;
 }
+
+#notecard-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.notecard-link {
+  position: static;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background: white;
+}
+
+.notecard-link a {
+  display: block;
+  text-decoration: none;
+}

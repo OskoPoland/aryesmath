@@ -5,25 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My GitHub Pages Site</title>
   <meta name="description" content="A simple static site hosted on GitHub Pages.">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./style.css">
+
+
+  <script src="./scripts/navbar.js" defer></script>
+  <script type="module" src="./scripts/app.js"></script>
+
+  <script>
+    window.MathJax = {
+        tex: {
+        inlineMath: [
+            ["\\(", "\\)"],
+            ["$", "$"]
+        ],
+        displayMath: [
+            ["\\[", "\\]"],
+            ["$$", "$$"]
+        ]
+        }
+    };
+    </script>
+    <script
+        id="MathJax-script"
+        async
+        src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js">
+    </script>
 </head>
     <body>
-        <!-- NAVBAR -->
-         <div class="NAVBAR">
-            <nav>
-                <ul>
-                    <!-- <li>About Me</li>
-                    <li>Teaching</li>
-                    <li>Research & Writing</li>
-                    <li>CV</li> -->
-                    <li><a href="./index.html">About Me</a></li>
-                    <li><a href="./teaching.html">Teaching</a></li>
-                    <li><a href="./writings.html">Academic</a></li>
-                </ul>
-            </nav> 
-         </div>
-        <!--  -->
-        <main>
+        <main id="app">
             <h1>About Me</h1>
             <div class="SPLIT-BLOCK">
                 <img src="./headshot.jpeg" alt="">
