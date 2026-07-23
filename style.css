@@ -166,3 +166,9 @@ footer {
   display: block;
   text-decoration: none;
 }
+
+#notecard-graph {
+  width: 100%;
+  height: 700px;
+  border: 1px solid #ccc;
+}

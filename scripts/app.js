@@ -1,4 +1,5 @@
 import { loadNoteCardList, getNotecardPath } from "./notes.js";
+import { loadNotecardGraph } from "./graph.js";
 
 const app = document.getElementById("app");
 //Page Routes - When adding a new page add a new route
@@ -39,6 +40,7 @@ async function renderPage() {
 
   if (route === "/notes") {
     await loadNoteCardList();
+    await loadNotecardGraph();
   }
 } 
 

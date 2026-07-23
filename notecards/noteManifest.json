@@ -2,6 +2,25 @@
     {
         "title" : "test1",
         "slug" : "test",
-        "file" : "./notecards/test.html"
+        "file" : "./notecards/test.html",
+        "tags" : ["tag1", "tag2"]
+    },
+    {
+        "title" : "test2",
+        "slug" : "test2",
+        "file" : "./notecards/test.html",
+        "tags" : ["tag1"]
+    },
+    {
+        "title" : "test3",
+        "slug" : "test3",
+        "file" : "./notecards/test.html",
+        "tags" : ["tag2"]
+    },
+    {
+        "title" : "test4",
+        "slug" : "test4",
+        "file" : "./notecards/test.html",
+        "tags" : ["tag3"]
     }
 ]

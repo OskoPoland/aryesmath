@@ -36,6 +36,28 @@ export async function loadNoteCardList() {
     }
 }
 
+async function getNotecards() {
+    const response = await fetch(manifestURL);
+
+    if (!response.ok) {
+        throw console.error;
+    }
+
+    const data = await response.json();
+
+    const notecards = Array.isArray(data)
+        ? data
+        : data.notecards;
+
+    if (!Array.isArray(notecards)) {
+    throw new TypeError(
+      "The notecard manifest must contain an array."
+    );
+
+    }
+    return notecards;
+}
+
 export async function getNotecardPath(route) {
     const response = await fetch(manifestURL);
     const notecards = await response.json();
