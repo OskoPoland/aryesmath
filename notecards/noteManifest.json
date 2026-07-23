@@ -7,8 +7,8 @@
     },
     {
         "title" : "Symmetric Delta Complex",
-        "slug" : "test2",
-        "file" : "./notecards/test.html",
+        "slug" : "SDC",
+        "file" : "./notecards/SDC.html",
         "tags" : ["SDC","Delta Complex", "Geometric Realization", "Categories", "Functors"]
     },
     {
