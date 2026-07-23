@@ -1,32 +1,53 @@
 [
     {
-        "title" : "Delta Complex",
-        "slug" : "delta_complex",
-        "file" : "./notecards/deltacomplex.html",
-        "tags" : ["ADC", "Delta Complex", "Complex"]
+        "title": "Delta Complex",
+        "slug": "delta_complex",
+        "file": "./notecards/deltacomplex.html",
+        "tags": [
+            "ADC",
+            "Delta Complex",
+            "Complex"
+        ]
     },
     {
-        "title" : "Symmetric Delta Complex",
-        "slug" : "SDC",
-        "file" : "./notecards/SDC.html",
-        "tags" : ["SDC","Delta Complex", "Geometric Realization", "Categories", "Functors"]
+        "title": "Symmetric Delta Complex",
+        "slug": "SDC",
+        "file": "./notecards/SDC.html",
+        "tags": [
+            "SDC",
+            "Delta Complex",
+            "Geometric Realization",
+            "Categories",
+            "Functors"
+        ]
     },
     {
-        "title" : "Simplicial Complex",
-        "slug" : "test3",
-        "file" : "./notecards/test.html",
-        "tags" : ["Complex"]
+        "title": "Simplicial Complex",
+        "slug": "test3",
+        "file": "./notecards/test.html",
+        "tags": [
+            "Complex"
+        ]
     },
     {
-	"title" : "Abstract Simplicial Complex",
-	"slug" : "abstract_simplicial_complex",
-	"file" : "./notecards/abstractsimplicialcomplex.html",
-	"tags" : ["Complex", "ASC"]
-	},
+        "title": "Abstract Simplicial Complex",
+        "slug": "abstract_simplicial_complex",
+        "file": "./notecards/abstractsimplicialcomplex.html",
+        "tags": [
+            "Complex",
+            "ASC"
+        ]
+    },
     {
-	"title" : "G.R. SDC",
-	"slug" : "SDCGR",
-	"file" : "./notecards/SDCGR.html",
-	"tags" : ["Complex", "SDC", "geometric realization", "category", "functor"]
-	}
+        "title": "G.R. SDC",
+        "slug": "SDCGR",
+        "file": "./notecards/SDCGR.html",
+        "tags": [
+            "Complex",
+            "SDC",
+            "geometric realization",
+            "category",
+            "functor"
+        ]
+    }
 ]
