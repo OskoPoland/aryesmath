@@ -1,20 +1,26 @@
 [
     {
         "title" : "Delta Complex",
-        "slug" : "test",
-        "file" : "./notecards/test.html",
+        "slug" : "delta_complex",
+        "file" : "./notecards/deltacomplex.html",
         "tags" : ["Delta Complex", "Complex"]
     },
     {
         "title" : "Symmetric Delta Complex",
         "slug" : "test2",
         "file" : "./notecards/test.html",
-        "tags" : ["Delta Complex"]
+        "tags" : ["Delta Complex", "Geometric Realization", "Categories", "Functors"]
     },
     {
         "title" : "Simplicial Complex",
         "slug" : "test3",
         "file" : "./notecards/test.html",
         "tags" : ["Complex"]
-    }
+    },
+    {
+	"title" : "Abstract Simplicial Complex",
+	"slug" : "abstract_simplicial_complex",
+	"file" : "./notecards/abstractsimplicialcomplex.html",
+	"tags" : ["Complex"]
+	}
 ]
