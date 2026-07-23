@@ -4,7 +4,7 @@ import { loadNotecardGraph } from "./graph.js";
 const app = document.getElementById("app");
 //Page Routes - When adding a new page add a new route
 const pages = {
-  "/": "./index.html",
+  "/": "./pages/home.html",
   "/cv": "./pages/index.html",
   "/notes": "./pages/notes.html",
   "/teaching": "./pages/teaching.html",
