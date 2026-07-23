@@ -1,26 +1,20 @@
 [
     {
-        "title" : "test1",
+        "title" : "Delta Complex",
         "slug" : "test",
         "file" : "./notecards/test.html",
-        "tags" : ["tag1", "tag2"]
+        "tags" : ["Delta Complex", "Complex"]
     },
     {
-        "title" : "test2",
+        "title" : "Symmetric Delta Complex",
         "slug" : "test2",
         "file" : "./notecards/test.html",
-        "tags" : ["tag1"]
+        "tags" : ["Delta Complex"]
     },
     {
-        "title" : "test3",
+        "title" : "Simplicial Complex",
         "slug" : "test3",
         "file" : "./notecards/test.html",
-        "tags" : ["tag2"]
-    },
-    {
-        "title" : "test4",
-        "slug" : "test4",
-        "file" : "./notecards/test.html",
-        "tags" : ["tag3"]
+        "tags" : ["Complex"]
     }
 ]
