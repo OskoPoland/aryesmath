@@ -49,5 +49,13 @@
             "category",
             "functor"
         ]
+    },
+    {
+        "title": "Tolstoy - Family Life",
+        "slug": "tolstoy_family_life",
+        "file": "./notecards/tolstoyfamilylife.html",
+        "tags": [
+            "SDC"
+        ]
     }
 ]
