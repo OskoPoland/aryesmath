@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QLineEdit,
+    QListWidget,
     QMainWindow,
     QMessageBox,
     QPlainTextEdit,
@@ -30,10 +31,6 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtWebEngineWidgets import QWebEngineView
 
-
-# ============================================================
-# GitHub configuration
-# ============================================================
 
 ENV_PATH = Path(__file__).resolve().parent / ".env"
 
@@ -50,13 +47,10 @@ BRANCH = "main"
 MANIFEST_PATH = "notecards/noteManifest.json"
 
 
-# ============================================================
-# New-notecard dialog
-# ============================================================
-
 class NewNotecardDialog(QDialog):
     def __init__(
         self,
+        available_tags: list[str],
         parent: QWidget | None = None,
     ) -> None:
         super().__init__(parent)
@@ -67,14 +61,48 @@ class NewNotecardDialog(QDialog):
         self.title_input = QLineEdit()
         self.title_input.setPlaceholderText("Delta Complex")
 
-        self.tags_input = QLineEdit()
-        self.tags_input.setPlaceholderText(
-            "ADC, Delta Complex, Complex"
+        self.tags_input = QComboBox()
+        self.tags_input.setEditable(True)
+        self.tags_input.addItems(available_tags)
+        self.tags_input.lineEdit().setPlaceholderText(
+            "Select or type a tag..."
         )
 
+        self.add_tag_button = QPushButton("Add Tag")
+        self.add_tag_button.clicked.connect(
+            self.add_tag
+        )
+
+        self.tag_list = QListWidget()
+        self.tag_list.setMaximumHeight(100)
+
+        self.remove_tag_button = QPushButton(
+            "Remove Selected Tag"
+        )
+        self.remove_tag_button.clicked.connect(
+            self.remove_selected_tag
+        )
+
+        tag_input_row = QHBoxLayout()
+        tag_input_row.addWidget(self.tags_input, 1)
+        tag_input_row.addWidget(self.add_tag_button)
+
+        tag_container = QWidget()
+        tag_layout = QVBoxLayout(tag_container)
+        tag_layout.setContentsMargins(0, 0, 0, 0)
+        tag_layout.addLayout(tag_input_row)
+        tag_layout.addWidget(self.tag_list)
+        tag_layout.addWidget(self.remove_tag_button)
+
         form_layout = QFormLayout()
-        form_layout.addRow("Title:", self.title_input)
-        form_layout.addRow("Tags:", self.tags_input)
+        form_layout.addRow(
+            "Title:",
+            self.title_input,
+        )
+        form_layout.addRow(
+            "Tags:",
+            tag_container,
+        )
 
         self.buttons = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Ok
@@ -93,7 +121,31 @@ class NewNotecardDialog(QDialog):
         layout.addLayout(form_layout)
         layout.addWidget(self.buttons)
 
+    def add_tag(self) -> None:
+        tag = self.tags_input.currentText().strip()
+
+        if not tag:
+            return
+
+        existing = {
+            self.tag_list.item(i).text().lower()
+            for i in range(self.tag_list.count())
+        }
+
+        if tag.lower() not in existing:
+            self.tag_list.addItem(tag)
+
+        self.tags_input.setEditText("")
+
+    def remove_selected_tag(self) -> None:
+        row = self.tag_list.currentRow()
+
+        if row >= 0:
+            self.tag_list.takeItem(row)
+
     def validate_and_accept(self) -> None:
+        self.add_tag()
+
         if not self.title():
             QMessageBox.warning(
                 self,
@@ -116,19 +168,12 @@ class NewNotecardDialog(QDialog):
         return self.title_input.text().strip()
 
     def tags(self) -> list[str]:
-        tags = [
-            tag.strip()
-            for tag in self.tags_input.text().split(",")
-            if tag.strip()
+        return [
+            self.tag_list.item(i).text().strip()
+            for i in range(self.tag_list.count())
+            if self.tag_list.item(i).text().strip()
         ]
 
-        # Remove duplicate tags while preserving their order.
-        return list(dict.fromkeys(tags))
-
-
-# ============================================================
-# Main editor
-# ============================================================
 
 class LatexEditor(QMainWindow):
     def __init__(self) -> None:
@@ -138,7 +183,7 @@ class LatexEditor(QMainWindow):
             "GitHub LaTeX Notecard Editor"
         )
 
-        self.resize(1200, 750)
+        self.resize(1200, 800)
 
         self.current_file_path: str | None = None
         self.current_file_sha: str | None = None
@@ -146,9 +191,8 @@ class LatexEditor(QMainWindow):
         self.manifest_data: list | dict | None = None
         self.manifest_sha: str | None = None
 
-        # ----------------------------------------------------
-        # Dropdown and buttons
-        # ----------------------------------------------------
+        self.current_tags: list[str] = []
+        self.available_tags: list[str] = []
 
         self.note_selector = QComboBox()
         self.note_selector.setMinimumWidth(350)
@@ -221,9 +265,45 @@ class LatexEditor(QMainWindow):
             self.delete_button
         )
 
-        # ----------------------------------------------------
-        # Editor and preview
-        # ----------------------------------------------------
+        self.tag_selector = QComboBox()
+        self.tag_selector.setEditable(True)
+        self.tag_selector.setMinimumWidth(220)
+
+        self.tag_selector.lineEdit().setPlaceholderText(
+            "Select or type a tag..."
+        )
+
+        self.add_tag_button = QPushButton(
+            "Add Tag"
+        )
+
+        self.add_tag_button.clicked.connect(
+            self.add_tag_to_current_note
+        )
+
+        self.remove_tag_button = QPushButton(
+            "Remove Tag"
+        )
+
+        self.remove_tag_button.clicked.connect(
+            self.remove_selected_tag
+        )
+
+        self.current_tags_list = QListWidget()
+        self.current_tags_list.setMaximumHeight(90)
+
+        tag_row = QHBoxLayout()
+        tag_row.addWidget(QLabel("Tags:"))
+        tag_row.addWidget(
+            self.tag_selector,
+            1,
+        )
+        tag_row.addWidget(
+            self.add_tag_button
+        )
+        tag_row.addWidget(
+            self.remove_tag_button
+        )
 
         self.editor = QPlainTextEdit()
 
@@ -300,16 +380,14 @@ class LatexEditor(QMainWindow):
         layout.setSpacing(8)
 
         layout.addLayout(selector_row)
+        layout.addLayout(tag_row)
+        layout.addWidget(self.current_tags_list)
         layout.addWidget(splitter, 1)
 
         self.setCentralWidget(container)
 
         self.update_preview()
         self.load_manifest()
-
-    # ========================================================
-    # Configuration validation
-    # ========================================================
 
     def validate_configuration(self) -> None:
         missing_values = []
@@ -324,18 +402,10 @@ class LatexEditor(QMainWindow):
             missing_values.append("GH_API_KEY")
 
         if missing_values:
-            missing_text = ", ".join(
-                missing_values
-            )
-
             raise RuntimeError(
-                "The following values are missing from "
-                f"{ENV_PATH}:\n\n{missing_text}"
+                "Missing environment variables:\n\n"
+                + ", ".join(missing_values)
             )
-
-    # ========================================================
-    # UI helpers
-    # ========================================================
 
     @staticmethod
     def create_panel(
@@ -378,10 +448,15 @@ class LatexEditor(QMainWindow):
     ) -> None:
         self.save_button.setEnabled(enabled)
         self.delete_button.setEnabled(enabled)
+        self.add_tag_button.setEnabled(enabled)
+        self.remove_tag_button.setEnabled(enabled)
 
     def clear_current_note(self) -> None:
         self.current_file_path = None
         self.current_file_sha = None
+
+        self.current_tags = []
+        self.refresh_current_tags_display()
 
         self.editor.blockSignals(True)
         self.editor.clear()
@@ -389,10 +464,6 @@ class LatexEditor(QMainWindow):
 
         self.update_preview()
         self.set_file_action_buttons(False)
-
-    # ========================================================
-    # GitHub helpers
-    # ========================================================
 
     def github_headers(self) -> dict[str, str]:
         self.validate_configuration()
@@ -455,8 +526,8 @@ class LatexEditor(QMainWindow):
 
         if isinstance(data, list):
             raise ValueError(
-                f"{repository_path} refers to a "
-                "directory, not a file."
+                f"{repository_path} refers to "
+                "a directory, not a file."
             )
 
         if data.get("type") != "file":
@@ -558,27 +629,13 @@ class LatexEditor(QMainWindow):
                     response.text,
                 )
 
-                documentation_url = (
-                    response_data.get(
-                        "documentation_url",
-                        "",
-                    )
-                )
-
             except ValueError:
                 message = response.text
-                documentation_url = ""
 
             details = (
                 f"HTTP {response.status_code}: "
                 f"{message}"
             )
-
-            if documentation_url:
-                details += (
-                    "\n\nDocumentation:\n"
-                    f"{documentation_url}"
-                )
 
         QMessageBox.critical(
             self,
@@ -586,14 +643,9 @@ class LatexEditor(QMainWindow):
             details,
         )
 
-    # ========================================================
-    # Manifest helpers
-    # ========================================================
-
-    def read_fresh_manifest(self) -> tuple[
-        list | dict,
-        str,
-    ]:
+    def read_fresh_manifest(
+        self,
+    ) -> tuple[list | dict, str]:
         manifest_file = self.get_github_file(
             MANIFEST_PATH
         )
@@ -654,6 +706,194 @@ class LatexEditor(QMainWindow):
             ensure_ascii=False,
         ) + "\n"
 
+    def get_manifest_notes(self) -> list:
+        if self.manifest_data is None:
+            raise ValueError(
+                "The manifest has not been loaded."
+            )
+
+        return self.notes_from_manifest(
+            self.manifest_data
+        )
+
+    def refresh_available_tags(self) -> None:
+        tags = {}
+
+        if self.manifest_data is not None:
+            try:
+                for note in self.get_manifest_notes():
+                    if not isinstance(note, dict):
+                        continue
+
+                    note_tags = note.get(
+                        "tags",
+                        [],
+                    )
+
+                    if not isinstance(
+                        note_tags,
+                        list,
+                    ):
+                        continue
+
+                    for tag in note_tags:
+                        tag = str(tag).strip()
+
+                        if not tag:
+                            continue
+
+                        key = tag.lower()
+
+                        if key not in tags:
+                            tags[key] = tag
+
+            except ValueError:
+                pass
+
+        self.available_tags = sorted(
+            tags.values(),
+            key=str.lower,
+        )
+
+        current_text = (
+            self.tag_selector.currentText()
+        )
+
+        self.tag_selector.blockSignals(True)
+        self.tag_selector.clear()
+        self.tag_selector.addItems(
+            self.available_tags
+        )
+        self.tag_selector.setEditText(
+            current_text
+        )
+        self.tag_selector.blockSignals(False)
+
+    def refresh_current_tags_display(
+        self,
+    ) -> None:
+        self.current_tags_list.clear()
+
+        for tag in self.current_tags:
+            self.current_tags_list.addItem(tag)
+
+    def add_tag_to_current_note(self) -> None:
+        if not self.current_file_path:
+            QMessageBox.warning(
+                self,
+                "No Notecard Selected",
+                "Select a notecard before adding tags.",
+            )
+            return
+
+        tag = self.tag_selector.currentText().strip()
+
+        if not tag:
+            return
+
+        existing_lower = {
+            item.lower()
+            for item in self.current_tags
+        }
+
+        if tag.lower() not in existing_lower:
+            self.current_tags.append(tag)
+
+        self.current_tags.sort(
+            key=str.lower
+        )
+
+        self.refresh_current_tags_display()
+
+        available_lower = {
+            item.lower()
+            for item in self.available_tags
+        }
+
+        if tag.lower() not in available_lower:
+            self.available_tags.append(tag)
+            self.available_tags.sort(
+                key=str.lower
+            )
+
+        self.tag_selector.clear()
+        self.tag_selector.addItems(
+            self.available_tags
+        )
+        self.tag_selector.setEditText("")
+
+        self.statusBar().showMessage(
+            f'Added tag "{tag}". '
+            "Save to commit the change.",
+            5000,
+        )
+
+    def remove_selected_tag(self) -> None:
+        selected_items = (
+            self.current_tags_list.selectedItems()
+        )
+
+        if not selected_items:
+            return
+
+        tag = selected_items[0].text()
+
+        self.current_tags = [
+            existing
+            for existing in self.current_tags
+            if existing != tag
+        ]
+
+        self.refresh_current_tags_display()
+
+        self.statusBar().showMessage(
+            f'Removed tag "{tag}". '
+            "Save to commit the change.",
+            5000,
+        )
+
+    def update_current_note_tags_in_manifest(
+        self,
+        manifest: list | dict,
+    ) -> bool:
+        if not self.current_file_path:
+            return False
+
+        clean_current_path = (
+            self.clean_repository_path(
+                self.current_file_path
+            )
+        )
+
+        notes = self.notes_from_manifest(
+            manifest
+        )
+
+        for note in notes:
+            if not isinstance(note, dict):
+                continue
+
+            note_path = (
+                note.get("file")
+                or note.get("path")
+                or ""
+            )
+
+            clean_note_path = (
+                self.clean_repository_path(
+                    str(note_path)
+                )
+            )
+
+            if clean_note_path == clean_current_path:
+                note["tags"] = list(
+                    self.current_tags
+                )
+
+                return True
+
+        return False
+
     def load_manifest(
         self,
         select_path: str | None = None,
@@ -673,6 +913,8 @@ class LatexEditor(QMainWindow):
 
             self.manifest_data = manifest
             self.manifest_sha = manifest_sha
+
+            self.refresh_available_tags()
 
             notes = self.notes_from_manifest(
                 manifest
@@ -771,15 +1013,404 @@ class LatexEditor(QMainWindow):
                 str(error),
             )
 
-    def get_manifest_notes(self) -> list:
-        if self.manifest_data is None:
-            raise ValueError(
-                "The manifest has not been loaded."
+    def on_note_selected(
+        self,
+        index: int,
+    ) -> None:
+        note_data = self.note_selector.itemData(
+            index
+        )
+
+        if not note_data:
+            self.clear_current_note()
+            return
+
+        tags = note_data.get(
+            "tags",
+            [],
+        )
+
+        if isinstance(tags, list):
+            self.current_tags = [
+                str(tag).strip()
+                for tag in tags
+                if str(tag).strip()
+            ]
+        else:
+            self.current_tags = []
+
+        self.refresh_current_tags_display()
+
+        repository_path = note_data["path"]
+
+        try:
+            note_file = self.get_github_file(
+                repository_path
             )
 
-        return self.notes_from_manifest(
-            self.manifest_data
+            self.current_file_path = (
+                note_file["path"]
+            )
+
+            self.current_file_sha = (
+                note_file["sha"]
+            )
+
+            self.editor.blockSignals(True)
+
+            self.editor.setPlainText(
+                note_file["content"]
+            )
+
+            self.editor.blockSignals(False)
+
+            self.update_preview()
+            self.set_file_action_buttons(True)
+
+            self.statusBar().showMessage(
+                f"Loaded {self.current_file_path}",
+                5000,
+            )
+
+        except requests.HTTPError as error:
+            self.clear_current_note()
+
+            self.show_request_error(
+                f"Could Not Load {repository_path}",
+                error,
+            )
+
+        except (
+            RuntimeError,
+            ValueError,
+            KeyError,
+            UnicodeDecodeError,
+        ) as error:
+            self.clear_current_note()
+
+            QMessageBox.critical(
+                self,
+                "Notecard Error",
+                str(error),
+            )
+
+    def save_current_note(self) -> None:
+        if (
+            not self.current_file_path
+            or not self.current_file_sha
+        ):
+            QMessageBox.warning(
+                self,
+                "No Notecard Selected",
+                "Select a notecard before saving.",
+            )
+            return
+
+        self.set_file_action_buttons(False)
+
+        try:
+            fresh_manifest, fresh_manifest_sha = (
+                self.read_fresh_manifest()
+            )
+
+            found = (
+                self.update_current_note_tags_in_manifest(
+                    fresh_manifest
+                )
+            )
+
+            if not found:
+                raise ValueError(
+                    "The current notecard could not "
+                    "be found in the manifest."
+                )
+
+            result = self.put_github_file(
+                repository_path=(
+                    self.current_file_path
+                ),
+                content=self.editor.toPlainText(),
+                commit_message=(
+                    f"Update "
+                    f"{self.current_file_path}"
+                ),
+                sha=self.current_file_sha,
+            )
+
+            self.current_file_sha = (
+                result["content"]["sha"]
+            )
+
+            manifest_result = self.put_github_file(
+                repository_path=MANIFEST_PATH,
+                content=self.format_manifest(
+                    fresh_manifest
+                ),
+                commit_message=(
+                    f"Update tags for "
+                    f"{self.current_file_path}"
+                ),
+                sha=fresh_manifest_sha,
+            )
+
+            self.manifest_data = fresh_manifest
+
+            self.manifest_sha = (
+                manifest_result["content"]["sha"]
+            )
+
+            self.refresh_available_tags()
+
+            current_index = (
+                self.note_selector.currentIndex()
+            )
+
+            current_data = (
+                self.note_selector.itemData(
+                    current_index
+                )
+            )
+
+            if current_data:
+                current_data["tags"] = list(
+                    self.current_tags
+                )
+
+                self.note_selector.setItemData(
+                    current_index,
+                    current_data,
+                )
+
+            self.statusBar().showMessage(
+                f"Saved {self.current_file_path}",
+                5000,
+            )
+
+            QMessageBox.information(
+                self,
+                "Notecard Saved",
+                (
+                    f"{self.current_file_path} "
+                    "and its tags were updated."
+                ),
+            )
+
+        except requests.HTTPError as error:
+            self.show_request_error(
+                "Could Not Save Notecard",
+                error,
+            )
+
+        except (
+            RuntimeError,
+            ValueError,
+            KeyError,
+            json.JSONDecodeError,
+        ) as error:
+            QMessageBox.critical(
+                self,
+                "Save Error",
+                str(error),
+            )
+
+        finally:
+            if self.current_file_path:
+                self.set_file_action_buttons(
+                    True
+                )
+
+    @staticmethod
+    def remove_manifest_entry(
+        manifest: list | dict,
+        repository_path: str,
+    ) -> dict | None:
+        clean_path = (
+            repository_path
+            .removeprefix("./")
+            .strip("/")
         )
+
+        notes = LatexEditor.notes_from_manifest(
+            manifest
+        )
+
+        for index, note in enumerate(notes):
+            if not isinstance(note, dict):
+                continue
+
+            note_path = (
+                note.get("file")
+                or note.get("path")
+                or ""
+            )
+
+            note_path = (
+                str(note_path)
+                .removeprefix("./")
+                .strip("/")
+            )
+
+            if note_path == clean_path:
+                return notes.pop(index)
+
+        return None
+
+    def delete_current_note(self) -> None:
+        note_data = self.note_selector.currentData()
+
+        if (
+            not note_data
+            or not self.current_file_path
+            or not self.current_file_sha
+        ):
+            return
+
+        title = note_data.get(
+            "title",
+            Path(self.current_file_path).stem,
+        )
+
+        confirmation = QMessageBox.warning(
+            self,
+            "Delete Notecard",
+            (
+                "Permanently delete this notecard "
+                "from GitHub and remove it from "
+                "the manifest?\n\n"
+                f"Title: {title}\n"
+                f"File: {self.current_file_path}"
+            ),
+            QMessageBox.StandardButton.Yes
+            | QMessageBox.StandardButton.Cancel,
+            QMessageBox.StandardButton.Cancel,
+        )
+
+        if (
+            confirmation
+            != QMessageBox.StandardButton.Yes
+        ):
+            return
+
+        self.refresh_button.setEnabled(False)
+        self.new_note_button.setEnabled(False)
+        self.set_file_action_buttons(False)
+
+        deleted_file = False
+        original_file_content = ""
+        original_file_path = (
+            self.current_file_path
+        )
+
+        try:
+            fresh_file = self.get_github_file(
+                original_file_path
+            )
+
+            fresh_manifest, fresh_manifest_sha = (
+                self.read_fresh_manifest()
+            )
+
+            original_file_content = (
+                fresh_file["content"]
+            )
+
+            updated_manifest = deepcopy(
+                fresh_manifest
+            )
+
+            removed_entry = (
+                self.remove_manifest_entry(
+                    updated_manifest,
+                    original_file_path,
+                )
+            )
+
+            if removed_entry is None:
+                raise ValueError(
+                    "The selected notecard was not "
+                    "found in the manifest."
+                )
+
+            self.delete_github_file(
+                repository_path=original_file_path,
+                sha=fresh_file["sha"],
+                commit_message=(
+                    f"Delete notecard: {title}"
+                ),
+            )
+
+            deleted_file = True
+
+            self.put_github_file(
+                repository_path=MANIFEST_PATH,
+                content=self.format_manifest(
+                    updated_manifest
+                ),
+                commit_message=(
+                    f"Remove {title} from "
+                    "notecard manifest"
+                ),
+                sha=fresh_manifest_sha,
+            )
+
+            self.clear_current_note()
+            self.load_manifest()
+
+            QMessageBox.information(
+                self,
+                "Notecard Deleted",
+                f'"{title}" was deleted.',
+            )
+
+        except requests.HTTPError as error:
+            if (
+                deleted_file
+                and original_file_content
+            ):
+                try:
+                    self.put_github_file(
+                        repository_path=(
+                            original_file_path
+                        ),
+                        content=(
+                            original_file_content
+                        ),
+                        commit_message=(
+                            "Restore notecard after "
+                            "failed manifest update"
+                        ),
+                    )
+                except Exception:
+                    pass
+
+            self.show_request_error(
+                "Could Not Delete Notecard",
+                error,
+            )
+
+            self.load_manifest(
+                select_path=original_file_path
+            )
+
+        except Exception as error:
+            QMessageBox.critical(
+                self,
+                "Deletion Error",
+                str(error),
+            )
+
+            self.load_manifest(
+                select_path=original_file_path
+            )
+
+        finally:
+            self.refresh_button.setEnabled(True)
+            self.new_note_button.setEnabled(True)
+
+            if self.current_file_path:
+                self.set_file_action_buttons(
+                    True
+                )
 
     def manifest_contains_slug(
         self,
@@ -824,473 +1455,6 @@ class LatexEditor(QMainWindow):
         return False
 
     @staticmethod
-    def remove_manifest_entry(
-        manifest: list | dict,
-        repository_path: str,
-    ) -> dict | None:
-        clean_path = (
-            repository_path
-            .removeprefix("./")
-            .strip("/")
-        )
-
-        notes = LatexEditor.notes_from_manifest(
-            manifest
-        )
-
-        for index, note in enumerate(notes):
-            if not isinstance(note, dict):
-                continue
-
-            note_path = (
-                note.get("file")
-                or note.get("path")
-                or ""
-            )
-
-            note_path = (
-                str(note_path)
-                .removeprefix("./")
-                .strip("/")
-            )
-
-            if note_path == clean_path:
-                return notes.pop(index)
-
-        return None
-
-    # ========================================================
-    # Existing-notecard loading
-    # ========================================================
-
-    def on_note_selected(
-        self,
-        index: int,
-    ) -> None:
-        note_data = self.note_selector.itemData(
-            index
-        )
-
-        if not note_data:
-            self.clear_current_note()
-            return
-
-        repository_path = note_data["path"]
-
-        try:
-            note_file = self.get_github_file(
-                repository_path
-            )
-
-            self.current_file_path = (
-                note_file["path"]
-            )
-
-            self.current_file_sha = (
-                note_file["sha"]
-            )
-
-            self.editor.blockSignals(True)
-
-            self.editor.setPlainText(
-                note_file["content"]
-            )
-
-            self.editor.blockSignals(False)
-
-            self.update_preview()
-            self.set_file_action_buttons(True)
-
-            self.statusBar().showMessage(
-                f"Loaded {self.current_file_path}",
-                5000,
-            )
-
-        except requests.HTTPError as error:
-            self.clear_current_note()
-
-            self.show_request_error(
-                f"Could Not Load "
-                f"{repository_path}",
-                error,
-            )
-
-        except (
-            RuntimeError,
-            ValueError,
-            KeyError,
-            UnicodeDecodeError,
-        ) as error:
-            self.clear_current_note()
-
-            QMessageBox.critical(
-                self,
-                "Notecard Error",
-                str(error),
-            )
-
-    # ========================================================
-    # Existing-notecard saving
-    # ========================================================
-
-    def save_current_note(self) -> None:
-        if (
-            not self.current_file_path
-            or not self.current_file_sha
-        ):
-            QMessageBox.warning(
-                self,
-                "No Notecard Selected",
-                "Select a notecard before saving.",
-            )
-            return
-
-        self.set_file_action_buttons(False)
-
-        try:
-            result = self.put_github_file(
-                repository_path=(
-                    self.current_file_path
-                ),
-                content=self.editor.toPlainText(),
-                commit_message=(
-                    f"Update "
-                    f"{self.current_file_path}"
-                ),
-                sha=self.current_file_sha,
-            )
-
-            self.current_file_sha = (
-                result["content"]["sha"]
-            )
-
-            self.statusBar().showMessage(
-                f"Saved "
-                f"{self.current_file_path}",
-                5000,
-            )
-
-            QMessageBox.information(
-                self,
-                "Notecard Saved",
-                (
-                    f"{self.current_file_path} "
-                    "was updated on GitHub."
-                ),
-            )
-
-        except requests.HTTPError as error:
-            if (
-                error.response is not None
-                and error.response.status_code
-                in {409, 422}
-            ):
-                QMessageBox.warning(
-                    self,
-                    "File Changed",
-                    (
-                        "The file may have changed "
-                        "on GitHub. Refresh the "
-                        "manifest and reload the "
-                        "notecard before saving."
-                    ),
-                )
-
-            else:
-                self.show_request_error(
-                    "Could Not Save Notecard",
-                    error,
-                )
-
-        except RuntimeError as error:
-            QMessageBox.critical(
-                self,
-                "Configuration Error",
-                str(error),
-            )
-
-        except KeyError:
-            QMessageBox.critical(
-                self,
-                "Unexpected Response",
-                (
-                    "GitHub did not return the "
-                    "updated file SHA."
-                ),
-            )
-
-        finally:
-            if self.current_file_path:
-                self.set_file_action_buttons(
-                    True
-                )
-
-    # ========================================================
-    # Notecard deletion
-    # ========================================================
-
-    def delete_current_note(self) -> None:
-        note_data = self.note_selector.currentData()
-
-        if (
-            not note_data
-            or not self.current_file_path
-            or not self.current_file_sha
-        ):
-            QMessageBox.warning(
-                self,
-                "No Notecard Selected",
-                "Select a notecard before deleting.",
-            )
-            return
-
-        title = note_data.get(
-            "title",
-            Path(self.current_file_path).stem,
-        )
-
-        tags = note_data.get("tags", [])
-
-        if isinstance(tags, list):
-            tags_text = ", ".join(
-                str(tag)
-                for tag in tags
-            )
-        else:
-            tags_text = str(tags)
-
-        confirmation = QMessageBox.warning(
-            self,
-            "Delete Notecard",
-            (
-                "This will permanently delete the "
-                "notecard file from GitHub and remove "
-                "its entry from the manifest.\n\n"
-                f"Title: {title}\n"
-                f"File: {self.current_file_path}\n"
-                f"Tags: {tags_text or 'None'}\n\n"
-                "This action creates GitHub commits "
-                "and cannot be undone from this app."
-            ),
-            QMessageBox.StandardButton.Yes
-            | QMessageBox.StandardButton.Cancel,
-            QMessageBox.StandardButton.Cancel,
-        )
-
-        if (
-            confirmation
-            != QMessageBox.StandardButton.Yes
-        ):
-            return
-
-        second_confirmation = QMessageBox.question(
-            self,
-            "Confirm Permanent Deletion",
-            (
-                f'Permanently delete "{title}"?'
-            ),
-            QMessageBox.StandardButton.Yes
-            | QMessageBox.StandardButton.No,
-            QMessageBox.StandardButton.No,
-        )
-
-        if (
-            second_confirmation
-            != QMessageBox.StandardButton.Yes
-        ):
-            return
-
-        self.refresh_button.setEnabled(False)
-        self.new_note_button.setEnabled(False)
-        self.set_file_action_buttons(False)
-
-        deleted_file = False
-        rollback_succeeded = False
-
-        original_file_content = ""
-        original_file_path = (
-            self.current_file_path
-        )
-
-        try:
-            # Retrieve fresh versions so the deletion does not
-            # use stale file or manifest SHAs.
-            fresh_file = self.get_github_file(
-                original_file_path
-            )
-
-            fresh_manifest, fresh_manifest_sha = (
-                self.read_fresh_manifest()
-            )
-
-            original_file_content = (
-                fresh_file["content"]
-            )
-
-            updated_manifest = deepcopy(
-                fresh_manifest
-            )
-
-            removed_entry = (
-                self.remove_manifest_entry(
-                    updated_manifest,
-                    original_file_path,
-                )
-            )
-
-            if removed_entry is None:
-                raise ValueError(
-                    "The selected notecard was not "
-                    "found in the current manifest. "
-                    "No files were deleted."
-                )
-
-            # First commit: delete the notecard file.
-            self.delete_github_file(
-                repository_path=original_file_path,
-                sha=fresh_file["sha"],
-                commit_message=(
-                    f"Delete notecard: {title}"
-                ),
-            )
-
-            deleted_file = True
-
-            # Second commit: remove its manifest entry.
-            manifest_result = self.put_github_file(
-                repository_path=MANIFEST_PATH,
-                content=self.format_manifest(
-                    updated_manifest
-                ),
-                commit_message=(
-                    f"Remove {title} from "
-                    "notecard manifest"
-                ),
-                sha=fresh_manifest_sha,
-            )
-
-            self.manifest_data = updated_manifest
-            self.manifest_sha = (
-                manifest_result["content"]["sha"]
-            )
-
-            self.clear_current_note()
-            self.load_manifest()
-
-            self.statusBar().showMessage(
-                f"Deleted {original_file_path}",
-                5000,
-            )
-
-            QMessageBox.information(
-                self,
-                "Notecard Deleted",
-                (
-                    f'"{title}" was deleted from '
-                    "GitHub and removed from the "
-                    "manifest."
-                ),
-            )
-
-        except requests.HTTPError as error:
-            # If the file deletion succeeded but the manifest
-            # update failed, attempt to recreate the file.
-            if (
-                deleted_file
-                and original_file_content
-            ):
-                try:
-                    self.put_github_file(
-                        repository_path=(
-                            original_file_path
-                        ),
-                        content=(
-                            original_file_content
-                        ),
-                        commit_message=(
-                            "Restore notecard after "
-                            "manifest update failure: "
-                            f"{title}"
-                        ),
-                    )
-
-                    rollback_succeeded = True
-
-                except (
-                    requests.HTTPError,
-                    RuntimeError,
-                ):
-                    rollback_succeeded = False
-
-            self.load_manifest(
-                select_path=original_file_path
-            )
-
-            if deleted_file:
-                if rollback_succeeded:
-                    QMessageBox.warning(
-                        self,
-                        "Deletion Rolled Back",
-                        (
-                            "The notecard file was "
-                            "temporarily deleted, but "
-                            "the manifest update failed.\n\n"
-                            "The app successfully restored "
-                            "the notecard file. The manifest "
-                            "was not changed."
-                        ),
-                    )
-
-                else:
-                    QMessageBox.critical(
-                        self,
-                        "Partial Deletion",
-                        (
-                            "The notecard file was deleted, "
-                            "but updating the manifest failed, "
-                            "and the app could not restore the "
-                            "file.\n\n"
-                            "The manifest may still contain "
-                            "an entry for a missing file."
-                        ),
-                    )
-
-            else:
-                self.show_request_error(
-                    "Could Not Delete Notecard",
-                    error,
-                )
-
-        except (
-            RuntimeError,
-            ValueError,
-            KeyError,
-            json.JSONDecodeError,
-        ) as error:
-            self.load_manifest(
-                select_path=original_file_path
-            )
-
-            QMessageBox.critical(
-                self,
-                "Deletion Error",
-                str(error),
-            )
-
-        finally:
-            self.refresh_button.setEnabled(True)
-            self.new_note_button.setEnabled(True)
-
-            if self.current_file_path:
-                self.set_file_action_buttons(
-                    True
-                )
-
-    # ========================================================
-    # New-notecard creation
-    # ========================================================
-
-    @staticmethod
     def make_slug(title: str) -> str:
         normalized = title.strip().lower()
 
@@ -1319,17 +1483,12 @@ class LatexEditor(QMainWindow):
             self.manifest_data is None
             or self.manifest_sha is None
         ):
-            QMessageBox.warning(
-                self,
-                "Manifest Not Loaded",
-                (
-                    "Load the manifest before "
-                    "creating a notecard."
-                ),
-            )
             return
 
-        dialog = NewNotecardDialog(self)
+        dialog = NewNotecardDialog(
+            self.available_tags,
+            self,
+        )
 
         if (
             dialog.exec()
@@ -1343,17 +1502,6 @@ class LatexEditor(QMainWindow):
         slug = self.make_slug(title)
         filename = self.make_filename(title)
 
-        if not slug or filename == ".html":
-            QMessageBox.warning(
-                self,
-                "Invalid Title",
-                (
-                    "The title must contain "
-                    "letters or numbers."
-                ),
-            )
-            return
-
         repository_path = (
             f"notecards/{filename}"
         )
@@ -1363,7 +1511,6 @@ class LatexEditor(QMainWindow):
         )
 
         try:
-            # Refresh before testing for duplicates.
             fresh_manifest, fresh_manifest_sha = (
                 self.read_fresh_manifest()
             )
@@ -1375,10 +1522,7 @@ class LatexEditor(QMainWindow):
                 QMessageBox.warning(
                     self,
                     "Duplicate Slug",
-                    (
-                        "A notecard already uses "
-                        f'the slug "{slug}".'
-                    ),
+                    f'Slug "{slug}" already exists.',
                 )
                 return
 
@@ -1388,34 +1532,16 @@ class LatexEditor(QMainWindow):
                 QMessageBox.warning(
                     self,
                     "Duplicate File",
-                    (
-                        f"{repository_path} already "
-                        "appears in the manifest."
-                    ),
+                    f"{repository_path} already exists.",
                 )
                 return
 
-        except (
-            requests.HTTPError,
-            RuntimeError,
-            ValueError,
-            json.JSONDecodeError,
-        ) as error:
-            if isinstance(
-                error,
-                requests.HTTPError,
-            ):
-                self.show_request_error(
-                    "Could Not Refresh Manifest",
-                    error,
-                )
-            else:
-                QMessageBox.critical(
-                    self,
-                    "Manifest Error",
-                    str(error),
-                )
-
+        except Exception as error:
+            QMessageBox.critical(
+                self,
+                "Manifest Error",
+                str(error),
+            )
             return
 
         new_entry = {
@@ -1431,26 +1557,6 @@ class LatexEditor(QMainWindow):
                 tags=tags,
             )
         )
-
-        confirmation = QMessageBox.question(
-            self,
-            "Create Notecard",
-            (
-                "Create the following notecard?\n\n"
-                f"Title: {title}\n"
-                f"Slug: {slug}\n"
-                f"File: {manifest_file_path}\n"
-                f"Tags: {', '.join(tags)}"
-            ),
-            QMessageBox.StandardButton.Yes
-            | QMessageBox.StandardButton.No,
-        )
-
-        if (
-            confirmation
-            != QMessageBox.StandardButton.Yes
-        ):
-            return
 
         self.create_notecard_and_update_manifest(
             entry=new_entry,
@@ -1535,7 +1641,6 @@ class LatexEditor(QMainWindow):
         self.set_file_action_buttons(False)
 
         card_created = False
-        rollback_succeeded = False
 
         try:
             fresh_manifest, fresh_manifest_sha = (
@@ -1552,7 +1657,6 @@ class LatexEditor(QMainWindow):
 
             notes.append(entry)
 
-            # First commit: create the new notecard.
             self.put_github_file(
                 repository_path=repository_path,
                 content=initial_content,
@@ -1564,8 +1668,7 @@ class LatexEditor(QMainWindow):
 
             card_created = True
 
-            # Second commit: add it to the manifest.
-            manifest_result = self.put_github_file(
+            self.put_github_file(
                 repository_path=MANIFEST_PATH,
                 content=self.format_manifest(
                     updated_manifest
@@ -1577,34 +1680,17 @@ class LatexEditor(QMainWindow):
                 sha=fresh_manifest_sha,
             )
 
-            self.manifest_data = updated_manifest
-            self.manifest_sha = (
-                manifest_result["content"]["sha"]
-            )
-
-            self.statusBar().showMessage(
-                f"Created {repository_path}",
-                5000,
+            self.load_manifest(
+                select_path=repository_path
             )
 
             QMessageBox.information(
                 self,
                 "Notecard Created",
-                (
-                    f"{entry['title']} was created "
-                    "successfully.\n\n"
-                    f"File: {repository_path}\n"
-                    f"Manifest: {MANIFEST_PATH}"
-                ),
-            )
-
-            self.load_manifest(
-                select_path=repository_path
+                f"{entry['title']} was created.",
             )
 
         except requests.HTTPError as error:
-            # If the card was created but the manifest update
-            # failed, attempt to delete the newly-created card.
             if card_created:
                 try:
                     created_file = (
@@ -1620,70 +1706,27 @@ class LatexEditor(QMainWindow):
                         sha=created_file["sha"],
                         commit_message=(
                             "Remove incomplete "
-                            "notecard creation: "
-                            f"{entry['title']}"
+                            "notecard creation"
                         ),
                     )
+                except Exception:
+                    pass
 
-                    rollback_succeeded = True
-
-                except (
-                    requests.HTTPError,
-                    RuntimeError,
-                    ValueError,
-                    KeyError,
-                ):
-                    rollback_succeeded = False
+            self.show_request_error(
+                "Could Not Create Notecard",
+                error,
+            )
 
             self.load_manifest()
 
-            if card_created:
-                if rollback_succeeded:
-                    QMessageBox.warning(
-                        self,
-                        "Creation Rolled Back",
-                        (
-                            "The notecard file was "
-                            "created, but the manifest "
-                            "update failed.\n\n"
-                            "The app successfully deleted "
-                            "the incomplete notecard file."
-                        ),
-                    )
-
-                else:
-                    QMessageBox.critical(
-                        self,
-                        "Partial Creation",
-                        (
-                            "The notecard file was created, "
-                            "but the manifest update failed, "
-                            "and the app could not delete the "
-                            "new file.\n\n"
-                            "The repository may contain an "
-                            "unlisted notecard."
-                        ),
-                    )
-
-            else:
-                self.show_request_error(
-                    "Could Not Create Notecard",
-                    error,
-                )
-
-        except (
-            RuntimeError,
-            ValueError,
-            KeyError,
-            json.JSONDecodeError,
-        ) as error:
-            self.load_manifest()
-
+        except Exception as error:
             QMessageBox.critical(
                 self,
                 "Creation Error",
                 str(error),
             )
+
+            self.load_manifest()
 
         finally:
             self.refresh_button.setEnabled(True)
@@ -1693,10 +1736,6 @@ class LatexEditor(QMainWindow):
                 self.set_file_action_buttons(
                     True
                 )
-
-    # ========================================================
-    # Live preview
-    # ========================================================
 
     def schedule_preview_update(self) -> None:
         self.update_timer.start()
@@ -1935,10 +1974,6 @@ class LatexEditor(QMainWindow):
             .replace("\n", "\\n")
         )
 
-
-# ============================================================
-# Start application
-# ============================================================
 
 def main() -> None:
     app = QApplication(sys.argv)
