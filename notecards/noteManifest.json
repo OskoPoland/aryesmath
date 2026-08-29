@@ -59,5 +59,13 @@
             "Reading",
             "Tolstoy"
         ]
+    },
+    {
+        "title": "Thoughts on Plato's Lysis",
+        "slug": "thoughts_on_plato_s_lysis",
+        "file": "./notecards/thoughtsonplatoslysis.html",
+        "tags": [
+            "Reading"
+        ]
     }
 ]
