@@ -207,8 +207,11 @@ The equivalence of these equivalence classes implies directly that $f \circ g\si
 		\[h_{-1,1} = h_{-1} = \id_{F_0} \quad\text{and}\quad h_{1,1} = h_1 = g_1 \circ f_1\]
 		we have successfully constructed a homotpy equivalence of $\id_{F_0} \sim g_1 \circ f_1$. 
 		\end{proof}
-	
-	
+		As we established before this, for any map $f: X \rightarrow Y$ we can always construct a homotopically equivalent map $\tilde f : X \rightarrow Cyl(f)$ but we can actually simplify this by instead taking $E  = X \times E(Y) = \{(x,\gamma) : \gamma(1) = f(x)\}$. Not only does this give us a homotpy equivalence we can further extend this to show that this has the CHP. This establishes the fact that we only need one map to construct a homotopically equivalent inclusion from a total space to $Y$. 
+		\begin{remark}
+			My understanding of this is that this allows us to study maps with "nicer" properties without losing topological information, up to homotopy equivalence of course.
+		\end{remark}
+		Observe that a map $Z \rightarrow E$ is defined utilizing a map $\phi: Z \rightarrow X$ and $\psi : Z \times I \rightarrow Y$ where $\psi(z,0) = \phi(f(z))$. Now construct a map $\xi : Z \times [1,2] \rightarrow Y$ where $\xi(z,1) = \psi(z,1)$. Observe that $\psi(z,t) = \tau_z(t)$ giving us a family of paths $\tau_z \in E(Y)$ parametrized by $z \in Z$. Then to each of these paths we are essentailly just adjoining that path $\xi(z,1)$ raning over $[1,1+t]$. Then it is a matter of reparametrizing the interval and we get a homotopy that lifts automatically for every $t$. 
 	
 	
 	
