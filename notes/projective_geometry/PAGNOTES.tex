@@ -1,0 +1,252 @@
+\documentclass[40pt]{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{xcolor}
+
+\setlength{\parindent}{0cm}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Proj}{\mathbb{P}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\im}{\text{im}\,}
+\DeclareMathOperator{\id}{\text{id}}
+\DeclareMathOperator{\rank}{\text{rk}}
+\DeclareMathOperator{\Frac}{\text{Frac}}
+\DeclareMathOperator{\trdeg}{\text{trdeg}}
+\renewcommand{\qedsymbol}{$\aleph$}
+\newcommand{\note}[1]{\textcolor{red}{\emph{#1}}}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+
+\title{Beginnings in Algebraic Geometry Notes for CH 9 - 12}
+\date{SFSU FALL 2026}
+
+\begin{document}
+	\maketitle
+	\tableofcontents
+	\pagebreak
+	\section{CH 9 Projective Varieties}
+	\subsection{9.1 Projective Space}
+	\begin{definition}[Projective Space]
+		Let $n \in \N$ a projective space over $K$ denoted $\Proj_k^n$ is defined as 
+		\[
+		\frac{K^{n+1}/\{(0,\dots,0)\}}{\sim}
+		\]
+		where $(a_0,\dots,a_{n}) \sim (b_1,\dots,b_{n})$ iff there exists a $\lambda \in K/\{0\}$ such that 
+		\[
+		(a_0,\dots,a_{n})=(\lambda b_0,\dots,\lambda b_n).
+		\]
+		An equivalence class is denoted $[a_0:\cdots:a_n]$. 
+	\end{definition}
+	\begin{remark}
+		Note here that we aren't really putting any structural requirements on $K$. My previous encounters with projective spaces almost always used a field and the notation of $K$ is consistent with the textbooks use of fields. With affine spaces we noted that the Nullstellensatz was only consistent when $K$ was an algebraically closed field. I imagine we will soon face a similar restriction. \note{Does $K$ need to be a field?}
+	\end{remark}
+	Projective spaces are particularly interesting because there are many related ways of presenting them. The first thing we'll do as a responsible mathematicitians is go through a couple of examples. 
+	\begin{description}
+		\item[Ex] Let $n = 0$, that is $\Proj^0_K$ for some $K$. This means we are looking at equivalence classes of $\frac{K/\{0\}}{\sim}$. Note that for any $a \in K/\{0\}\}$ we can always take $\lambda = \frac{1}{a}$ therefore all of $\Proj^0 = \{[1]\}$. 
+		\item[Ex] Take $n = 1$,  for any $[a_0:a_1] \in \Proj^1$ observe that by taking $\lambda = \frac{1}{a_0}$ then every equivalence class where $a_0 \neq 0$ is simply $[1: \frac{a_1}{a_0}]$. On the other hand when the first term is zero, $[0:a_1]$ we may always choose $\lambda = \frac{1}{a_1}$ so that it may be scaled to $[0:1]$. This means that $\Proj^1$ can instead be expressed as a disjoint union
+		\[
+		\Proj^1 = \{[1:a] \; | \; a \in K\}\sqcup\{[0:1]\}.
+		\]
+		\note{Observe that the left term is in bijection with $\A^1$}
+		\item[Ex] Let $n = 2$. Similar to $\Proj^1$, equivalence classes $[a_0:a_1:a_2] \in \Proj^2$ can always be rescaled to $[1 : b_1 : b_2]$ when $a_0 \neq 0$. If the first term is zero then again every term can be scaled to $[0:b_1:b_2]$. Then, 
+		\[
+		\Proj^2 = \{[1:b_1:b_2] \; | \: b_1,b_2 \in K\}\sqcup\{[0:b_1:b_2] \; | \; b_1,b_2 \in K\}
+		\]
+		Interestingly the by dropping the first term; the left portion is in bijection with $\A^2$ while the right term is in bijection with $\Proj^1$ which gives the decomposition
+		\[
+		\Proj^2 = \A^2\sqcup\Proj^1.
+		\]
+	\end{description}
+	\begin{theorem}
+		For $n \geq 1$ that there exists a natural bijection $\Proj^n = \A^{n} \sqcup \Proj^{n-1}$
+	\end{theorem}
+	\begin{proof}
+		The proof follows the structure provided in problem 9.1.3 and consists of three portions. First define
+		\[
+		U = \{[a_0:\cdots:a_n] \in \Proj^n\; | \; a_0,\dots,a_n \in K, a_0 \neq 0\} \quad\text{and}\quad V = \{[a_0:\cdots:a_n]\in\Proj^n\; | \; a_0,\dots,a_n \in K, a_0 = 0\}
+		\]
+		We begin by showing that $\Proj^n = U \sqcup V$. The containment of $\Proj^n$ in $U \cup V$ and vice verse is automtic given the definition of $U$ and $V$. It remains to show that $U\cup V$ can be upgraded to $U \sqcup V$. Suppose towards a contradiction that $U \cap V\neq\emptyset$ then there exists $[b_0:\cdots:b_n] \in U \cap V$. Note that for any $[a_1:\cdots:a_n] \in U$, because $a_0$ is non-zero, we may always take $\lambda = \frac{1}{a_0}$ so that every equivalence class contained in $U$ is of the form $[1:c_1:\cdots:c_n]$ for some $c_1,\dots,c_n \in K$. The assumption that $U \cap V$ is non-empty implies that $b_0$ is both zero and one. Hence $U \cap V = \emptyset$ and $\Proj^n = U \sqcup V$. The isomorphism $V \simeq \Proj^{n-1}$ and $U \simeq \A^n$ follow immediately by simply dropping the leading zero or one.
+		\end{proof}
+	There are a few more ways that projective spaces are represnted. The most well known is that $\Proj^{n}$ is isomorphic to the set of points through the origin of $\A^{n+1}$
+	
+	\subsection{9.2 Projective Vanishing Operator}
+	We say that a polynomial $f \in K[x_0,\dots,x_n]$ only vanishes on a point $a$ if it vanishes on every representative of $a$ in the desired projective space.
+	\begin{description}
+		\item[Non-Example:] Consider the polynomnial $f(x,y) = x^2 - y$	which vanishes on $[2,4]$ but it doesnt vanish on $[4,8]$
+		\item[Example:] The polynomial $f(x,y) = x^2 - y^2$ on the other hand vanishes on $[2,2]$ and every possible representative of the solution
+	\end{description}
+	We end up with a problem: How do we check that every representative vanishes? Instead of checking we simply restrict ourselves to the case of homogenous polynomials. A polyomial is considered homogenous of degree $d$ if every non-zero term of $f$ has degree $d$. For example $f(x,y,z)= 3x^2+2yz+3zx$ is a polynomial homogenous of degree 2 because every non-zero term has degree 2.
+	\begin{proposition}
+		Let $f \in K[x_0,\dots,x_n]$ be a homogenous polynomial of degree $d$ and $[a_0:\cdots:a_n]=[b_0:\cdots:b_n]$ in $\Proj^n$ then $f(a_0,\dots,a_n)=0 \iff f(b_0,\dots,b_n) = 0$.
+	\end{proposition}
+	\begin{proof}
+		If $f$ is a homogenous polynomial of degree $d$, then each non-zero term of $f$ takes the form $cx_0^{\alpha_0}\cdots x_n^{\alpha_n}$ for some non-zero $c \in K$, $\alpha_0,\dots,\alpha_n \in \N$ such that $\sigma \alpha_i = d$. Evaluating $f$ at a representative of $[a_0:\cdots:a_n]$  means each non-zero term takes the form 
+		\[
+		c\lambda^{\sum_i \alpha_i}a_0 \cdots a_n = c\lambda^da_0\cdots a_n.
+		\]
+		Then $\lambda^d$ can be factored out of every non-zero term of $f$ evaluating at so that $f(\lambda a_0,\dots, \lambda a_n) = \lambda^df(a_0,\dots,a_n)$.  If $f(a_0,\dots,a_n)=0$ and, by assumption, there exists a $\lambda \in K$ such that 
+		\[(\lambda a_0,\dots,\lambda a_n) = (b_1,\dots,b_n)\]
+		with the desired implication following direcrtly. Following identical logic the reverse implication completes the desired if and only if. 
+	\end{proof}
+	Of course in true algebraist sense, the fact that we can determine that a homegenous polynomial vanishes on all representatives as long as it vanishes on one, we restrict ourselves to looking only at homogenous polynomials. Yet we would like to still work with non-homogenous as a strict homogeneity condition is too restrictive. Lucky for us we can considere homogenous components of a polynomial. For example the polynomial $f(x, y) = x^2 + xy + x$ has a homogenous component of degree 2 and degree 1 denoted
+	\[f_2(x,y) = x^2 + xy \quad\text{and}\quad f_1(x,y) = x\]. 
+	The next proposition follows quite naturally
+	\begin{proposition}
+		Let $f \in K[x_0,\dots,x_n]$ be a polynomial and $a \in \Proj^n$. Then $f$ vanishes at $a$ if and only if each homogenous component of $f$ vanishes at $a$. 
+	\end{proposition}
+	\begin{proof}
+		Suppose that each homogenous component $f_k$ of $f$ vanishes on $a$ for all $k \leq d$ where $d$ is the degree of polynomial $f$. As 
+		\[f = \sum_{k=1}^d f_k\]
+		and $f_k(a) = 0$ for every representative of $a$, then $f$ vanishes at every representative of $a$. Now suppose that $f$ vanishes on every representative of $a$. Then for any $\lambda \in K\setminus \{0\}$, by assumption it follows
+		\begin{align}
+			0 &= f(\lambda a_0,\dots,\lambda a_n) \\
+			&= \sum_{k=1}^d \lambda^d f_k(a_0,\dots,a_n).
+		\end{align}
+		Since (2) vanishes of inifnitely many $\lambda$ we may view (2) as a univariate polynomial 
+		\[f(x) = \sum_{k=1}^d x^d f(a_0,\dots,a_n) = 0\]
+		vanishes on infinitely many values of $K$. This implies that $f(x)$ must be the zero polynomial then, $f_k(a_0,\dots,a_n) = 0$ for all $k$. Since $f_k$ is homogenous then each homogenous component of $f$ must vanish on every representative of $a$. 
+	\end{proof}
+	\begin{definition}[Projective $\V$ Operator]
+		Let $\mathcal{S} \subseteq K[x_0,\dots,x_n]$ be a set of polynomials. The projective vanishes set of $\mathcal{S}$ is 
+		\[\V_\Proj(\mcal{S}) = \{a \in \Proj^n \; | \; f(a)=0 \; \forall f \in \mcal{S}\}\]
+		We say that $X \subseteq \Proj^n$ is projective variety if $X = \V_\Proj(S)$ for some set $\mcal{S} \subseteq K[x_0,\dots,x_n]$. 
+	\end{definition}
+	Analagously to the affine case, a projective variety is defined by a ideals, i.e. 
+	\begin{proposition}
+		If $S \subseteq K[x_0,\dots,x_n]$ is a set of polynomials then 
+		\[\V_\Proj(\mcal{S}) = \V_\Proj(\langle \mcal{S} \rangle)\]
+	\end{proposition}
+	\begin{proof}
+		Let $a \in \V_\Proj(\mcal{S})$, implies that for any polynomial $f \in \mcal{S}$ that $f$ vanishes on $a$. Let $g \in K[x_0,\dots,x_n]$ be a polynomial. The product $fg$ evaluated at $a$ must also vanish. Therefore $fg \in \mcal{S}$ hence $\mcal{S}$ must be an ideal. The reverse inclusion comes immediately. 
+	\end{proof}
+	Further specifying, again like the affine case, we see that projective varieties are finitely generated by homogenous polynomials. 
+	\begin{proposition}
+		Any projective variety $X \subseteq \Proj^n$ is of the form $X = \V_\Proj(f_1,\dots,f_k)$ where $f_1,\dots,f_k \in K[x_0,\dots,x_n]$ are homogenous polynomials.
+	\end{proposition}
+	\begin{proof}
+		Let $X \subseteq \Proj^n$ be a projective variety then $X = \V_\Proj(\mcal{S})$ where $\mcal{S} \subseteq K[x_0,\dots,x_n]$ is an ideal. Hilbert's Basis theorem ensures that $K[x_0,\dots,x_n]$ is Neotherian implying there exist polynomials $f_1,\dots,f_k \in K[x_0,\dots,x_n]$ such that $\mcal{S} = \langle f_1,\dots,f_k \rangle$. Using lemma 9.16 note that if each polynomial $f_i$ of degree $d$ vanishes on a point $a \in \Proj^n$ then every homogenous component $f_{i,k}$ of degree $k$ for $k \leq d$ must also vanishes on $a$. Since $f_i = \sum_p=1^d f_{i,p}$ then we may further refine our list of generating polynomials. Hence any projective variety is the vanishing of a finite set of homogenous polynomials. 
+	\end{proof}
+	\subsection{9.3 Projective $\mathcal{I}$-operator}
+	It is defined essentially identically to the affine vanishing operator
+	\begin{definition}[Projective $\mcal{I}$-operator]
+		Let $ X \subseteq \Proj^n$ be a subset. The vanishing ideal of $X$ is the set
+		\[
+		\mcal{I}_\Proj(X) = \{f \in K[x_0,\dots,x_n] \; | \; f(a) = 0 \; \forall a \in X\}
+		\]
+	\end{definition}
+	\begin{description}
+		\item[Ex:] Let $X = \{[1:0]\} \subseteq \Proj^n$.  Observe that for the polynomial $f(x_0,x_1) = x_1$ any representative of $[1:0]$ will always vanish. In fact we will show that $\la x_1 \ra = \I_\Proj(X)$. The inclusion $\la x_1 \ra \subseteq \I_\Proj(X)$ follows immediately as $x_1$ is fixed to zero. Now take $f \in \I_\Proj(X)$ then $f(a, 0) = 0$ for all $a \in K$, then we can view the polynomial as univariate in the first coordinate $f(x_0, 0)$ with infinitely many zeroes implying it must be the zero polynomial. Take a polynomial $f \in K[x_0,x_1]$ and view it as a univariate polynomial $f \in (K[x_0])[x_1]$ which has a general form 
+		\[
+		f = \sum_{d \geq 0} f_d(x_0)x_1^d
+		\]
+		If $f$ vanishes on $X$, then $f(x_0, 0) = 0$ implying that the degree zero homogenous component is also zero leaving us with an extra $x_1$ term
+		\[
+		f = x_1\sum_{d\geq 1}f_d(x_0)x^{d-1} \in \la x_1 \ra.
+		\]
+		\item[Ex:] Let $X = \V(x_0 + x_1 - x_2) \subseteq \Proj^2$ then $\I(X) = \la x_0 + x_1 - x_2 \ra$. The ideal into vanishing ideal inclusion is immediate by definition. Now
+	\end{description}
+	\begin{definition}
+		An ideal $I \subseteq K[x_0,\dots,x_n]$ is a homogenous ideal if for all $f \in I$ every homogenous component of $f$ is also in $I$.
+	\end{definition}
+	In fact we can immediately generate a more useful and straightforward characterization of a homogenous ideal. 
+	\begin{proposition}
+		An ideal $I \subseteq K[x_0,\dots,x_n]$ is homogenous if and only if it admits a set of homogenous generators. 
+	\end{proposition}
+	\begin{proof}
+		Suppose that $I = \la S \ra$ where $S$ is composed of all homogenous polynomials contained in $I$. Let $f \in I$, then $f = \sum_{k\geq 0}f_k$. Since $f_k \in \la S\ra$ by construction then the sum $f$ must also be contained in $\la S \ra$. The other inclusion follows immediately form the fact that $S$ is a subset of the ideal $I$. Now suppose that $I$ admits a set of homogenous generators, more precisely that $I = \la S \ra$ where $S$ is generated by a collection of homogenous polynomials. Let $f \in I$, then by definition 
+		\[f = \sum_{i=1}^m g_ih_i\]
+		where $g_i \in K[x_0,\dots,x_n]$ and $h_i \in \la S \ra$ of homogenous degree $d_i$ for all $i$. Observe that homogenous components of $f$ of degree $k$ take the form 
+		\[f_k = \sum_{i=1}^m (g_ih_i)_k\]. 
+		Note that every monomial in the product $g_ih_i$ is a monomial of $g_i$ multiplied by all of $h_i$. This means that every monomial of the product is of homogenous degree at least $d_i$. This ensures that for $k < d_i$, the homogenous component $(g_ih_i)_k = 0$. For $k \geq d_i$, monomials of homogenous degree $k$ must be the product $(g_i)_{k - d_i}h_i$ as every monomial of the product $g_ih_i$ is a product of a monomial of $g_i$ with $h_i$. This implies that $(g_ih_i)_k \in I$ then $f_k$ is a sum of elements of $I$ implying that it must be contained in $I$. Therefore $I$ must be a homogenous ideal. 
+	\end{proof}
+	With this we can give a characterization of not just ideals, but vanishing ideals.
+	\begin{proposition}
+		If $X \subseteq \Proj^n$ is any subset, then $\I(X)$ is a homogenous radical ideal. 
+	\end{proposition}
+	\begin{proof}
+		We begin by proving that $\I(X)$ is a radical ideal. Suppose there exists an integer $m$ such that $f^m \in \I(X)$, then for a point $a \in X$ 
+		\[
+		0 = f^m(a) = (f(a))^m.
+		\]
+		Since $K$ is an infinite field it has no zero divisors implying that $f(a) = 0$ and that $f \in \I(X)$. Hence $\I(X)$ is a radical ideal. Since $f$ vanishes on $a$ then every homogenous component of $f$ must also vanish on $a$ and is therefore contained in $\I(X)$ implying that it is homogenous. 
+	\end{proof}
+	With this we go on to establish identical properties to those of affine varieties related to the existence of unique irreducible decompositions of projective varieties. The proofs themselves follow exactly as in the affine case. 
+	\subsection{9.4 Affine Restrictions}
+		We saw in the very first section of this chapter that a projective space $\Proj^n$ could be viewed as $\A^n \sqcup \Proj^{n-1}$. Quite reasonably we ask whether a projective variety could be stratified in this way. Consider the projective variety $X = \V_\Proj(x_0^2 + x_1^2 - x_2^2) \subseteq \Proj_\C^2$. we saw that the affine component of a projective space is the collection of points where the first coordinate is non-zero or more succinctly when the first coordinate was fixed at 1. Similarly, fix $x_0 = 1$, then we have a subvariety
+		\[
+		X_0 = \V_\A(1+x_1^2 - x_2^2) \subseteq X
+		\]
+		whose solutions are entirely contained in $\A^2_\C$. We give this phenomenon a more precise definition:
+		\begin{definition}[Affine Patch]
+			For each $i \in \{0,\dots,n\}$ the i-th affine patch of $\Proj^n$ is the set
+			\[
+			\A^n_i = \{[a_0:\cdots:a_n]\in\Proj^n \; | \; a_i \neq 0\}
+			\]
+			and for any set $X \subseteq \Proj^n$, the intersection $X \cap \A^n_i$ is called the i-th affine restriction of $X$. 
+		\end{definition}
+		Of course by simply dropping the i-th component, which is fixed at 1, we are in bijection with $\A^n$. Then the i-th restriction of a projective variety $X = \V_\Proj(\mcal{S})$ is $\V_\A(\mcal{S}_i)$ where 
+		\[
+		\mcal{S}_i = \{f(x_0,\dots,x_{i-1},1,x_{i+1},\dots,x_n) \; | \; f \in \mcal{S}\}
+		\]
+		\subsection{9.5 Projective Closure}
+		In the previous section we developed a way to take the global projective variety and investigate restriction to local affine patches. Now we aim to develop a method to take some affine patches and join them together into a projective variety. Notice though that in the process of restricting to affine patche lose the points at infinity. So if we were to start with affine patches and attempt to move back into a projective variety, we would need to devise a way to add point at infinity and ensure that the resulting set is actually a projective variety. To do this we define the projective closure.
+		\begin{definition}[Projective Closure]
+			Let $X \subseteq \A^n$ be an affine variety, and let $j_0(X)$ be the image of $X$ in the first affine patch $\A_0^n \subseteq \Proj^n$. The projective closure of $X$, denoted $\overline X$ is the intersection fo all projective varieties that contain $j_0(X)$. 
+		\end{definition}
+		\begin{remark}
+			Observe that, under the zariski topology, this is exactly the definition of a closed set. 
+		\end{remark}
+		\begin{itemize}
+			\item Consider the affine variety $\V_\A(1+x_1-x_2) \subseteq \A^2$ which has the vanishing set $\{(a,1+a)  : a \in K\}$. Under the josure, $j_0$ we can embed this variety as a set in $\Proj^2$ defined as
+			\[
+			j_0(X) = \{[1:a:a+1] : a \in K\} \subseteq \Proj^2.
+			\]
+			Observe that $[1:a:a+1] = [\frac{1}{a}:1:1 + \frac{1}{a}]$ means that $a$ must be furthe resitrcted to $a \in K\setminus \{0\}$. Take $b = \frac{1}{a}$ then we can rewrite the elements of $j_0(X)$ to be $[b:1:1+b]$. Then in terms of our polynomial, for every point in $j_0(X)$, $f(b,1,1+b) = 0$ can be viewed as a univariate polynomial $\tilde f (x,1,1+x) = 0$ which means that $\tilde f $ is the univariate polynomial. If we were to treate $j_0(X)$ as a projective variety then we have a univariate polynomial vanishing on $\Proj^2 = \A^2 \sqcup \Proj^1$. In particular this polynomial is vanishing on $\Proj^1$ which in this case is
+			only the poin $[0:1]$ then $f(0,1,1)$ must be a solution so we have the point $[0:1:1]$ as a solution. So we determine that we must augment $j_0(X)$ as $j_0(X) \cup \{[0:1:1]\}$. Note that we STILL don't yet know whether this is a projective variety because restricting to the first affine path agrees with $j_0(X)$ but we don't know how this variety is changed when restricting to different affine patches. This means that we must determine the polynomial that vanishes and luck for us there is one that I am too lazy to compute so I will take from the book:
+			\[\overline X = \V_\Proj(x_0+x_1 - x_2) \]
+			\item Let $\V_\A(x_2  +x_1^2) \subseteq\A^2$ has josure
+			\[
+			j_0(X) = \{[1:a:a^2] | a \in K\}
+			\]
+			which under $b = \frac{1}{a}$ can be viewed as the set of points $\{[b^2:b:1] : b \in K\setminus \{0\}\}$. Similarly we must add a single point and then determine whether this point with the josure is actually the vanishing of the polynomial. It is hence $\overline X = \V_\Proj(x_0x_1 - x_2^2)$.
+			\end{itemize}
+			Observe that the resulting polynomial of the variety is now of some homogenous degree. In fact, as we will state soon, the projective closure of an affine variety is always the "homogenization" of the ideal generating the affine variety. This gives us a much simpler characterization of the projective closure than the rather abstract intersection of all varieties containing the josure. 
+			\begin{definition}
+				Let $f \in K[x_1,\dots,x_n]$ be a polynomial of degree $d$. The homogeniztion of the polynomial is define as 
+				\[
+				\overline f = x_0^df(\frac{x_1}{x_0}, \dots, \frac{x_n}{x_0}) \in K[x_0,\dots,x_n].
+				\]
+			\end{definition}
+			Observe that if we were to look at the josure of a homogenized polynomial, that is we evaluate $\overline f(1,x_1,\dots,x_n)$ we will get back our unhomogenized polynomial $f$. Reframing our previous examples we would like to determine whether if $X = \V_\A(f_1,\dots,f_k)$ that $\overline X = \V_\Proj(\overline f_1, \dots, \overline f_k)$ yet the accursed twisted cubic will laugh in our face. 
+			\begin{itemize}
+				\item 
+			\end{itemize}
+		\end{document}

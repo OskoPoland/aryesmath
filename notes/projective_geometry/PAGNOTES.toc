@@ -1,0 +1,7 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}CH 9 Projective Varieties}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}9.1 Projective Space}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}9.2 Projective Vanishing Operator}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}9.3 Projective $\mathcal {I}$-operator}{4}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}9.4 Affine Restrictions}{5}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}9.5 Projective Closure}{6}{subsection.1.5}%
