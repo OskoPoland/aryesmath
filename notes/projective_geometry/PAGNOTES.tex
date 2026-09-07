@@ -245,8 +245,28 @@
 				\overline f = x_0^df(\frac{x_1}{x_0}, \dots, \frac{x_n}{x_0}) \in K[x_0,\dots,x_n].
 				\]
 			\end{definition}
-			Observe that if we were to look at the josure of a homogenized polynomial, that is we evaluate $\overline f(1,x_1,\dots,x_n)$ we will get back our unhomogenized polynomial $f$. Reframing our previous examples we would like to determine whether if $X = \V_\A(f_1,\dots,f_k)$ that $\overline X = \V_\Proj(\overline f_1, \dots, \overline f_k)$ yet the accursed twisted cubic will laugh in our face. 
-			\begin{itemize}
-				\item 
-			\end{itemize}
+			Observe that if we were to look at the josure of a homogenized polynomial, that is we evaluate $\overline f(1,x_1,\dots,x_n)$ we will get back our unhomogenized polynomial $f$. Reframing our previous examples we would like to determine whether if $X = \V_\A(f_1,\dots,f_k)$ that $\overline X = \V_\Proj(\overline f_1, \dots, \overline f_k)$ yet the accursed twisted cubic will laugh in our face. I don't feel like walking through this example so I will make some general remarks about it insead. The affine twisted cubic $\V_\A(x_2-x_1^2, x_3-x_1^3)$ will have a josure $j_0(X) = \{[1:a:a^2:a^3] \; | \; a \in K\} \subseteq \Proj^3$ and to make it a projective variety we only need to add the point $[0:0:0:1]$. If we were to look at a variety definined by the homogenization of the polynomials then we would arrive at $j_0(X) \sqcup \{0:0:b:c\}$, i.e. we would add too many points. Instead we actually another defining polynomial rather than simply homogenizing the defining polynomials of the affine variety. So instead of homogenizing some polynomials we will actually just homogenize the entire ideal.
+			\begin{definition}[Homogenization of a Set]
+				Let $\mcal{S} \subset K[x_1,\dots,x_n]$ be a set of polynomials. The homogenization of $S$ is the set
+				\[ \overline{ \mcal{S}} = \{\overline f : f \in \mcal{S}\} \subseteq K[x_0,\dots,x_n]\]
+			\end{definition}
+			One thing to note is that generally the homogenization of an ideal is not also an ideal. If we were to take a product $g \overline f$ where $g \in K[x_0,\dots,x_n]$ and inhomogenous and $\overline f \in \overline{\mcal{S}}$ then our product is not homogenous and so can not be in $\overline{\mcal{S}}$. With the homogenization of a set we get the right information to recharacterize the affine closure in a way that plays better with the vanishing and ideal operators. 
+			\begin{theorem}
+				If $X \subseteq \A^n$ and affine variety then $\overline X = \V_\Proj(\overline{\I_\A(X)}) \subseteq \Proj^n$. 
+			\end{theorem}
+			($\subseteq $) %The idea here is that if we can prove that this variety contains the josure then it must also contain Xbar because this is the smallest set to contain the josure. 
+			Let $[1:a_1:\cdots:a_n] \in j_0(X)$ and $g \in \overline{\I_\A(X)}$ then $g = \overline f$ for some $f \in \I_\A(X)$ and $g(1,a_1,\dots,a_n) = f(a_1,\dots,a_n) = 0$ then $j_0(X)$ is contained in $\V_\Proj(\overline{\I_\A(X)})$. Since $\overline X$ is the smallest projective variety to contain $j_0(X)$ then $\overline X$ must be contained in $\V_\Proj(\overline{\I_\A(X)})$. ($\supseteq$) It suffices to show that 
+			\[
+			\I_\Proj(\overline X) \subseteq \I_\Proj(\V_\Proj(\overline{\I_\A(X)}))
+			\]
+			because application of the projective vanishing operator will give us the desired containment. Suppose that $g \in \I_\Proj(\overline X)$, as $g$ is contained in a homogenous ideal it must also be homogenous. The homogenous polynomial $g$ is not necessarily the homogenization of a polynomial so to force this condition let $k \in \N$ be the maximal choice such that $g = x_0^kh$ for some $h \in K[x_0,\dots,x_n]$. Observe that forcing $k$ to be maximal implies that from at least one monomial of $g$ we must be able to factor the entirety of an $x_0$ component out, if this weren't the case then there would be some $x_0$ terms in every monomial and $k$ would not be maximal. Since $g$ is homogenous of some degree $d$, then this monomial has degree $d - k$. Note that this monomial must have minimal degree after factoring as any term with some $x_0$ has less remaining degree distributed over terms $x_i$ where $i \neq 0$. Take $h_0 = h(1,x_1,\dots,x_n)$ and observe that this removes the $x_0$ term from every monomial and utilizing the conlusion of the previous two sentences this means that the monomial of degree $d - k$ is now of maximal degree in $h_0$. The $\overline{h_0} = x_0^{d-k}h_0$ which returns us back to the polynomial h. Since $g$ vanishes on all of $\overline X$ then it must vanish on all of $j_0(X)$, in particular this means that $g$ must vanish on all of $X$. Since 
+			\[
+			h_0(a_1,\dots,a_n) = h(1,a_1,\dots,a_n) = g(1,a_1,\dots,a_n) = 0
+			\]
+			we see that $h_0 \in \I_\A(X)$ and by definition $h \in \overline{\I_\A(X)}$ and that $g \in \la \overline{\I_\A(X)}\ra$. Then 
+			\[
+			g \in \la \overline{\I_\A(X)}\ra \subseteq \I_\Proj(\V_\Proj(\overline{\I_\A(X)}))
+			\]
+			and we are done. 
 		\end{document}
+		

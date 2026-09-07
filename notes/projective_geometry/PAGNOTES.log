@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  3 SEP 2026 10:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  7 SEP 2026 14:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -482,7 +482,7 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 157.
 
 [4] [5] [6{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super
--ts1.enc}] (./PAGNOTES.aux)
+-ts1.enc}] [7] (./PAGNOTES.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -491,13 +491,13 @@ Package rerunfilecheck Info: File `PAGNOTES.out' has not changed.
 (rerunfilecheck)             Checksum: 7C6ABF9943E17FF1C7846C55C80ACC25;1110.
  ) 
 Here is how much of TeX's memory you used:
- 11836 strings out of 467525
- 181934 string characters out of 5418982
- 628443 words of memory out of 5000000
+ 11840 strings out of 467525
+ 181979 string characters out of 5418982
+ 630443 words of memory out of 5000000
  40575 multiletter control sequences out of 15000+600000
  636265 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,8n,79p,854b,616s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,8n,79p,1415b,616s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
@@ -516,10 +516,10 @@ e/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive
 /2026/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/tex
 live/2026/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/
 texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on PAGNOTES.pdf (6 pages, 220331 bytes).
+Output written on PAGNOTES.pdf (7 pages, 227681 bytes).
 PDF statistics:
- 180 PDF objects out of 1000 (max. 8388607)
- 134 compressed objects within 2 object streams
- 31 named destinations out of 1000 (max. 500000)
+ 189 PDF objects out of 1000 (max. 8388607)
+ 142 compressed objects within 2 object streams
+ 35 named destinations out of 1000 (max. 500000)
  49 words of extra memory for PDF output out of 10000 (max. 10000000)
 
