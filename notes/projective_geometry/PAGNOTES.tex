@@ -293,6 +293,79 @@
 				where the second equality comes from the fact that $g$ must be the homogenization of some polynomial $f$ and evaluating $g$ at $x_0 = 1$ simply returns us to evaluation $f$ at $a_1,\dots,a_n$. The final set is just $\I_\A(X)$ then $\V_\A(\I_\A(X)) = X$ and we are done. 
 			\end{proof}
 			\subsection{9.6 Project Nullstelensatz}
-			If we are 
+			If we are to take inspiration from the affine NS then we aim to prove that 
+			\[
+			\I_\Proj(\V_\Proj(I)) = \sqrt{I}
+			\]
+			for some ideal $I \in K[x_0,\dots,x_n]$. But we have a problem here if $I = \la x_0,x_1,\dots,x_n \ra$. The only point that vanishes on a polynomial in here would be $[a_0:
+			\cdots:a_n]$ where each $a_i = 0$. Since there is no such point in $\Proj^n$ then $\V_\Proj(I) = \emptyset$. Yet every polynomial vanishes on the emptyset hence $\I_\Proj(\V_\Proj(I)) = K[x_0,\dots,x_n] \neq I$ where we note that $I$ is already radical. So with this we aim to disregard this annoying ideal. 
+			\begin{definition}
+				An ideal $I \subseteq K[x_0,\dots,x_n]$ is irrelivant if $I \supseteq \la x_0,\dots,x_n \ra$. Otherwise $I$ is called relevant. 
+			\end{definition}
+			With this the projective NS is the affine NS reframed with these classification. 
+			\begin{proposition}
+				Let $I \subseteq K[x_0,\dots,x_n]$ be a homogenous ideal. 
+				\begin{enumerate}
+					\item $\V_\Proj(I) = \emptyset$ if and only if $\sqrt{I} \supseteq \la x_0,\dots,x_n\ra$.
+					\item If $\sqrt{I}$ is relevant then $\I_\Proj(\V_\Proj(I)) = \sqrt{I}$. 
+				\end{enumerate}
+			\end{proposition}
+			But before proving this we will utilize a different way to move between affine and projective varieties through cones. 
+			\begin{definition}
+				Let $X \subseteq \Proj^n$ be a subset. The affine cone over $X$ is the set 
+				\[
+				C(X) = \{(0,\dots,0)\} \cup \{(a_0,\dots,a_n) \; | \; [a_0:\cdots:a_n] \in X\} \subseteq \A^{n+1}
+				\]
+			\end{definition}
+			With the affine cone in mind we'll prove the following proposition that allow interchagnes between the affine and projecive vanishng and ideal operators.
+			\begin{proposition}
+				Let $I \subsetneq K[x_0,\dots,x_n]$ be a homogenous ideal then 
+				\[
+				\V_\A(I) = C(\V_\Proj(I))
+				\]
+			\end{proposition}
+			\begin{proof}
+				Since we are looking to show that $\V_\A(I)$ is a cone then we must first show that for any homogenous ideal that this variety admits $(0,\dots,0)$. Suppose that it did not admit the origin, this means that there exsists a homogenous polynomial $f \in I$ such that $f(0,\dots,0) \neq 0$. This is only possible if the polynomial is non-zero and constant which forces $I$ to admit such a generator. But if it were to admit such a generator then $I = K[x_0,\dots,x_n]$ contradicting our choice of $I$. Since each polynomial in $I$ is homogenous, if it were to vanish on a point $(a_0,\dots,a_n)$ then it must vanish on any representative $[a_0:\cdots:a_n]$ and vice versa hence
+				\[
+				(a_0,\dots,a_n) \in \V_\A(I) \iff [a_0:\cdots:a_n] \in \V_\Proj(I) \iff (a_0,\dots,a_n)\in C(\V_\Proj(I))
+				\]
+				therefore we are done. 
+			\end{proof}
+			\begin{proposition}
+				Let $X \subseteq \Proj^n$ be a non-empty subset. Then 
+				\[
+				\I_\Proj(X) = \I_\A(C(X)).
+				\]
+			\end{proposition}
+			\begin{proof}
+				Note that $\I_\Proj(X)$ is a non-empty homogenous ideal which means that none of the generating polynomials can be constant. Then on any point $(0,\dots, 0 ) \in \A^{n+1}$ a polynomial in this projective vanishing ideal might vanish. Similarly the fact that a polynomial vanishes on the projective variety $X$ means that it must vanish on it's affine restriction. Then we can redifine the projective vanishing ideal as
+				\begin{align}
+					\I_\Proj(X) &= \{f \in K[x_0,\dots,x_n] \; | \; f(a_0,\dots,a_n) = 0 \text{ if } [a_0:\cdots:a_n] \in X, f(a_0,\dots,a_n) = 0 \text{ if } (a_0,\dots,a_n) = (0,\dots,0) \} \\
+									&= \I_\A(\{0,\dots,0\} \cup \{(a_0,\dots,a_n) \; | \; [a_0:\cdots:a_n] \in X\}) \\
+									&= \I_\A(C(X))
+				\end{align}
+			\end{proof}
+			Now that we have the ability to move between projective and affine varieties and vanishing ideals through cones we can prove the projective NS. 
+			\begin{proof}
+				\begin{enumerate}
+					\item[(a)] Suppose that $\sqrt{I} \supseteq \la x_0,\dots,x_n\ra$. Note that if $a \in \V_\Proj(I)$ then there exits some polynomial $f \in I$ such that $f(a) = 0$ then $f \in \sqrt{I}$ hence $a \in \V_\Proj(\sqrt{I})$. Suppose that $a \in \V_\Proj(\sqrt{I})$ then for some $m > 0$ there exists an $f^m \in \sqrt{I}$ such that $f^m(a) = 0$. By definition it follows that $f \in I$ and as $f^m(a) = f^{m-1}(a)f(a) = 0$ it follows that $f(a) = 0$. Therefore $\V_\Proj(I) = \V_\Proj(\sqrt{I})$. Then 
+					\[
+					\V_\Proj(I) = \V_\Proj(\sqrt{I}) \subseteq \V_\Proj(\la x_0, \dot, x_n \ra) = \emptyset.
+					\]
+					Now suppose that $\V(I) = \emptyset$, then either $I = K[x_0,\dots,x_n]$ in which case $\sqrt{I} = I \supseteq \la x_0,\dots,x_n\ra$. Suppose that $I \subsetneq K[x_0,\dots,x_n]$. Utilizing prop 1.11 
+					\[
+					\V_\A(I) = C(\V_\Proj(I)) = C(\emptyset) = \{(0,\dots,0)\}.
+					\]
+					Under the affine NS
+					\[
+					\sqrt{I} = \I_\A(\V_\A(I)) = \I_\A(\{0,\dots,0\}) = \la x_0,\dots,x_n\ra
+					\]
+					\item[(b)] Now assume that $\sqrt{I}$ is relevant. Suppose that $\V_\Proj(I) = \emptyset$. The first case tells us that $\sqrt{I} \supseteq \la x_0,\dots,x_n\ra$ but the only relevant ideal that can contain the maximal irrelevant ideal is the full ring i.e. $\sqrt{I} = K[x_0,\dots,x_n]$. Then $\I_\Proj(\V_\Proj(I)) = \I_\Proj(\emptyset) = K[x_0,\dots,x_n]$ and we are done. Now suppose that $\V_\Proj(I) \neq \emptyset$ which means that $I \subsetneq K[x_0,\dots,x_n]$. Then, 
+					\[
+					\I_\Proj(\V_\Proj(I)) = \I_\A(C(\V_\Proj(I))) = \I_\A(\V_A(I)) = \sqrt{I}
+					\]
+					hence we are done.
+				\end{enumerate}
+			\end{proof}
 		\end{document}
 		
