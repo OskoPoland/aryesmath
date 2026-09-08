@@ -212,9 +212,36 @@ The equivalence of these equivalence classes implies directly that $f \circ g\si
 			My understanding of this is that this allows us to study maps with "nicer" properties without losing topological information, up to homotopy equivalence of course.
 		\end{remark}
 		Observe that a map $Z \rightarrow E$ is defined utilizing a map $\phi: Z \rightarrow X$ and $\psi : Z \times I \rightarrow Y$ where $\psi(z,0) = \phi(f(z))$. Now construct a map $\xi : Z \times [1,2] \rightarrow Y$ where $\xi(z,1) = \psi(z,1)$. Observe that $\psi(z,t) = \tau_z(t)$ giving us a family of paths $\tau_z \in E(Y)$ parametrized by $z \in Z$. Then to each of these paths we are essentailly just adjoining that path $\xi(z,1)$ raning over $[1,1+t]$. Then it is a matter of reparametrizing the interval and we get a homotopy that lifts automatically for every $t$. 
-		\section{CW - Complexes}
-	
-	
+	\section{CW - Complexes}
+		CW Complexes have two ways of being presented but before this I will give an intuitive definition. A CW-Complex is space that is constructed by gluing the Disks together so that boundaries of higher dimensional disks correspond to lower dimensional disks of this space. 
+		\begin{definition}[Constructive]
+			Let $sk_0(X)$ be a discrete union of disks $D_\alpha^0$, i.e. this is a discrete space and it's cells are disks of dimension 0. Define the $n$-skeleton to be 
+			\[
+			sk_n(X) = sk_{n-1}(X)\bigcup_\alpha D_\alpha^n
+			\]
+			where the union with the $\alpha$ is signifying that these spaces are joined via an attaching map $\phi_\alpha: \partial D_\alpha^n \rightarrow sk_{n-1}(X)$. Similarly we can express the $n$ skeleton as a quotient
+			\[
+			sk_{n-1}(X)\bigsqcup_\alpha D_\alpha^n/\sim
+			\]
+			where $x \in \partial D_\alpha^n$ is identified with $\phi_\alpha(x) \in sk_{n-1}(X)$. 
+		\end{definition}
+		$sk_n(X)$ is frequently denoted $X^n$, and with this construction we obtain a nested sequence of inclusion $X^0 \subset X^1 \subset \cdots \subset X^n \subset \cdots$. $X$ is their union equipped with a direct limit topology.
+		\begin{definition}[Set-Theoretic]
+			Take $X$ to be the union of all cells $\overset{\circ}{D}_\alpha^n$ and for each cell we can define the characteristic map 
+			\[
+			\Phi_\alpha : D_\alpha^n \rightarrow X
+			\]
+			where $\partial D_\alpha^n$ coincides with the $\phi_\alpha$.
+		\end{definition}
+		Similar to direct limit topologies, a subset in $X$ is closed, open, if and if its inverse image in all cells $D_\alpha^n$ is closed, open. 
+		\begin{definition}[Axiomatic]
+			A space $X$ is equipped with a CW-structure if it is partitioned into pairwise disjoint subsets $e_\alpha^n$ provided with the characteristic maps $\Phi_\alpha : D_\alpha^n \rightarrow X$ which supply the homeomorphism $e_\alpha^n \simeq \overset{\circ}{D^n}$ satisfying the following conditions:
+			\begin{enumerate}
+				\item Closure-Finiteness:  Each $\Phi_\alpha|_{\partial D^n}$ lands in finitely many cells of lower dimensions
+				\item Weak Topology A subset in $X$ is closed iff its inverse image under each characteristic map is closed. 
+			\end{enumerate}
+		\end{definition}
+		At this point it's a good idea to give a good example. As the nested inclusions hint, we should be able to construct the $*^\infty$ spaces using skeletons. First we will construct a finite space, $S^2$. Let $X_0 = \{p\}$ be a single point, then take $X_1 = X_0$, and finally we can take $X_2 = D^2$ with a constant attaching map $\phi: D_2 \rightarrow \{p\}$ be the constant map mapping every point to $p$. Of course this means that the map behaves as we expect on the boundary of $D^2$. Note that there multiple ways to construct a CW-complex for $S^2$. 
 	
 	
 	
