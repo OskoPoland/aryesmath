@@ -40,9 +40,10 @@
 \DeclareMathOperator{\trdeg}{\text{trdeg}}
 \renewcommand{\qedsymbol}{$\aleph$}
 \newcommand{\note}[1]{\textcolor{red}{\emph{#1}}}
+%\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{remark}[theorem]{Remark}
-
-
+%\newtheorem{definition}[theorem]{Definition}
 \title{MATH 215A : Algebraic Topology}
 \date{August 2026}
 
@@ -242,7 +243,108 @@ The equivalence of these equivalence classes implies directly that $f \circ g\si
 			\end{enumerate}
 		\end{definition}
 		At this point it's a good idea to give a good example. As the nested inclusions hint, we should be able to construct the $*^\infty$ spaces using skeletons. First we will construct a finite space, $S^2$. Let $X_0 = \{p\}$ be a single point, then take $X_1 = X_0$, and finally we can take $X_2 = D^2$ with a constant attaching map $\phi: D_2 \rightarrow \{p\}$ be the constant map mapping every point to $p$. Of course this means that the map behaves as we expect on the boundary of $D^2$. Note that there multiple ways to construct a CW-complex for $S^2$. 
-	
-	
-	
-\end{document}
+		\section{Schubert Cells}
+		Given a grassmanian $G(n,k)$ we want to exhibit the CW-structure that this space has naturally. Consider $G(10,5)$ an for an arbitrary $n \times k$ matrix whose rows represent a linear subspace $V^k \cap \R^n$ then the reduced row-echelon form of this matrix is of the form 
+		\[
+		\begin{bmatrix}
+			& \note{1} & * & * & 0 & * & 0 & 0 & * & 0 \\
+			&  &  &  & \note{1} & * & 0 & 0 & * & 0 \\	
+			&  &  &  &  &  & \note{1} & 0 & * & 0 \\
+			&  &  &  &  & &  & \note{1} & * & 0 \\
+			&  &  &  &  &  &  &  &  & \note{1} \\
+		\end{bmatrix}
+		\]
+		Let $\lambda = \{2, 5, 7,8,10\}$ be the number representing the distance of the first non-zero number of a row from the left edge of the matrix (including the number itself). 	Observe that as we gradually move from right to left on this matrix, we can think of the output as the intersection of this subspace $V^5$ with $E_i = Span\{e_{i + 1}, \dots, e_n\} = \R^{10-i}$. We can record these dimensions in a list 5,5,4,4,3,3,2,1,1,0. This is a signature, which I am calling a Schubert signature but I don't know what it is called, that gives us the Schubert cells. That is we take a collection of linear subspaces of dimension five whose signature is the same. From this signature we can extract a sequence $\lambda$ that we show above, where $\lambda_i$ tells us after which dimensions of $E_i$, the dimension of $V^5 \cap E_i$ will decrease. By removing the free columns, we recover a Young Tableu/Diagram corresponding to a schubert cell. In turn this relationship allows us to count the number of Schubert cells, which are the number of Young Diagrams that we can fit in a $n-k \times k$ matrix, exactly $n \choose k$. Despite the fact that the schubert cells are rather easy to define, the attaching maps present a problem and it will be dealt with when we get to Morse theory in a very difficult theorem that we will, for the time being, accept.
+		
+		\section{Bruhat Cells}
+		Flag manifolds $V^{d_1} \subset V^{d_2} \subset \dots \subset V^{d_r} \subset \mathbb{K}^n$, consist of a sequence of nested subspaces of $\R^n$, that is a choice of $V^{d_i}$ is a choice of subspace in $ G(n,d_i )$. Then we can imagine that each flag of this flag manifold consists of a schubert cell. That is take $d_{ij} = V^{d_i} \cap E_j$ and record for all $j$, and stick this as a column vector in a matrix. For complete flag manifolds the end result is an $n \times n$, what I am calling a rank-matrix, matrix
+		\[
+		\begin{bmatrix}
+			d_{1,1} & \cdots & d_{1,n} \\
+			\vdots & & \vdots \\
+			d_{n,1} & \cdots & d_{n,n}
+		\end{bmatrix} = LPU
+		\]
+		with an $LPU$-factorization. The location of the pivot positions of this matrix tell us at which $j$ the intersection $V^{d_i} \cap E_j$ is empty, when we have passed its maximum dimension. This fixes some pivot positions related to the structure of the subspace $V^{d_i}$ and note that pivot positions are determined by the permutation matrix $P$. So in reverse, given an $LPU$ factorization we parametrize a family of complete flag manifolds based on permutations of the identity matrix. If we were to consider a simple example 
+		\[
+		V^1 \subset V^2 \subset \R^3
+		\]
+		we would get a $3 \times 3$ rank matrix. This tells us that we have the number of Bruhat cells equivalent to the number of purmutations of $P$ which in this case is $3!$.  
+		
+		\section{Homotopy Theory of Cell Spaces}
+		\begin{definition}
+			A pair $(X,A)$ is a Borsuk pair if any map from $X$ to $Y$ and a homotopy of it's restriction to $A$ can be extended to a homotopy on $X$. In other words $X \cup (A \times I) \rightarrow Y$ extends to $X \times I \rightarrow Y$. 
+		\end{definition}
+		This is the definition provided but it's worth decomposing what we actually have. Given a map $f: X \rightarrow Y$ and a homotopy $h : A \times I \rightarrow Y$ such that $h(a,0) = f(0)$ then we can combine these to form a homotopy on $X \cup (A \times I)$. Note that this is really the space $X \times \{0\} \cup A \times I$ which have an overlap at $t = 0$. Then combining $f$ and $h$ our homotopy is $H : X \cup (A \times I) \rightarrow Y$ such that $H(x,0) = f(x)$ and $H(a,t) = h(a,t)$ which guarantees that the map is a homotopy of the restriction $f|_A$. Then $(X,A)$ is a Borsuk pair if we can extend to a homotopy $\hat F : X \times I \rightarrow Y$ such that $\hat{F}|_{X \cup (A \times I)} = H$. 
+		
+		\begin{theorem}
+			A CW-pair $(X,A)$ is Borsuk
+		\end{theorem}
+		This arugment will be proved using induction on cells. Later we will see that some spaces are homotopy equivalent to CW-complexes which allows us to prove things, up to homotopy, inductively about these spaces that we otherwise couldnt. We can choose to index the cells $n - 1$ so that $X^{n-1}$ when $n = 1$ is the empty set and our condition is vacuously true and all we have to prove is the induction step. 
+		\begin{proof}
+			We will be doing induction on the $n$-cells of $X$. Indexing each cell by $n -1$ then $X^{n-1} = \emptyset $ for $n = 1$ so our base case is vacuously true. Suppose that this is true for some $n- 1$ and $X^{n-1 } \subsetneq A$ it will suffice to show that we can construct a homotopy $X^n \cup( (A) \times I) \rightarrow Y$ corresponds with the restriction to the $n-1$ cell. More precisely, the map $f:X\rightarrow Y$ furnishes maps $f_n : X^n \times \{0\} \rightarrow Y$ and for $n-1$ we have homotopy $F_{n-1} : X^{n-1} \cup (A \times I ) \rightarrow Y$ which behaves properly with restriction to lower dimensional cells of $X$. Let $\Phi : D^n \rightarrow X$ be the characteristic map and define the function $D : D^n \cup (\partial D^n \times I) \rightarrow Y $ where 
+			\[
+			F(D^n, 0) := (f_n \circ \Phi)(D^n) \quad\text{and}\quad F(\partial D^n, 0) := (F_{n-1} \circ \Phi)(\partial D^n).
+			\]
+			The domain space we can descirbe as the empty cup it naturally lives in $D^n \times I$. This means that composed with this retraction we get the desired homtopy for this $n$ space which behaves properly on the restriction to the base space.
+		\end{proof}
+		\begin{theorem}
+			If $(X,A)$ is Borsuk and $A$ is contractible, the the canonical projection $\pi: X \rightarrow X/A$ is a homotopy equivalence. 
+		\end{theorem}
+		\begin{proof}
+			Let $(X,A)$ be a Borsuk pair with a map $f_0 : X \rightarrow X$ where $f_0 = \id_X$. The contractibility of $A$ furnishes a homotopy $h: A \times I \rightarrow X$ where $h_0(A) = f_0(A)$ and $h_1(A) = pt$. Then we can construct a homotopy $H: X \cup (A \times I) \rightarrow X$ where $H_0(X) = f_0(X)$ and $H_t(A) = h_t(A)$. This homotopy can be extended to $F: X \times I \rightarrow X$ such that $F_1(X)$ is a constant map and $F_t(A) \subset A$. This automotically provides a homotopy $g \circ \phi \sim \id_X$. Taking $\hat{f_t} = \pi \circ f_t$ we get a homotopy.   
+		\end{proof}
+		\section{Cellular Approximation Theorem}
+		We say that a map $f:X \rightarrow Y$ between CW-complexes is cellular if $f(X^n) \subset Y^n$. Intuitively a cellular map never raises the dimension of a cell. What we establish with the cellular approximation theorem is that any map between cellular spaces is always homotopic to a cellular map. This means that given arbitrary maps between CW-complexes we can up to homotopy study more well behaved cellular maps instead. This will show up when we talk about fundamental groups of a space. The fundamental group is the algebraic structure that is generated when we quotient a space by the homotopy equivalence generating homotopy classes. When we talk about paths, we saw that many path operations that preserved looked like group operations an in fact the space $\pi_i(X, Y)$ is in fact a group. A path between two CW-complexes passes through some $n$ cells and for $n \geq 2$ the path can be pushed, i.e. is homotopic, to a cell of $n-1$ dimension. This means that the fundamental group of CW-complexes will, up to homotopy, involve one the 1 and 2-skeletons of the CW complexes. 
+		\begin{theorem}
+			Any map $f:X \rightarrow Y$ between cellular spaces is homotopic to a cellular map. Moreover, if $f$ is already cellular on a CW-subcomplex $A \subset X$, the the homotopy can be made relative to $A$. 
+		\end{theorem}
+		The proof of this theorem will rely on the following non-trivial lemma. 
+		\begin{lemma}
+			Let $Y$ be obtained from $B$ by attaching an $n$-cell, assume that we have the pushout diagram 
+			% https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXHBhcnRpYWwgRF5uIl0sWzIsMCwiQiJdLFsyLDIsIkUiXSxbMCwyLCJEXm4iXSxbMywyLCJcXFBoaSJdLFswLDFdLFswLDNdLFsxLDJdXQ==
+			\[\begin{tikzcd}
+				{\partial D^n} && B \\
+				\\
+				{D^n} && E
+				\arrow[from=1-1, to=1-3]
+				\arrow[from=1-1, to=3-1]
+				\arrow[from=1-3, to=3-3]
+				\arrow["\Phi", from=3-1, to=3-3]
+			\end{tikzcd}\]
+			
+			Then any map $f: (\partial D^m, D^m) \rightarrow (B,Y)$ with $m < n$ is homotopic relative to $\partial D^m$ to a map $g$ such that $g(D^m) \subset Y^n$. 
+		\end{lemma}
+		In a sense this lemma says that if our map is not cellular on a single cell, then we can push it off of the large cell onto a boundary homotopically relative to the boundary. I won't be proving this lemma because the proof is not provided in the text and I am lazy. The idea is that we can always find a free point on the disk, a result of the application of I think Lebesgue's Covering Lemma, that allows us to construct a deformation retract of the disk onto the boundary taking the image of our map with it (?).  Instead I will attempt to provide a proof of the cellular approximation theorem.
+		\begin{proof}
+			Let $f: X\rightarrow Y$ be a map of CW-complexes and I want to show that I have a map $g_n$ such that $g_n$ is cellular on a cells $X^n$ excluding a subcomplex $A$ and that there exists a homotopy $H_{n}$ of $g_{n-1} \sim_{X^{n-1}} g_n$. As usualy we index so that we start with the empty cell and so our base case is vacuously true. Then for our inductive step we can assume we have a map $g_{n-1}$ cellular on $X^{n-1} \setminus A$ and a homotopy $H_{n-1}$ and we will use these maps to construct $g_n$ and $H_n$. Now consider cells $e_\alpha^n \in X^n$, if for all such cells $g_{n-1}(e_\alpha^n) \subset Y^n$ then we can extend $H_{n-1}$ by setting $g_n = g_{n-1}$ and using the constant homotopy. Otherwise consider that the cells under $g_{n-1}$ land in some subcomplex of higher dimension $N$ where $Y^n \subseteq Y^N \subset Y$ for $N > n$. Take maximal $N$ and choose cell $e_\alpha^n$ such that $g_{n-1}(e_\alpha^n) \cap Y^N \neq \emptyset$ then we get a diagram 
+			% https://q.uiver.app/#q=WzAsNixbMCwwLCJcXHBhcnRpYWwgRF5uIl0sWzIsMCwiWF57bi0xfSJdLFsyLDIsIlhebiJdLFswLDIsIkRebiJdLFs0LDAsIllee24tMX0iXSxbNCwyLCJZXk4iXSxbMywyLCJcXFBoaSJdLFswLDEsIlxcUGhpIl0sWzAsMywiIiwxLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiaG9vayIsInNpZGUiOiJ0b3AifX19XSxbMSwyLCIiLDEseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJob29rIiwic2lkZSI6InRvcCJ9fX1dLFsyLDUsImdfXFxhbHBoYSIsMV0sWzEsNCwiZ197bi0xfSIsMV0sWzQsNSwiIiwxLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiaG9vayIsInNpZGUiOiJ0b3AifX19XV0=
+			\[\begin{tikzcd}
+				{\partial e_\alpha^n} && {X^{n-1}} && {Y^{n-1}} \\
+				\\
+				{e_\alpha^n} && {X^n} && {Y^N}
+				\arrow["\Phi", from=1-1, to=1-3]
+				\arrow[hook, from=1-1, to=3-1]
+				\arrow["{g_{n-1}}"{description}, from=1-3, to=1-5]
+				\arrow[hook, from=1-3, to=3-3]
+				\arrow[hook, from=1-5, to=3-5]
+				\arrow["\Phi", from=3-1, to=3-3]
+				\arrow["{g_\alpha}"{description}, from=3-3, to=3-5]
+			\end{tikzcd}\]
+		\end{proof}
+		supplying us with a map $f_{n,\alpha} = \Phi \circ g_{n-1} : (\partial e_\alpha^n, e_\alpha^n) \rightarrow (Y^{n-1}, Y^N)$. Then lemma 7.2 says there exist a homotopy relative to the boundary of the cell to a map $g_{n,\alpha}$ that is cellular on any disk of dimension $m < N$. Repeating this process and gluing each homotopy results in a final homotopy $H_{n,\alpha} : g_{n-1} \sim_{\partial e_\alpha^n} f_{n,\alpha} : e_\alpha^n \rightarrow Y$. This is actually a homotopy on a subcomplex of $X^n$, together which form a Borsuk pair meaning that we can extend this homotopy to $\tilde{H}_{n}$ that agrees with the homotopy on the subcomplex. Setting $g_n = H_n(-,1)$ we are finished. 
+		\section{$N$-connected Cell Spaces} 
+		\begin{definition}
+			A space is $n$ connected if for all $k \leq n$, any map $S^k \rightarrow X$ can be extended to a map $D^{k+1} \rightarrow X$. 
+		\end{definition}
+		Lets consider $X = \R^2 \setminus \{(0,0)\}$ then a map $S^0 \rightarrow X$ can be extended to $D^1 \rightarrow X$ which is the equivalent of finding a path between two points and that $X$ is 0-connected, this is telling us that being 0-connected is equivalent to being path-connected. But if we were to take $S^1 \rightarrow X$ where $S^1$ is centered at the origin, we cannot extend this to a map $D^2 \rightarrow X$ because we are missing a point and so our space is not 1-connected. Note here that 1-connectedness is equivalent to being path connected. The idea of $n$-connectedness is generalizing this relationship to higher dimensions. 
+		\begin{theorem}
+			An $n$-connected CW-complex is hootopy equivalent to a CW-complex whose $n$-skeleton consists of one point. 
+		\end{theorem}
+		Let us consider the CW-complex $S^2$. The CW-complex construction of $S^2$ consists of exactly two points, a point on the 1-skeleton and a point on the 2-skeleton which corresponds to the 1 and 2 connectedness of $S^2$. We will utilize the fact that quotienting $Y$ by a subcomplex $A$ preserves the CW structure and so we will construct $A$ so that $[A]$ is the $n$-skeleton of $Y$. Then utilizing a corollary of the Borsuk property, $Y \sim Y/A$ and the $n$-skeleton will be a point $[A]$.
+		\begin{proof}
+			content...
+		\end{proof}
+		
+		
+			\end{document}

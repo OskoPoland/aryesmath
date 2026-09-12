@@ -367,5 +367,13 @@
 					hence we are done.
 				\end{enumerate}
 			\end{proof}
+			
+			\begin{remark}
+				$\V_\Proj(f_1,\dots,f_k) = \emptyset$ if and only if there exists $d$ such that every monomial of degree $d$ is contained in $\la f_1,\dots, f_k\ra$. 
+				\begin{proof}
+					SKETCH : ($\impliedby$) If every monomial of degree $d$ is contained in $\la f_1,\dots,f_k\ra$ then in particular we contain $x_0^d,\dots,x_n^d$ on which means that we contain the irrelevant ideal and projective NS tells us this vanishing is empty. ($\implies$) If the vanishing is empty then the projective NS tells use that $\sqrt{\la f_1,\dots,f_k \ra} \supseteq \la x_1,\dots,x_n \ra$. By definition of radical ideals there exist a $d_i$ such that $x_i^{d_i}$ is contained in the radical of the vanishing ideal. Now take $N = \max\{d_1,\dots,d_n\}$ which ensures that any $x_i^N$ is contained in the vanishing ideal. Let $d = (n+1)N$
+				\end{proof}
+			\end{remark}
+			
 		\end{document}
 		
