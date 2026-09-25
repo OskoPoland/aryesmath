@@ -374,6 +374,316 @@
 					SKETCH : ($\impliedby$) If every monomial of degree $d$ is contained in $\la f_1,\dots,f_k\ra$ then in particular we contain $x_0^d,\dots,x_n^d$ on which means that we contain the irrelevant ideal and projective NS tells us this vanishing is empty. ($\implies$) If the vanishing is empty then the projective NS tells use that $\sqrt{\la f_1,\dots,f_k \ra} \supseteq \la x_1,\dots,x_n \ra$. By definition of radical ideals there exist a $d_i$ such that $x_i^{d_i}$ is contained in the radical of the vanishing ideal. Now take $N = \max\{d_1,\dots,d_n\}$ which ensures that any $x_i^N$ is contained in the vanishing ideal. Let $d = (n+1)N$
 				\end{proof}
 			\end{remark}
+			\section{CH 10 Maps of Projective Varieties}
+			\subsection{10.1 Regular Maps of Projective Varieties}
+			In the affine case we established that polynomials maps between affine varieties maps that are polynomial in each coordinate from one variety into another. In projective varieties this perspective makes less sense because of the scaling factor that acts as an equivalence among projective points. So instead we consider homogenous maps between projective varieties, we have to be careful though because we may accidentally vanish on a point in the variety and end up with a function that isn't well defined. To avoid this we define maps between projective varieties as follows:
+			\begin{definition}
+				Let $X \subseteq \Proj^m$ and $Y \subseteq \Proj^n$ be projective varieites. A map $F : X \rightarrow Y$ is called polynomial if there exists polynomials $f_0,\dots,f_n \in K[x_0,\dots,x_m]$ homogenous of the same degree, such that $X \cap \V(f_0,\dots,f_m) = \emptyset$ and 
+				\[
+				F(a) = [f_0(a): \cdots : f_n(a)] \; \forall a \in X
+				\]
+				If we can take $f_i$ to be linear in all $i$ then we call the map between varieties linear. 
+			\end{definition}
+			Unfortunately the requirement that $X \cap \V(f_0,\dots,f_m) \emptyset$ tends to be far too restrictive. The restrictiveness arises when we try and define polynomial maps over all varieities, this intersection requirement cuts out many obvious maps and as we will see later polynomials maps on projective varieties are always constant. Lets illustrate this with an example, take $X = \V(y^2 - xz) \subseteq \Proj^2$ and consider the function $x , y \in K[x,y,z]$. We can use these function to define a polynomial map as $X \cap \V(x,y) = \{[0:0:1]\}$ but we still get a map from a subset of $X$ to $\Proj^1$ which simply excludes this point:
+			\begin{align}
+				[x:y] : X \setminus \V(x,y ) &\rightarrow \Proj^1 \\
+				[a:b:c] &\mapsto [a: b]
+			\end{align}
+			Now if we consider polynomials $y, z \in K[x,y,z]$ notice that we again don't get a polynomial map but we get a regular map now that excludes $[1:0:0]$. Notice that these maps together cover the entirety of $X$ so we can define a map 
+			\begin{align}
+				F : X &\rightarrow \Proj^1 \\
+				[a:b:c] &\mapsto \begin{cases}
+					[a:b], & [a:b:c] \not \in \V(x,y) \\
+					[b:c], & [a:b:c] \not \in \V(y,z)
+				\end{cases}
+			\end{align}
+			In fact for any projective variety $X$ and every point $p \in X$ there exist a pair of possibly different polynomials $f,g$ such that $p \not \in \V(f,g)$ meaning we can define a map over the entire projective variety by constructing a piecewise map for every $p$. This motivates the definition for a regular map:
+			\begin{definition}
+				A map $F: X \rightarrow Y$ of projective varieties is called regular if for every $p \in X$, there exists polynomials $f_0,\dots,f_n \in K[x_0,\dots,x_m]$ homogenous of the same degree such that $p \not \in \V(f_0,\dots,f_n)$ and 
+				\[
+				F(a) = [f_0(a):\cdots:f_n(a)] \; \forall a \in X\setminus\V(f_0,\dots,f_n)
+				\]
+			\end{definition}
+			It's important to note that every polynomial map is a regular map, in the sense that we were able to find a single polynomial for all points in the projective variety, but not every regular map is polynomial. 
 			
+			\begin{remark}
+				Any regular map $F: \Proj^1 \rightarrow \Proj^n$ is a polynomial map.
+			\end{remark}
+			\begin{proof}
+				Let $F$ be a regular map from $\Proj^1$ to $\Proj^n$. This implies that for any point $p \in \Proj^1$ there exists polynomial $f_0,\dots,f_n \in K[x,y]$ homogenous of the same degree such that $p \not \in \V(f_0,\dots,f_n)$ and that 
+				\[F(a) = [f_0(a):\cdots : f_n(a)]\]
+				for all $a \in \Proj^1 \setminus \V(f_0,\dots,f_n)$. If $\Proj^1 \cap \V(f_0,\dots,f_n) = \emptyset$ then we are done. Assume that the intersection is non-empty then there exists a point $p \in \Proj^1$ such that $f_i(p) = 0$ for all $i$. If $p = [0:a]$ for some $a \in K\setminus\{0\}$ then we may view each $f_i$ as a univariate polynomial vanishing at $a$. Since our field is algebraically closed then $f_i(x,y) = (y-a)g_i(x,y)$ allowing us to choose a new collection $g_0,\dots,g_n$ which doesn't vanish at $p$, is equivalent upon evaluation as point in $\Proj^n$, and that only add $p$ to the domain of $F$. If $p = [1:a]$ for some $a \in K$, then we can do the same process to product a collection on which this point doesn't vanish. Once we have a collection that no longer vanishes at $p$, we repeat the process by checking for projective points on which this new collection doesn't vanish.  Note that any polynomial only has a finite number of solutions ensureing that this process terminates at some collection $h_0,\dots,h_n$. In particular this process must terminate a point where no polynomial has a common root or we have forced a 1 in some component in both cases implying the vanishing set is empty.
+			\end{proof}
+			\subsection{10.2 Projective Equivalences}
+			Of course now that we have developed the notion of a map between projective varieties. This naturally asks us to consider when two projective varieties are isomorphic to one another. In particular, if for projective varieties $X \subseteq \Proj^m$ and $Y \subseteq \Proj^n$ there exist a pair of regular maps $F: X \rightleftarrows Y : G$ where $F \circ G = \id_X$ then we say these varieites are isomorphic. Verifying an isomorphism has no special conditions other than ensuring that given a map $F$, that the inverse that you define is a well defined regular map on $Y$. We are particularly interested in a very special isomorphism of $\Proj^n$ to $\Proj^n$. Similar to affine space we can identify $\Proj^n$ with a vector space, note that we could never really be a vector space because we never have the origin, and consider for a point $[a_0:a_1:a_2] \in \Proj^2$ 
+			\[
+			\begin{bmatrix}
+				a_0 & a_1 & a_2
+			\end{bmatrix}\begin{bmatrix}
+			1 & 1 & 0 \\
+			1 & 0 & 2 \\
+			0 & 1 & -1 
+			\end{bmatrix}
+			\]
+			giving us a linear map 
+			\[
+			[a_0 : a_1 : a_2 ] \mapsto [a_0 + a_1 : a_0 + 2a_2 : a_1 - a_2]. 
+			\]
+			More generally for a point $[a_0:\cdots:a_n]$ and a $(n+1) \times (n+1)$ invertible matrix we get a linear map 
+			\[
+			F_A = \left [ \sum_{j=0}^n A_{0,j}x_j : \cdots : \sum_{j=0}^n A_{n,j}x_j \right]
+			\]
+			that, given the invertibility of $A$, has an inverse $F_{A^{-1}}$. This then implies that $F_A$ and $F_{A^{-1}}$ are enough information to provide an isomorphism of projective $n$ space to itself. 
+			\begin{definition}[Projective Equivalence]
+				A projective equivalence of $\Proj^n$ is an isomorphism of the form 
+				\begin{align}
+					F_A: \Proj^n &\rightarrow \Proj^n \\
+					p &\mapsto Ap
+				\end{align}
+				where $A$ is an $(n + 1 ) \times (n+1)$ matrix with entries in $K$. We say that projective varieties $X,Y \subseteq \Proj^n$ are projectively equivalent if there exists a projectively equivalent if there exists a projective equivalence such that $F_A(X) = Y$. 
+			\end{definition}
+			\begin{remark}
+				If $X$ is a projective variety then a projective equivalence always maps $X =\V(f_1,\dots,f_k)$ to a projective variety $F_A(X)$. To see this consider that 
+				\[
+				F_A(X) = \{F(a) \in \Proj^n : f_i(a) = 0 \; \forall i\} = \{a \in \Proj^n : (f_i \circ F^{-1}_A)(a) = 0 \; \forall i\}
+				\]
+				where $f_i \circ F_A^{-1}$ is polynomial because it is just a composition of two polynomial. Then it's immediate to verify that $(f_i \circ F_A^{-1})(F_A(a)) = f_i(a) = 0$. This assertion is generally true but requires us to develop some more machinery and will be tackled in Theorem 11.65. 
+			\end{remark}
+			The language of projective equivalences, on a degree two polynomial, exhibits a remarkable level of regularity. That is 
+			\begin{theorem}
+				Let $f,g \in K[x,y,z]$ be irreducible and homogenous of degree 2. Then $\V(f)$ and $\V(g)$ are projectively equivalent in $\Proj^2$.  
+			\end{theorem}
+			\begin{proof}
+				Choose two distinct points $[a_1:b_1:c_1], [a_2:b_2:c_2] \in \V(f)$, and the matrix 
+				\[
+				\begin{bmatrix}
+					a_1 & a_2 \\
+					b_1 & b_2 \\
+					c_1 & c_2 \\
+				\end{bmatrix}
+				\]
+				must be of rank 2. If every point of $\V(f)$ satisfies the linear equations given by this matrix then we have $\V(f)$ to be contained in the vanishing set of a linear function. But the radical of the ideal generated by a linear polynomial is just the same ideal which implies that we were able to express a quadratic of homogenous degree 2 as the product of a linear polynomial. This contradiction implies that there must exist a third point $[a_3:b_3:c_3]$ such that 
+				\[
+				A = \begin{bmatrix}
+					a_1 & a_2 & a_3\\
+					b_1 & b_2 & b_3\\
+					c_1 & c_2 & c_3\\
+				\end{bmatrix}
+				\]
+				is off full rank and therefore invertible. Therefore $A$ induces a projective equivalence $F_A$ defined by $A$ maps $[1:0:0], [0:1:0], [0:0:1]$ to our three points chosen from $\V(f)$. The inverse identifies $\V(f)$ with some irreducible conic $\V(g)$ such that those three points are contained in said irreducible conic. But a homogenous polynomial of degree 2 that vanishes on those three points has the form
+				\[
+				g = \alpha xy + \beta yz + \gamma xz.
+				\]
+				All $\alpha, \beta,$ and $\gamma$ must be non-zero or $g$ would be reducible contradiction our assertion that $\V(g)$ is irreducible. Then the projective equivalence must be a map
+				\[
+				[a:b:c] \mapsto [\alpha^{-1}a : \beta^{-1} b : \gamma^{-1} c]
+				\]
+				which identifies $\V(g)$ with projective variety $\V(xy + xz+ yz)$. Then composing these we see that we have a projective equivalence. 
+			\end{proof}
+			From this we can actually make a rather powerful isomorphism statememt:
+			\begin{theorem}
+				Let $f \in K[x,y,z]$ be an irreducible, homogenous polynomial of degree 2. Then $\V(f) \cong \Proj^1$.
+			\end{theorem}
+			Becuase we know that all varieties of this form are isomorphic to one another it just suffices to show that one of these is isomorphic to $\Proj^1$. Refering to $\V(y^2-xz)$ we can show this and the result of the proof follows.
+			\subsection{10.3 Veronese Maps}
+			Veronese maps are special because they give us a mechanism to identify, under projective equivalence, any variety defined by complex polynomials of high homogenous degree with varieties defined by a collection of polynomials of degree at most two. Using this result we can then establish that any polynomials map of projective varieties is linear(we saw something similar to this argument in 10.1.6). 
+			\begin{definition}[Veronese Maps]
+				For any $d,n \geq 1$, the Veronese map $F_{d,n} \Proj^n \rightarrow \Proj^{{d + n \choose k} - 1}$ is the polynomial map 
+				\[
+				F_{d,n} = [x_0^d: x_0^{d-1}x_1 : x_0^{d-1}x_2 : \cdots : x_n^d]
+				\]
+				where the monomials appearing in the definition are all of the possible monomials of degree $d$ in the variables $x_0,\dots,x_n$. 
+			\end{definition}
+			Note that we can view $F_{d,n}$ as a regular map because of the manner in which we defined it. That is let $\Delta = \V(x_0^d, x_0^{d-1}x_1,x_0^{d-1}x_2, \dots, x_n^d)$ and observe that if a point $p \in \Proj^n \cap \Delta$ then the componentes $p_i^d = 0$ for all $i$ which means that all $p_i = 0$ but a point with zeroes in each component can not be contained in $\Proj^n$. Since $F_{d,n}$ is polynomial it is by definition regular. Let $D = (d_0,\dots,d_n)$ be the tuples which index the degree $d_0 + \cdots +d_n = d$ monomials. For example 
+			\[
+			X^D = x_0^{d_0}\cdots x_n^{d_n}
+			\]
+			and we will call the cordinates of $\Proj^{{d + n \choose k} - 1}$ by $y_D$ so that $F_{d,n}$ is the polynomial map whose $y_D$-coordinate is $x^D$.  
+			\begin{proposition}
+				For any $d,n \geq 1$, the image of the Veronese map $F_{d,n}: \Proj^n \rightarrow \Proj^{{d + n \choose k} - 1}$ is 
+					\[
+					X_{d,n} = \V(\{y_Dy_{D'} - y_Ey_{E'} \; | \; D + D' = E + E'\}) \subseteq \Proj^{{d + n \choose k} - 1}
+					\]
+			\end{proposition}
+			\begin{proof}
+				Let $a \in F_{n,d}(\Proj^n)$ then for any $D,D',E,E'$ such that $D + D' = E + E'$ given by the vanishing
+				\[
+				a^Da^{D'} - a^Ea^{E'} = (a_0^{d_0}\cdots a_n^{d_n})(a_0^{d_0'}\cdots a_n^{d_n'}) - (a_0^{e_0}\cdots a_n^{e_n})(a_0^{e_0'}\cdots a_n^{e_n'}) = 0
+				\]
+				then we see immediately that $F_{d,n}(\Proj^n) \subseteq X_{d,n}$. Now take $a \in X_{d,n}$ then it follows by the conditions on the vanishing that for tuples $D,D',E,E'$ that $a_Da_{D'} = a_Ea_{E'}$. This can be immediately extended to show that for any $D_k, E_k$ where $D_1 + \cdots + D_k = E_1 + \cdots +E_k$ that 
+				\[
+				a_{D_1}\cdots a_{D_k} = a_{E_1}\cdots a_{E_k}.
+				\]
+				In particular for $D = (d_0,\dots,d_n)$ we have that 
+				\[
+				a_D^d = (a_0^{d_0}\cdots a_n^{d_n})^d =a_{(d,0,\dots,0)}^{d_0}\cdots a_{(0,\dots,d)}^{d_n}.
+				\]
+				Note that at least one coordinate must be non-zero because each index $a_i$ comes from a component of a projective class in $\Proj^n$. WLOG suppose that $a_{(d,\dots,0)} \neq 0$ then we can rescale this projective component by this component so that $a_{(d,\dots,0)}  = 1$. For $1 \leq i \leq n$ define 
+				\[
+				b_i = b_{((d-1),\dots,1,\dots,0)}
+				\]
+				where the 1 lives in the $i$-th index of the tuple. Then 
+				\begin{align}
+					F_{d,n}(b) &= b_0^{d_1}\cdots b_n^{d_n} \\
+					&= a_{(d,0,\dots,0)}^{d_0}a_{(d-1,1,\dots,0)}^{d_1}\cdots a_{(d-1,0,\dots,1)}^{d_n} \\
+					&= (a_{0}^{d-1}a_1)^{d_1}\cdots (a_0^{d-1}a_n)^{d_n} \\
+					&= (a_0)^{(d-1)d_1}\cdots a_0^{(d-1)d_n} a_D \\
+					&= a_0^{(d-1)d}a_D \\
+					&= a_{(d,\dots,0)}^{d-1}a_D\\
+					&= a_D
+				\end{align}
+				where (14) and (18) are a result of the fact that we set $a_0 = 1$. Therefore $b \in image(F_{d,n}(\Proj^n))$ and $X_{d,n} \subseteq F_{d,n}(\Proj^n)$. 
+			\end{proof}
+			Whats good is that we get explicit defining polynomials but we can even show that Veronese maps are in fact isomorphism of $X_{d,n}$ and $\Proj^n$. 
+			\begin{proposition}
+				For any $d,n \geq 1$, the Veronese map $F_{d,n} : \Proj^n\rightarrow X_{d,n}$ is an isomorphism. 
+			\end{proposition}
+			\begin{proof}
+				To prove that this is an isomorphism we construct the following map for any $b \in X_{d,n}$ define
+				\[
+				G_{d,n}(b) = \begin{cases}
+					[b_{(d,0,\dots,0)} : b_{(d-1,1.\dots,0)}  :\cdots : b_{(d,0,\dots,1)}] \\
+					[b_{(1,d-1,\dots,0)} : b_{(0,d,\dots,0)} :\cdots : b_{(0,d-1,\dots,1)} ] \\
+					\quad\quad\quad\vdots \\
+					[b_{(1,0,\dots,d-1)}: b_{(0,1,\dots,d-1)} : \cdots : b_{(d,0,\dots,d)} ]
+				\end{cases}
+				\]
+				where we choose the correct presentation depending on the point $b$. In the previous proof we saw that not every component could be 0 so we know that the point given by $G$ is well defined. It remains to check the composition but that seems tedious and I am happy to accept that this is an inverse.
+			\end{proof}
+				\begin{description}
+					\item[Ex:] Let $X = \V(x_0^3 + x_1^2 + x_2^3) \subseteq \Proj^2$ and we consider the Veronese map 
+					\[
+					F_{3,2} : X \rightarrow \Proj^{{5 \choose 3} - 1} = \Proj^9
+					\]
+					Observe that $D = (d_0,d_1,d_2)$ is the tuple indexing outputs of the Veronese map and $d_1 + d_2 + d_3 = 3$. Then we can verify that 
+					\[a \in X \iff a_0^3 + a_1^3 + a_2^3 = 0 \iff a_{(3,0,0)} + a_{(0,3,0)} + a_{(0,0,3)} = 0 \iff F_{3,2}(a) \in \V(y_{(3,0,0)}, y_{(0,3,0)}, y_{(0,0,3)})\]
+					then
+					\[
+					F_{3,2}(X) \cong X_{3,2} \cap \V(y_{(3,0,0)}, y_{(0,3,0)}, y_{(0,0,3)})
+					\]
+					following from the previous proposition. More generally we can present the first most important consequences of the relationship given by Veronese maps.
+					
+				\end{description}
+				\begin{proposition}
+					Up to isomorphism, every projective variety can be written as the vanishing set of a finite collection of homogenous polynomials of degree at most two.
+				\end{proposition}
+				\begin{proof}
+					Let $X \subseteq \Proj^n$ be a projective variety. The primary observation is that $X$ can be expressed as the vanishing set of polynomials $f_1,\dots,f_k$ of the same homogenous degree. Then each $f_i$ has the form
+					\[
+					f_i = \sum_D a_{i,D}x_0^{d_0}\cdots x_{n}^{d_n}
+					\]
+					over all tuples $D = (d_0,\dots,d_n)$ \note{verify this claim}. Now consider the Veronese map
+					\[
+					F_{d,n} : \Proj^n \rightarrow \Proj^{{n + d \choose d} - 1}
+					\] 
+					and define linear polynomials $\ell_1,\dots, \ell_k$ such that 
+					\[
+					\ell_i = \sum_{D}a_{i,D}y_D
+					\]
+					\note{We are trying to get a Veronese map whose image is a variety which lets us treat the map as an ismorphism} Then we observe that 
+					\[
+					a \in X \iff F_{d,n}(a) \in X_{d,n} \cap \V(\ell_1,\dots,\ell_k)
+					\]
+					which implies that the image of the regular map on the variety $X$ is exactly this intersection. Since the map is regular it can be restricted to a regular map on $X$. But because we know that the Veronese map is an isomorphism onto the variety $X_{d,n}$ then we have a regular invese to the map giving us an isomorphism $X \cong X_{d,n} \cap \V(\ell_1,\dots,\ell_k)$ where everthing defining this isomorphic variety is given by quadratics and linear polynomials. 
+				\end{proof}
+				This result is particularly interesting because we can say that up to isomorphism, polynomial maps between variety are linear.
+				\begin{proposition}
+					If $F: X\rightarrow Y$ a polynomial map of projective varieties, then there exists an isomorphism $G:X \rightarrow Z$ and a linear map $L : Z \rightarrow Y$ such that $F = L \circ G$. 
+				\end{proposition}
+				\begin{proof}
+					\note{Exercises - in HW5}
+				\end{proof}
+				With this and exercise 10.2.6 we can impose a rather strong condition on polynomial maps. 
+				\begin{proposition}
+					A $F: X\rightarrow Y$ is a polynomial map of projective varieties, then for any $b \in Y$, there are finitely many $a \in X$ such that $F(a) = b$. 
+				\end{proposition}
+				\begin{proof}
+					Using the previous proposition, $F = L \circ G$ for some linear map $L$ and isomorphism $G$. Because isomorphisms are one-to-one and linear maps are finite-to-one then $F$ must be finite-to-one.
+				\end{proof}
+				\subsection{10.4 Segre Maps}
+				We have a solid understanding of projective varieties and ways in which we can embed them into higher dimensional spaces. Now what if have $\Proj^m \times \Proj^n$, with our affine intuition we wonder: Does this naturally live in $\Proj^{m+n}$? The way in which I interpret this is to think about a term $a \in \Proj^{m+n}$ where the first $m$ terms are zero. If we were to break this back down into the product structure this would leave us with an all zero point in $\Proj^m$ which doesn't make sense. Fortunately for us, Segre has devised a way to embed this product into a higher projective space via a Segre map.
+				\begin{definition}[Segre Map]
+					For $m , n \geq 0$ the Segre map $S_{m,n} : \Proj^m \times \Proj^n \rightarrow \Proj^{(m+1)(n+1) - 1}$ is a map 
+					\[
+					S_{m,n} = [x_0y_0 : x_0y_1: \cdots : x_my_{n-1} : x_my_{n}]
+					\]
+					where the monomials are all possible products $x_iy_j$.
+				\end{definition}
+				Observe that if all products $a_ib_j = 0$ take $b_j = 0$ then for all $i$, $a_ib_j = 0$ which means that $a_i$ is not necessarily zero for all $i$. Because we have any other term $a_ib_k$ and we take $a_i \neq 0$ then we force all $b_j$ to be zero. So we only get zero if $a_i = 0$ for all $i$ or $b_i = 0$ for all $i$. Because this can't happen in $\Proj^n$ or $\Proj^m$ then we are good and the Segre map is well defined. Lets look at a simple example 
+				\begin{align}
+					S_{1,1} : \Proj^1 \times \Proj^1 &\to \Proj^3 \\
+					([a_0:a_1], [b_0:b_1]) &\mapsto [a_0b_0 : a_0b_1 : a_1b_0 : a_1b_1]
+				\end{align}
+				Observe that in general we can organize entries in $\Proj^{(m+1)(n+1) - 1}$ into components $z_{ij}$ where $ 0\leq i \leq m$ and $0 \leq j \leq n$. These entries can be used to populate a matrix $A(z)$. Using our previous example we take $z = [a_0b_0 : a_0b_1 : a_1b_0 : a_1b_1]$
+				\[
+				A(z) = \begin{bmatrix}
+					a_0b_0 & a_0b_1 \\
+					a_1b_0 & a_1b_1
+				\end{bmatrix}
+				\]
+				Using this presentation we can give the cartesian product of projective spaces by embedding them as the vanishing set in a higher dimensional projective space using a Segre map.
+				\begin{proposition}
+					$S_{m,n}$ is an injection of $\Proj^m \times \Proj^n$ as a projective variety $Z_{m,n} \subseteq \Proj^{(m+1)(n+1)-1}$ where 
+					\[
+					Z_{m,n} = \V(\{z_{ij}z_{k\ell} - z_{i\ell}z_{kj} : 0 \leq i , k \leq m, 0 \leq j, \ell \leq n\}).
+					\]
+				\end{proposition}
+				\begin{proof}
+					We will begin by showing that $\im (S_{m,n}) = Z_{m,n}$. Take $(a,b) \in \Proj^m \times \Proj^n$ and take $z = S_{m,n}(a,b)$ then for $0 \leq i , k \leq m$ and $0 \leq j, \ell \leq n$ we see that 
+					\[
+					z_{ij}z_{k\ell} - z_{i\ell}z_{kj} = a_ib_ja_kb_\ell - a_ib_\ell a_k b_j = 0
+					\]
+					hence $\im S_{m,n} \subseteq Z_{m,n}$. For $c \in Z_{m,n}$ implying that all $2 \times 2$ minors of $A(c)$ vanish. Then $\rank A(c) = 1$ because if the rank was zero this would imply that $c$ was zero in every component. Since $\rank A(c) = 1$ then every row is a multiple of a single row. Let this single row be $b = (b_0,\dots,b_m)$ and take every other row to be $a_ib$ for some $a_i \in K$. Then we see that 
+					\[
+					c = S_{m,n}([1:a_1:\cdots:a_m], [b_0:\cdots:b_n])
+					\]
+					hence $\im (S_{m,n}) = Z_{m,n}$. Now we show that $S_{m,n}$ is injective. Consider $z, z' \in Z_{m,n}$ such that $z = S_{m,n}(a,b)$ and $z' = S_{m.n}(x,y)$ for some some $a,x \in \Proj^m$ and $b, y \in \Proj^n$ where $z = z'$. This implies that $A(z) = A(z')$, and as we saw in the previous part of this proof, the fact that each $2 \times 2$ minor vanishes in both matrices means that they must be rank 1. In particular this means that the first row of $A(z)$ can be set to $b$ and each successive row set to $a_ib$. Similarly the first row of $A(z')$ can be set to $y$ and the successive rows are multiples $x_iy$. Since these matrices are equivalent this means that $b = y$. Then $a_ib = x_iy = x_ib$ which implies that $x_i = a_i$ for all $i$. Therefore $(a,b) = (x,y)$ and we can conlcude that the Segre map is injective. 
+				\end{proof}
+				Now that we can view a product of the projective spaces as varieties, does this mean that taking products of the varieties of these spaces can be injected to a variety of a higher projective dimension. 
+				\begin{proposition}
+					If $X \subseteq \Proj^m$ and $Y \subseteq \Proj^n$ are projective vareities, then the Segre map $S_{m,n}$ resitrcts an injective variety $X \times Y$ onto a projective variety in $\Proj^{{n + d\choose d} - 1}$.
+				\end{proposition}
+				\begin{proof}
+					Let $X = \V(\mcal{S})$ and $Y = \V(\mcal{T})$ be projetive varieties for polynomials $\mcal{S} \subseteq K[x_0,\dots,x_m]$ and $\mcal{T} \subseteq K[x_0,\dots,x_n]$. For all $f \in \mcal{S}$ and $g \in \mcal{T}$ define 
+					\[
+					f_i(z) = f(z_{0i}, \dots, z_{mi}) \quad\text{and}\quad g_j(z_{j0},\dots, z_{jn})
+					\]
+					collecting all $f_i \in \mcal{S}'$ and $g_j \in \mcal{T}'$. Then for $(x,y) \in X \times Y$ we know that $S_{m,n}(x,y) \in Z_{m,n}$ and observe that for all $i$
+					\[
+					f(x_0y_i, \dots, x_my_i) = y_i^d f(x_0,\dots,x_m) = 0
+					\]
+					and 
+					\[
+					g(x_jy_0,\dots,x_jy_n) = x_j^dg(y_0,\dots,y_m)
+					\]
+					then $S_{m,n}(X \times Y) \subseteq Z_{m,n} \cap \V(\mcal{S}' \cup \mcal{T}')$. Reversing this process we can check again that vanishing on $\mcal{S}', \mcal{T}'$ will imply that the original points vanish on $\mcal{S}$ and $\mcal{T}$. 
+				\end{proof}
+				With this we can define the product of projective varieties.
+				\begin{definition}
+					If $X \subseteq \Proj^m$ and $Y \subseteq \Proj^n$ are projective varieties then their product $X \times Y$ is the projective variety 
+					\[
+					S_{m,n}(X \times Y) \subseteq \Proj^{(m+1)(n+1)- 1}
+					\]
+				\end{definition}
+				Now we ask whether maps into or out of products of varieities are regular. In particular, our soon to be topological perspecitve, wants us to determine whether the projection maps of $X \times Y$ are regular.
+				\begin{proposition}
+					If $X \subseteq \Proj^m$ and $Y \subseteq \Proj^n$ are projective varieites. Then the projection maps $\pi_1 : X \times Y 
+					\to X$ and $\pi_2 : X \times Y \to Y$ are regular. 
+				\end{proposition}
+				Under the Segre map we may note that for $z$ we can always find $m$ terms $z_{i,0},\dots,z_{i,m}$ which when mapped into $Y$ gives us a point scaled by $x_j$ which is equivalent to a point in $X$. 
+				\begin{proof}
+					We construct $\pi_1$ and $\pi_2$ follows immdietly from symmetry. For $c = (a,b) \in X \times Y \subseteq \Proj^{(m+1)(n+1)-1}$ define 
+					\[
+					\pi_1(c) = \begin{cases}
+						[c_{00}: c_{10}: \cdots : c_{m0}] & c \not \in \V(z_{00},\dots,z_{m0}) \\
+						\vdots \\
+						[c_{0n}:c_{1n} : \cdots :c_{mn}] & c \not \in \V(z_{0n},\dots,z_{mn})
+					\end{cases}
+					\]
+					For $c = (a,b) \in X \times Y$, at least one $a_i$ or $b_j$ is non-zero. Without loss of generality take $b_j \neq 0$ then $c \not \in \V(z_{0j},\dots,z_{nj})$ and 
+					\[
+					\pi_1(c) = [a_0b_j : \cdots :a_nb_j] = [a_0:\cdots:a_n].
+					\]
+				\end{proof}
 		\end{document}
 		

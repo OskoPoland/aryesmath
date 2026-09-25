@@ -343,8 +343,44 @@ The equivalence of these equivalence classes implies directly that $f \circ g\si
 		\end{theorem}
 		Let us consider the CW-complex $S^2$. The CW-complex construction of $S^2$ consists of exactly two points, a point on the 1-skeleton and a point on the 2-skeleton which corresponds to the 1 and 2 connectedness of $S^2$. We will utilize the fact that quotienting $Y$ by a subcomplex $A$ preserves the CW structure and so we will construct $A$ so that $[A]$ is the $n$-skeleton of $Y$. Then utilizing a corollary of the Borsuk property, $Y \sim Y/A$ and the $n$-skeleton will be a point $[A]$.
 		\begin{proof}
-			content...
+			:CRY:
 		\end{proof}
 		
+		\section{Fundamental Group}
+		%Introduce the Fundamental group
+		Let $\pi_1(X,x_0)$ be the set of all loops in the based space $(X,x_0)$ starting ending at the base point under the equivalence $\sim$ where two loops are equivalent if and only if they are homtopic. What's particular fascinating about this space is that the loops actually exhibit a group structure. 
+		\begin{theorem}
+			$\pi_1(X,x_0) $ is a group under product $[f][g] = [f\circ g]$. 
+		\end{theorem}
+		The fact that the loops start and end at the base point guarantees that their composition is well defined function on the space. In particular the composition of two loops results in a loop where we simply reparametrize the function $f$ to have domain $[0,1/2]$ and $g$ to be on the domain $[1/2, 1]$ resulting in a new well defined loop on the space. The associativity of concatenation again follows from the reparametrizion of each loop so that their combined domains are $[0,1]$. The identity on this space will be the constant path $c: I \rightarrow X$ where $t \mapsto x_0$ for all $t \in I$. Then the concatenation of any other path $f$ with $c$, after reparametrization results in a path homotopic to the orginal path $f$ by parametrizing the shrinking of $c$. In fact this identity is two sided. Inverses are given by simply reparametrizing the path in reverse and it's evident that $h \circ h^{-1} \sim c$. If we were to change the basepoint, i.e $(X, x_1)$ where $x_1 \neq x_0$, and the base point lies in the same connected component of $X$, then we hope that there is a way to relate paths in $\pi_1(X,x_0)$ and $\pi_1(X,x_1)$. 
+		\begin{lemma}
+			If $x_0$ and $x_1$ lie in the same connected component of $X$, $\pi_1(X,x_0) \cong \pi_1(X,x_1)$. 
+		\end{lemma}
+		\begin{proof}
+			Let $h: I \rightarrow X$ be a path from $x_1$ to $x_0$ and $h^{-1}$ be the inverse path $h(1-t)$ from $x_0$ to $x_1$. Given any path $f$ from base point $x_1$ to $x_1$ the composition $h \circ f \circ h^{-1}$ results in a path starting and ending at $x_1$. Because $x_0$ and $x_1$ are in the same path connected component this path is well defined. So we can define a base point change map $B_h : \pi_1(X,x_0) \rightarrow \pi_1(X,x_1)$ where $[f] \mapsto [hfh^{-1}]$. Then 
+			\[
+			B_h([fg]) = [hfgh^{-1}] = [hfh^{-1}hgh^{-1}]=B_h(f)B_h(g)
+			\]
+			and 
+			\[
+			B_hB_{h^{-1}}([f]) = [f]
+			\]
+			hence this map is a group isomorphism. 
+		\end{proof}
+		For the remainder of these notes when we don't care so much about the based point, a based point will just be denoted $X_\bullet$. If we have a continuous map $f: X_\bullet\rightarrow Y_\bullet$ then there is an induced group homomophism $f_*:\pi_1(X_\bullet) \rightarrow \pi_1(Y_\bullet)$ were $f_*([\gamma]) = [f \circ \gamma]$. To check the hom condition, take two paths $\gamma, \delta \in \pi_1(X_\bullet)$ then 
+		\[
+		f_*([\gamma\delta]) = [f\gamma\delta] = [f\gamma][f\delta]
+		\]
+		where $(f\gamma)(2s)$ for a $s \in [0,1/2]$ and $(f\delta)(2s-1)$ for $s \in [1/2,1]$. If $X_\bullet \sim Y_\bullet$ a homotopy equivalence then $\pi_1(X_\bullet) \cong \pi_1(Y_\bullet)$, that means that there are two maps such $f: X_\bullet\rightarrow Y_\bullet$ and $g:Y_\bullet\rightarrow X_\bullet$ such that $f \circ g \sim \id_{X_\bullet}$ and $g \circ f \sim \id_{Y_\bullet}$. 
+		\begin{lemma}
+			If $\phi_t: X\rightarrow Y$ is a homotopy and let $h$ be the path formed under the image of $\phi_t(x_0)$ which compose a base change map $B_h$ in $Y_\bullet$. Then 
+			$\phi_{0*} = B_h\phi_{1*}$. 
+		\end{lemma}
+		\begin{proof}
+			Let $h_t$ be the restirction $h|_{[0,t]}$. We can view this as a reparametrizatio of $t$, i.e. $h_t(s) = h(st)$ which will only cover the domain $[0,t]$. Then if $f$ is a loop in $X_\bullet$ then $\phi_t(f)$ is a loop in $Y_\bullet$ and the composition $h_t\phi_tfh_t^{-1}$ gives us a homotopy of loops with base point $\phi_0(x_0)$. Then at $t = 0$ we get $h_0\phi_{0}fh_0^{-1} = [\phi_0f]$ and at $t =1$ we get $h_1\phi_{1}fh^{-1} = [\phi_1f]$ and $h$ supplies a homotopy so that $[\phi_0f] = [\phi_1f]$. This tells us that $\phi_{0*}f = B_h(\phi_{1*}f)$.
+		\end{proof}
+		\begin{theorem}
+			If $X_\bullet$ and $Y_\bullet$ are homotopically equivalent then $\pi_1(X_\bullet) \cong \pi_1(Y_\bullet)$. 
+		\end{theorem}
 		
-			\end{document}
+	\end{document}
