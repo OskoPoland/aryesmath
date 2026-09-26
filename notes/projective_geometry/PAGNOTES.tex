@@ -41,6 +41,7 @@
 \newcommand{\note}[1]{\textcolor{red}{\emph{#1}}}
 \newtheorem{proposition}{Proposition}[section]
 \newtheorem{corollary}{Corollary}[section]
+\newtheorem{lemma}{Lemma}[section]
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
@@ -600,7 +601,7 @@
 				\begin{proof}
 					Using the previous proposition, $F = L \circ G$ for some linear map $L$ and isomorphism $G$. Because isomorphisms are one-to-one and linear maps are finite-to-one then $F$ must be finite-to-one.
 				\end{proof}
-				\subsection{10.4 Segre Maps}
+ 				\subsection{10.4 Segre Maps}
 				We have a solid understanding of projective varieties and ways in which we can embed them into higher dimensional spaces. Now what if have $\Proj^m \times \Proj^n$, with our affine intuition we wonder: Does this naturally live in $\Proj^{m+n}$? The way in which I interpret this is to think about a term $a \in \Proj^{m+n}$ where the first $m$ terms are zero. If we were to break this back down into the product structure this would leave us with an all zero point in $\Proj^m$ which doesn't make sense. Fortunately for us, Segre has devised a way to embed this product into a higher projective space via a Segre map.
 				\begin{definition}[Segre Map]
 					For $m , n \geq 0$ the Segre map $S_{m,n} : \Proj^m \times \Proj^n \rightarrow \Proj^{(m+1)(n+1) - 1}$ is a map 
@@ -684,6 +685,98 @@
 					\[
 					\pi_1(c) = [a_0b_j : \cdots :a_nb_j] = [a_0:\cdots:a_n].
 					\]
+				\end{proof}
+				We've established that we can essentially map out of a product of projective varieties. Now we consider maps into a product of varieties. 
+				\begin{proposition}
+					Let $W \subseteq \Proj^\ell$, $X \subseteq \Proj^m$, and $Y \subseteq \Proj^n$ be projective varieties. If $F : W \rightarrow X$ and $G : W \rightarrow Y$ are regular maps, then the function 
+					\begin{align}
+						F \times G : W &\to X \times Y \\
+						a &\mapsto (F(a), G(a))
+					\end{align}
+				\end{proposition}
+				\begin{proof}
+					Since $F$ and $G$ are regular for a point $p \in W$ there exist polynomials 
+					\[
+					f_0,\dots,f_m, g_0,\dots,g_n \in K[w_0,\dots,w_\ell]
+					\]
+					such that 
+					\[
+					F(a) = [f_0(a): \cdots : f_m(a)] \; \forall a \in W \setminus \V(f_0,\dots,f_m)
+					\]
+					and
+					\[
+					G(a) = [g_0(a): \cdots: g_n(a)] \; \forall a \in W \setminus \V(g_0,\dots,g_n).
+					\]
+					Then by definition 
+					\[
+					p \not \in \Delta = \V(f_ig_j : 0 \leq i \leq m , 0 \leq j \leq n)
+					\]
+					then 
+					\[
+					(F\times G)(a) = [f_0(a)g_1(a) : f_0g_2(a) : \cdots : f_m(a)g_n(a)]
+					\]
+					for all $a \in W \setminus\Delta$. This means that by definition the product of regular maps is regular.  
+				\end{proof}
+				This result is fairly interesting because it says that varieties that arise as products have intrinsic nature dependent on each of their components.
+				\begin{proposition}
+					Let $X,X',Y,Y'$ be projective varieties. If $X \cong X'$ and $Y \cong Y'$, then 
+					\[
+					X \times Y \cong X' \times Y'
+					\]
+				\end{proposition}
+				\begin{proof}
+					We've established that the projection maps are regular so we consider their precomposition
+					\[
+					F \circ \pi_1 : X \times Y \to X' \quad\quad G \circ \pi_2 : X \times Y \to Y'
+					\]
+					are regular maps and their product is a regular map
+					\[
+					X \times Y \to X' \times Y'
+					\]
+					Because $F$ and $G$ are isomorphisms then they have regular inverses and we can repeat this process for $F^{-1}$ and $G^{-1}$ to product an inverse map. Since we have regular maps with regular inverses then we can conclude 
+					\[
+					X \times Y \cong X'\times Y'
+					\]
+				\end{proof}
+				\begin{proposition}
+					Let $Z$ be a subset of $\Proj^m \times \Proj^n$. Then viewing the product as a projective variety via the Segre map, $Z$ is itself a projective variety if and only if $Z$ is a vanishing set $\V(\mcal{S}) \subseteq \Proj^m \times \Proj^n$ for some $S \subseteq K[x_0,\dots,x_m,y_0,\dots,y_n]$.
+				\end{proposition}
+				Before proving this proposition we will prove a collection of small lemmas beforehand then utilize those lemmas.
+				\begin{lemma}
+					Every polynomial $f \in K[x_0,\dots,x_m,y_0,\dots,y_n]$ decomposes uniquely into a sum of bihomogenous polynomials.
+				\end{lemma}
+				\begin{proof}\note{Worth looking at this again just to nail the communication - there are some kind of annoying wording bits that makes it difficult to tell if this is really clear.}
+					Let $f \in K[x_0,\dots,x_m,y_0,\dots,y_n]$ be a homogeneous polynomial of degree $d$. Observe that monomials of $f$ take the form 
+					\[
+					x_0^{\alpha_0}\cdots x_m^{\alpha_m}y_0^{\beta_0}\cdots y_n^{\beta_n}
+					\]
+					Suppose that $m \leq n$ let $D_\alpha = (\alpha_0,\dots,\alpha_m,0,\dots,0)$ and $D_\beta = (\beta_0,\dots,\beta_n)$ with enough zeroes in $D_\alpha$ such that $D_\alpha,D_\beta \in \N^{n+1}$. Then the above monomial may be viewed as $x_{D_\alpha}y_{D_\beta}$ which we establish in exercises 10.3.3 to be uniquely determines by $D_\alpha + D_\beta$. Let $f_{i,d-i}$ be the sum of monomials in $f$ such that $\sum_{k=0}^m\alpha_k = i$ and $\sum_{k=0}\beta_k = d-i$ and observe that 
+					\[
+					f = \sum_{i = 0}^d f_{i,d-i}
+					\]
+					is the unique decomposition of $f$ as each monomial is determined by the $D_\alpha$ and $D_\beta$ associated to them. Now take a polynomial $g \in K[x_0,\dots,x_m,y_0,\dots,y_n]$ not necessarily homogeneous. The polynomial $g$ can be further decomposed as a sum $\sum_{j=0}^n g_j$ where $g_j$ is the collection of monomials of $g$ of homogeneou degree $j$. Each homogeneous component $g_j$ can be further decomposed as a sum giving us a decomposition 
+					\[
+					g = \sum_{j=0}^n \sum_{i=0}^{d_j}g_{i,d_j-i}
+					\]
+					Since each homogeneous component decomposes uniquely, then we guarantee that $g$ can be decomposed into a unique sum of bihomogeneous polynomials. 
+				\end{proof}
+				\begin{lemma}
+					Let $(a,b) \in \Proj^m \times \Proj^n$ and $f \in K[x_0,\dots,x_m,y_0,\dots,y_n]$ then $f(a,b) = 0$ if and only if  every bihomogeneous component of $f$ vanishes at $(a,b)$.
+				\end{lemma}
+				\begin{proof}
+					Suppose that $f \in K[x_0,\dots,x_m,y_0,\dots,y_n]$ vanishes at a point $(a,b)\in \Proj^m \times \Proj^n$. The polynomial $f$ can be decomposed into homogenous components $f_k$ which must vanish on $(a,b)$ for all $k$. Each $f_k$ can be further decomposed into a sum
+					\[
+					f_k(a,b) = \sum_{i=0}^{d_k} f_{i,d_k - i}(a,b) = 0.
+					\]
+					As each $f_k$ vanishes on all representatives of $a$ and $b$, take $\lambda \in K\setminus \{0\}$ then 
+					\[
+					f_k(\lambda a, \lambda b) = \sum_{i=0}^{d_k}\lambda^{d_k}f_{i,d_k-i}(a,b) = 0
+					\]
+					We may view this polynomial as a univariate polynomial 
+					\[
+					\sum_{i=0}^{d_k}x^{d_k}f_{i,d_k-i}(a,b) \in K[x]
+					\]
+					vanishing on infinitely many $x$. Since we are over an infinite field this implies that this univariate polynomial is a zero polynomial and as a result $f_{i,d_k-i}(a,b) = 0$ for all $i$. Therefore we can conclude that if $f(a,b) = 0$ then every bihomogenous component of $f$ must vanish on $(a,b)$. Now suppose that every bihomogenous component of $f$  vanish on $(a,b)$. Because each homogenous component of $f$ can be decomposed into a sum of bihomogeneous components, all of which vanish on $(a,b)$ then they must all vanish on $(a,b)$. This means exactly that $f$ vanishes on $(a,b)$. \note{Do I need to check that bihomogeneous components vanish on all representatives. Probably a good idea just to be careful} 
 				\end{proof}
 		\end{document}
 		
