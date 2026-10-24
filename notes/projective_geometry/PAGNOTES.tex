@@ -15,6 +15,7 @@
 \usepackage{graphicx}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \usepackage{xcolor}
+\usepackage{tikz}
 
 \setlength{\parindent}{1.5em}
 \newtheorem{definition}{Definition}[section]
@@ -45,6 +46,60 @@
 \newtheorem{lemma}{Lemma}[section]
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+
+
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{theorems}
+
+% Define a theorem style with blue background and frame
+\newtcbtheorem[number within=section]{myprop}{Proposition}{
+	enhanced,
+	breakable,
+	colback=blue!5,
+	colframe=blue!75!black,
+	coltitle=white,
+	colbacktitle=blue!80!black,
+	fonttitle=\bfseries,
+	attach boxed title to top left={xshift=0pt, yshift*=0.5mm},
+	boxed title style={size=small, colframe=blue!75!black}
+}{myprop}
+
+\newtcbtheorem[number within=section]{mydef}{Definition}{
+	enhanced,
+	breakable,
+	colback=blue!5,
+	colframe=blue!75!black,
+	coltitle=white,
+	colbacktitle=blue!80!black,
+	fonttitle=\bfseries,
+	attach boxed title to top left={xshift=0pt, yshift*=0.5mm},
+	boxed title style={size=small, colframe=blue!75!black}
+}{mydef}
+
+\newtcbtheorem[number within=section]{mysummary}{Summary}{
+	enhanced,
+	breakable,
+	colback=green!5,
+	colframe=green!75!black,
+	coltitle=white,
+	colbacktitle=green!80!black,
+	fonttitle=\bfseries,
+	attach boxed title to top left={xshift=0pt, yshift*=0.5mm},
+	boxed title style={size=small, colframe=green!75!black}
+}{mysummary}
+
+% Public wrapper: both title and label are optional
+\NewDocumentEnvironment{prop}{ O{} O{} }
+{\begin{myprop}{#1}{#2}}
+	{\end{myprop}}
+	
+\NewDocumentEnvironment{summary}{ O{} O{} }
+{\begin{mysummary}{#1}{#2}}
+	{\end{mysummary}}
+	
+\NewDocumentEnvironment{newdef}{ O{} O{} }
+{\begin{mydef}{#1}{#2}}
+	{\end{mydef}}
 
 
 \title{Beginnings in Algebraic Geometry Notes for CH 9 - 12}
@@ -1157,15 +1212,15 @@ With this we go on to establish identical properties to those of affine varietie
 				is regular at $p$. As we did this for an arbitrary point it follows that $F$ is regular on all of $X$. 
 			\end{proof}
 			
-			\begin{description}
-				\item[Summary:] In this section we further expound on the local behaviors of quasirpojective varieites. We find that a quasiprojective variety is locally affine, and even better a quasirpojective variety can be covered by finitely many affine-open subvarieties. This is essentially extending the quasicompactness of affine and projective varieties into the case of quasiprojective varieties. The local nature of quasiprojective varieites will allow us to discuss properties by looking at local affine open peices rather than at the global variety. In particular we can port over the intrinsic properties of affine varieties that we discussed in the beginning of the book because each local peice is isomorphic to affine varieites.
-			\end{description}
+			\begin{summary}
+				In this section we further expound on the local behaviors of quasirpojective varieites. We find that a quasiprojective variety is locally affine, and even better a quasirpojective variety can be covered by finitely many affine-open subvarieties. This is essentially extending the quasicompactness of affine and projective varieties into the case of quasiprojective varieties. The local nature of quasiprojective varieites will allow us to discuss properties by looking at local affine open peices rather than at the global variety. In particular we can port over the intrinsic properties of affine varieties that we discussed in the beginning of the book because each local peice is isomorphic to affine varieites.
+			\end{summary}
 			\subsection{11.6 Continuity of Regular Maps}
 			We have spent this time talking about projective space under this new Zariski Topology and used openness, closedness, and locality to characterize the global behavior of quasiprojective varieties. Now we come to the standard topological notion of continuity. We ask what functions are continuous on projective varieites and we see that the answer lies in the familiar regular functions. In fact, an isomorphism of varieities under a regular function with a regular inverse is exactly a continuous function with a continuous inverse. 
-			\begin{proposition}
+			\begin{prop}
 				Let $F : X \to Y$ be a regular map of quasiprojective varieties. If $Z$ is closed in $Y$, then $F^{-1}(Z)$ is closed in $X$.
-			\end{proposition}
-			\begin{proposition}
+			\end{prop}
+			\begin{prop}
 				Let $F : X \to Y$ be an isomorphism of quasiprojective varieites and $Z \subseteq X$, the the following assertions hold:
 				\begin{enumerate}
 					\item $Z$ is open in $X$ if and only if $F(Z)$ is open in $Y$.
@@ -1173,27 +1228,169 @@ With this we go on to establish identical properties to those of affine varietie
 					\item $Z$ is a subvariety of $X$ if and only if $F(Z)$ is a subvariety in $Y$. 
 				\end{enumerate}
 				If $Z$ is a subvariety in $X$, then the restriction $F|_Z : Z \to F(Z)$ is an isomorphism of quasiprojective varieties.
-			\end{proposition}
-			\begin{proposition}
+			\end{prop}
+			\begin{prop}
 				Let $X\subseteq \Proj^n$ and $Y \subseteq \Proj^m$ be quasiprojective varieites. A map $F:X\to Y$ is regular if and only if the following conditions hold:
 				\begin{enumerate}
 					\item $F$ is continuous with respect to the Zariski topology, and
 					\item For every open set $V \subseteq Y$ and for every regular function $G \in K[V]$, then $G \circ F$ is regular on $F^{-1}(V)$. 
 				\end{enumerate}
-			\end{proposition}
-			\begin{proposition}
+			\end{prop}
+			\begin{prop}
 				Let $F : X\to Y$ be a map of quasiprojective varieties. $F$ is an isomorphism if and only if the following conditions hold:
 				\begin{enumerate}
 					\item $F$ is a homeomorphism with respect to the Zariski topology, and 
 					\item For every open set $V \subseteq Y$, the map $G \mapsto G \circ F$ is a well defined $K$-algebra homomorphism $K[V]$ to $K[F^{-1}(V)]$. 
 				\end{enumerate}
-			\end{proposition}
+			\end{prop}
 			\begin{description}
 				\item[Summary:] Characterization of regular maps as continuous. Essentially telling us that the set theoretic intuition we have built about the preservation of certain topological properties under continuous maps can be used. 
 			\end{description}
 			\subsection{11.7 Products and Graphs}
-			\begin{description}
-				\item] description
-			\end{description} 
+			Harkening back to the Segre map, we aim to present this map again and ensures that this map is well defined on a pair of quasiprojective varieites. 
+			\begin{prop}{Products of Quasiprojective Varieties}
+				If $X \subseteq \Proj^m$ and $Y\subseteq \Proj^m$ are quasiprojective varieties, then the Segre map $S_m,n$ restricts to an injection of $X \times Y$ as a quasirprojective variety in $\Proj^{(n+1)(m+1) - 1}$.
+			\end{prop}
+			\begin{proof}
+				We remind ourselves that the quasiprojective variety is an injection on projective varieties, closed subsets. As $X$ and $Y$ are quasiprojective let $X = Z \setminus Z'$ and $Y = W \setminus W'$ where $Z,Z'\subseteq \Proj^m$ and $W,W' \subseteq \Proj^n$ are closed in their respective ambient projective spaces. Then, 
+				\[
+				X \times Y = (Z \times W) \setminus ((Z \times W') \cup (Z' \times W))
+				\]
+				and under the segre map 
+				\[
+				S_{m,n}(X \times Y) = S_{m,n}(Z \times W) \setminus (S_{m,n}(Z \times W') \cup S_{m,n}(Z' \times W)).
+				\]
+				As each of the products in the right term consists of closed varieties, and closure is preserved under finite union, then the image of the Segre map is a quasiprojective variety. 
+			\end{proof}
+			With this expanded notion we can now make sense of applying the segre map to products off projective and affine varieties. For example $\Proj^1 \times \A^2$.  Note that $\A^2 = \Proj^2 \setminus \V(y_0)$, then 
+			\[
+			\S_{1,2}(\Proj^1 \times \A^2) = S_{1,2}(\Proj^1 \times \Proj^2) = S_{1,2}(\Proj^1 \times( \Proj^2 \setminus \V(y_0))) \setminus (\Proj^1 \times \V(y_0))
+			\]
+			Normally, 
+			\[
+			S_{1,2}([a_0:a_1],[b_0:b_1:b_2]) = [a_0b_0:a_0b_1:a_0b_2:a_1b_0:a_1b_1:a_1b_2]
+			\]
+			then the removal of this closed subset above results in 
+			\[
+			S_{1,2}(\Proj^1 \times \A^2) = S_{1,2}(\Proj^1 \times \Proj^2) \setminus \V(z_{00}, z_{10}).
+			\]
+			\begin{newdef}
+				Let $F: X \to Y$ be a regular function. The graph of a regular function is the set 
+				\[
+				\Gamma_F =\{(a,b) \in X \times Y \; | \; b = F(a) \}\subseteq X \times Y
+				\]
+			\end{newdef}
+			For example let $X = \Proj^1 \setminus \V(x_0x_1)$ and $Y = \Proj^1$. Then the map $F : X \to Y$ is given by 
+			\[
+			F([a_0:a_1]) = [a_0a_1 : _0^2 + a_1^2]
+			\]
+			has the graph 
+			\[
+			\Gamma_F = \{[a_0:a_1:b_0:b_1] \in X \times Y \; | \; [b_0:b_1] = [a_0a_1 : a_0^2 + a_1^2 ]\}.
+			\]
+			The condition on the set is equivalent to the cross product condition $b_0(a_0^2 + a_1^2) = b_1a_0a_1$ then we can express the graph as a variety
+			\[
+			\Gamma_F = (X \times Y ) \cap \V(y_0(x_0^2 + x_1^2) - y_1x_0x_1) \subseteq \Proj^1 \times \Proj^2.
+			\]
+			More generally it is possible to show that the graph of  regular function is always a closed subset.
+			\begin{prop}
+				Let $X \subseteq \Proj^n$ and $Y \subseteq \Proj^m$ be quasiprojective varieties and $F : X\to Y$ a regular function. Then $\Gamma_F$ is closed in $X \times Y$. 
+			\end{prop}
+			\begin{proof}
+				By regularity for $p \in X$, there exists polynomials $f_0,\dots,f_m \in K[x_0,\dots,x_n]$ such that $ p \not \in \V(f_0,\dots,f_m)$. Note that we may view $f_0,\dots,f_m \in K[x_0,\dots,x_m,y_0,\dots,y_n]$ depending only on $x_0,\dots,x_n$. Now define 
+				\[
+				U_p = (X \times Y) \setminus \V(f_0,\dots,f_m)
+				\]
+				which contains the point $(p,q)$. Observe that $\Gamma_F\cap U_p$ contains pairs of projective coordinates $(a,b)$ such that $a \not \in \V(f_0,\dots,f_n)$ and 
+				\[
+				[f_0(a):\cdots:f_n(a)] = [b_0:\cdots:b_n]
+				\]
+				which is equivalent to the condition that $b_if_j(a) - b_jf_i(a) = 0$. Now define 
+				\[
+				Z_p = \{y_if_j - y_jf_j \; | \; 0 \leq i, j \leq n\} \subseteq \Proj^n \times \Proj^m
+				\]
+				and we can see that if $(a,b) \in U_p \cap \Gamma_F$ then $(a,b) \in Z_p \cap U_p$. The reverse inclusion follows from exactly the same logic hence we can conclude that $\Gamma_F \cap U_p = Z_p \cap U_p$. Since $Z_p$ is closed in $U_p$, then we have show that $\Gamma_F$ is closed in $U_p$. Since closedness is local and we have shown this for an arbitary neighborhood this implies that $\Gamma_F$ is closed in $X \times Y$. 
+			\end{proof}
+			The utility of this proposition is that it gives us a new characterization for the image of a regular function. Given a regular function $F : X \to Y$ of quasiprojective vareities, by applying the projection map on the second coordinate to $\Gamma_F$ we can extract the image of a regular function. 
+			\begin{summary}
+				The goal of this section is to introduce the generalization of graphs on continuous functions to graphs of regular functions. To do this it is necessary to expand our Segre map to apply to quasiprojective varieties. Thankfully that is not to difficult. Then showing that the graph is closed in general, paired with the projection allows us to create a new way to identify the image of a regular function. 
+			\end{summary}
+			\subsection{11.8 Images of Projective Varieties}
+			\begin{prop}
+				If $X \subseteq \Proj^m$ closed and $Y \subseteq \Proj^n$ is quasiprojective, then the projection $\pi : X \times Y \to Y$ takes a closed set to a closed set in $Y$. 
+			\end{prop}
+			Rather than giving a proof (it can be found in Beggings in Algebraic Geometry pg. 353) I will instead attempt to provide a summary of the strategy in the proof. 
+			\begin{proof}
+				Sketch: The beginning of this proof establishes that you can quickly generalize to show that you only need to consider the product $\Proj^m \times \A^n$ and this implies any other combination of closed and quasiprojective. The remainder of the proof will tackle this case. 
+				\begin{enumerate}
+					\item[1)] Let $Z \subseteq \Proj^m \times \A^n$ be a closed subset. Then $Z =\V(f_1,\dots,f_k)$ for polynomials $f_1,\dots,f_k \in K[x_0,\dots,x_m,y_1,\dots,y_n]$. We characterize the pre-image of $Z$ under the projection as the set
+					\[
+					\pi^{-1}(Z) = \{(a,b) \in \Proj^m \times \A^n \; | \; f_i(a) = 0 \quad \forall i\}
+					\]
+					\item[2)] Fixing a single point $b = (b_1,\dots,b_n) \in \A^n$ we can characterize the fiber over particular points of $\A^n$. Define $f_i^b(x_0,\dots,x_m) = f_i(x_0,\dots,x_m,b_0,\dots,b_m)$. Then fibers over $b$ are empty when
+					\[
+					\pi^{-1}(b) \cap Z = \emptyset \iff \V(f_0^b,\dots,f_k^b) = \emptyset
+					\]
+					\item[3)] Observe that the Projective Nullstellensatz implies that $I = \la f_0^b ,\dots,f_k^b \ra  \supseteq \la x_0,\dots,x_m\ra$. More accutely, there exists some $r \geq 0$ such that all monomials of degree $r$ are contained in $I$. Define
+					\[
+					M_r = \{\text{monomials of degree $r$}\}.
+					\]
+					Observe that for $\alpha \in M_r$ corresponding to monomial $x^\alpha$ is contained in $I$ and hence can be given by the sum
+					\[
+					x^\alpha = \sum_{j=1}^k g_jf_j^b
+					\]
+					where $g_j \in K[x_0,\dots,x_m]$ for all $j$. This allows us to further recharacterize the fiber, i.e. $\pi^{-1}(b) \cap Z = \emptyset$ if and only if the above sum exists for all $\alpha$. 
+					\item[4)] Now we further refine the sum in order to a two parameter coefficient that will supply a matrix. Once we have a matrix condition we'll show that this conditions relies on the determinants giving us polynomial equations for when the fiber over a point is empty. Note that $g_j$ can be expressed as the sum
+					\[
+					g_j = \sum_\beta a_{\beta,j}x^\beta
+					\]
+					then,
+					\[
+					x^\alpha = \sum_{j=1}^k \sum_\beta a_{\beta,j}x^\beta f_j^b.
+					\]
+					Since $x^\alpha$ is homogeneous, both terms in the summan must be homogeneous then take $d_j$ to be the homogeneous degree of $f_j^b$ and we see that $\beta \in M_{\beta - d_j}$. Examining individual monomials in the summand we see that 
+					\[
+					x^\beta f_j^b = \sum_\alpha c_{(\beta, j),\alpha}^bx^\alpha
+					\]
+					and observe that the coordinates $c_{(\beta, j), \alpha}$ can be used to populate matrix $C_r^b$ where the columns are indexed by $M_r$ and the rows are indexed by pairs $(\beta, j)$ with $\beta \in M_{r - d_j}$. 
+					\item[r)] The final observation is to see that each term $x^\beta f_j^b$ is a linear combination of $x^\alpha$ where $\alpha \in M_r$. This implies that the standard basis vectors are in the row span $C_r^b$. In other words this means that $\rank(C_r^b) = |M_r|$. Hence we can recharacterize the fiber over a point one more time 
+					\[
+					\pi^{-1}(b)\cap Z = \emptyset \iff \exists r \geq 0 \colon \rank(C_b^r) = |M_r|
+					\]
+					then negated
+					\[
+					\pi^{-1}(b)\cap Z \neq \emptyset \iff \forall r \geq 0, \rank(C_b^r) < |M_r|
+					\]
+					which is precisely the conditions that all $|M_r|\times |M_r|$ minors of $C_b^r$ vanish establishing a polynomial condition on the fiber over a point. Therefore $\pi(Z)$ is closed.
+				\end{enumerate}
+			\end{proof}
+			This is the essential meat of the proof of the following proposition
+			\begin{prop}
+				Let $F :X \to Y$ be a regular map of quasiprojective varieties, then $F(X)$ is closed in $Y$. 
+			\end{prop}
+			\begin{proof}
+				Let $\Gamma_F$ be the graph of regular map $F$. We established that $\Gamma_F$ is a closed subset of $X \times Y$, then the previous proposition ensures that $\pi(\Gamma_F)$ is closed in $Y$. Since $\pi(\Gamma_F) =  F(X)$, then $F(X)$ is closed in $Y$. 
+			\end{proof}
+			From this proof follow two useful characterizations of closedness follow allowing us to determine whether something is or isn't a projective variety. 
+			\begin{prop}
+				If $X \subseteq \Proj^n$ and $Y \subseteq \Proj^m$ are isomorphic quasiprojective varieties. Then $X$ is closed in $\Proj^n$ if and only if $Y$ is closed in $\Proj^m$. 
+			\end{prop}
+			\begin{proof}
+				We established that $F(X)$ is closed in $\Proj^m$. Since this is an isomorphism and $F(X) = Y$ then $Y$ must be closed in $\Proj^m$. The reverse follows via the exact same argument. 
+			\end{proof}
+			Extending this to the algebraic side, we saw previously that the ring of regular functions on $\Proj^m$, $K[\Proj^m]$, was exactly equivalent to $K$. We can refine this to show that the ring of regular functions on an irreducible projective variety are similarly uninteresting. 
+			\begin{prop}
+				Let $X$ be an irreducible projective variety, then every regular function on $X$ is constant. More succinctly $K[X] = K$. 
+			\end{prop}
+			\begin{proof}
+				Let $F: X \to K$ be a regular function, because we define regular functions as regular maps $F: X \to \A^1$ then $F(X)$ must be closed in $\A^1$. We have established long ago that the only closed subset of $\A^1$ are all of $\A^1$ of a finite number of points. If $F(X) = \A^1$, then the composition $(j_0 \circ F)(X) = \Proj^1$ is a map from $X \to \Proj^1$ where $F(X)  = \A^1 \subset \Proj^1$ is not closed contradicting the closure of $X$. Then it follows that $F(X)$ must be a finite number of points in $\A^1$. Let $a_1,\dots,a_\ell \in \A^1$ be the finite number of points in the image of $F$. Then 
+				\[
+				X= F^{-1}(a_1)\sqcup \cdots\sqcup F^{-1}(a_\ell)
+				\]
+				contradicts the irreducibility of $X$. Hence the image of $X$ under $F$ must be a single point. 
+			\end{proof}
+			\begin{summary}
+				The goal of this section was to establish the proposition that projections of products of closed and quasirojective varieties are closed under the projection map to the first coordinate. The proof is involved and the stategy is to show that a more general case $\Proj^m \times \A^n$ will imply the statement. This allows us to establish that closedness is an intrinsic property of quasiprojective varieities. Note that we previously established that closed subsets of quasiprojecive varieties mapped to closed subsets. So we are now globalizing this statement for a pair of isomorphic quasiprojective varieties. 
+			\end{summary}
 	\end{document}
 	
