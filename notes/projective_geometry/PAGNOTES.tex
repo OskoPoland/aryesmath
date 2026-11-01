@@ -1505,6 +1505,89 @@ With this we go on to establish identical properties to those of affine varietie
 			In this chaper we define a weaker form of equivalence called birational equivalence. A birational function is now an equivalence class of regular functions which agree on intersections of dense open sets. Like regular fucntions we can gather them into a ring. This ring is a field when the quasiprojective variety we are dealing with is irreducible. Finally we show that birational equivalence induces an isomorphism on the rings of rational functions. 
 		\end{summary}
 		\subsection{12.2 Dimension of Quasiprojective Varieties}
+		The goal of this section is to define the dimension of a quasiprojective variety in a way that doesn't require us to entirely redevelope the theory from the affine setting. As we saw in 12.1, the ring of rational functions of a quasiprojective variety is conanically isomorphic to the fraction field of a dense open subset. Because the affine restrictions of a quasirprojective variety is dense in the quasiprojective variety, then it follows that we can apply dimension to the affine pieces of projective varieties. 
+		\begin{newdef}
+			Let $X$ be an irreducible quasiprojective variety. The dimension of $X$ is defined as 
+			\[
+			\dim(X) = \trdeg_K(K(X)).
+			\]
+			The dimension of a non-empty, reducible variety is the maximum of the dimension of each of its reducible components. 
+		\end{newdef}
+		The first proposition we will establish is arguably the most important. 
+		\begin{prop}
+			Let $X$ be a quasiprojective variety and $U\subseteq X$ be a dense open subset, then
+			\[
+			\dim(U) = \dim(X).
+			\]
+		\end{prop}
+		This proposition tells us that it will make sense to study the affine pieces of a quasiprojective variety rather than redeveloping tools. This will then follow from the observation of the previous chapter which established that the fraction ring of a quasiprojective variety is equivalent to the fraction ring of a dense open subset of that variety. 
+		\begin{proof}
+			We begin by assuming that $X$ is an irreducible quasiprojective variety. Let $U \subseteq X$ be a dense open subset and we have established that $K(U) = K(X)$. Then, $\trdeg_K(K(X)) = \trdeg_K(K(U))$. Now suppose that $X$ is reducible and $X_1,\dots,X_r$ are the irreducible, closed subvarieties of $X$. Let $U$ be a dense open subset of $X$, then 
+			\[
+			U = (X_1 \cap U) \cup \cdots \cup (X_r \cap U).
+			\]
+			Since $X_i \cap U$ is a non-empty, open subset of $X_i$, then it is dense and irreducible in $X_i$ hence $K(X_i \cap U) = K(X_i)$. Therefore the maximum dimension of an irreducble component of $U$ must correspond to the maximum dimension of an irreducible component of $X$. 
+		\end{proof}
+		Using this we will compute the dimension of some examples. 
+		\begin{description}
+			\item[Example:] As the affine resitrciton of $\Proj^n$ is $\A^n$ and on top of this $\A^n$ is dense in $\Proj^n$ hence 
+			\[
+			\dim(\Proj^n) = \dim(\A^n) = n.
+			\]
+			It is somewhat interesting that we are adding some extra information moving from $\A^n$ to $\Proj^n$ but not enough that we add another dimension. More so we are enriching the dimension we are in by including points at infinity rather than adding extra free parameters.
+			\item[Example:] Let $f \in K[x_0,\dots,x_n]$ be a homogeneous polynomial. Then to compute $X = \V_\Proj(f) \subseteq \Proj^n$ observe that 
+			\[
+			X \cap \A_0^n = \V_\A(f(1,x_1,\dots,x_n)) \subseteq \A^n
+			\]
+			Since we can view $f$ as a polynomial $f_0 \in K[x_1,\dots,x_n]$ we can utilize affine dimension tools to establish that $\dim(\V_\A(f_0) = n - 1$ so it follows $\dim(X) = n-1$. The follows form the Fundamental Theorem of Dimension Theory.
+		\end{description}
+		Now we aim to establish a generalization of the Fundamental Theorem of Dimension Theory in the context of quasiprojective varieties. To do this we start by presenting a new way to use the vanishing operator. 
+		\begin{newdef}[Local Hypersurface]
+			Let $X$ be a quasiprojective variety. We say that a non-empty subset $Y \subseteq X$ is a local hypersurface in $X$ if for every $p \in X$ is contained in an open set $U \subseteq X$ such that 
+			\[
+			Y \cap U = \V(F) = \{a \in U \; | \; F(a) = 0\}
+			\]
+			for a regular function $F \in K[U]$ that does not vanish on every irreducible component of $U$. 
+		\end{newdef}
+		\note{I am curious about why we are interested in this presentation of the vanishing operator. It will later show up  in a proposition about the dimension of a local hypersurface. Will this have something to do with the latter portion of this book which will deal with lines on hypersurfaces.} Note that the set $\V(F)$ can be viewed as the preimage of $\{0\} \in K$ of the regular function $F : U \to \A^1$. As this is the preimage of a closed set, the $\V(F) \subseteq U$  is closed in $U$ by the continuity of regular maps. With local surfaces we can now present the generaliation of the Fundamental Theorem of Dimension Theory. 
+		\begin{prop}
+			Let $X$ be a quasiprojective variety whose irreducible components all have the same dimension and let $Y \subseteq X$ be a local hypersurface of $X$. Then every irreducible component of $Y$ has $\dim(X)  -1$. 
+		\end{prop}
+		\begin{proof}
+			Let $Z$ be an irreducible component of $Y$. Then for $p \in Z$, there exists an open set $U \subseteq X$ such that $p \in U$ and regular function $F \in K[U]$ that does not vanish on any irreduicble component of $U$ such that 
+			\[
+			Z \cap Y = \V(F).
+			\]
+			As closed sets can be covered by affine opens, we can restrict further and assume that $U$ is affine. Since $Z \cap U$ is irreducible then it must be contained in some irreducible component of $U$, calling this component $V$. That is $V$ is an irreducible affine variety and furthermore $Z \cap V$ is an irreducible component of $Y \cap V = \V(F|_V)$. As $p \in \V(F|_V)$ and $F|_V \neq 0$, then this is a non-empty and not all of $V$. Then using the strong fundmantal theorem of dimensino theory, then
+			\[
+			\dim(Z \cap V) = \dim(V) -1.
+			\]
+			Since $V$ is an irreducible affine variety of $X$, then it must be dense in some component of $X$, all of which have the same dimension, then $\dim(V) = \dim(X)$. Since $Z$ is irreducible then $\dim(Z) = \dim(Z \cap V)$. We conclude that 
+			\[
+			\dim(Z) = \dim(Z\cap V) = \dim(V) - 1 = \dim(X) - 1.
+			\]
+			\end{proof}
+		In the Strong Fundamental Theorem of Dimension Theory, we established that cutting a hypersurface out of an irreducible affine variety reduced the dimension by exactly one. Similarly, we generalize to a local hypersurface to say that irreducible components of these hypersurfaces have their dimensino cut down by exactly one. The language of local hypersurfaces gives us a way to import this natural notion of dimension from affine land. 
+		\begin{prop}
+			Let $X \subseteq \Proj^n$ be a quasiprojective variety, all of whose irreducible components have the same dimension, and let $Y = \V(f_1,\dots,f_k, F_1,\dots,F_\ell) \subseteq X$ where $f_1,\dots,f_k \in K[x_0,\dots,x_n]$ and $F_1,\dots,F_\ell \in K[X]$. If $Y \neq \emptyset$, then 
+			\[
+			\dim(Y) \geq \dim(X) - k- \ell.
+			\]
+		\end{prop}
+		\begin{proof}
+			\note{exercise}
+		\end{proof}
+		Finally, we can go back to the land of projective varieties and give a lower bound on their dimension. 
+		\begin{prop}
+			If $f_1,\dots,f_k \in K[x_0,\dots,x_n]$ are non-constant homogeneous polynomials with $k \leq n$, then $\V_\Proj(f_1,\dots,f_k) \neq \emptyset$ and 
+			\[
+			\dim(\V_\Proj(f_1,\dots,f_k)) \geq n - k.
+			\]
+		\end{prop}
+		Nicely this definition of dimension aligns with the same lower bound established in the case of affine varieties. 
+		\begin{proof}
+			\note{exercise}
+		\end{proof}
 		\begin{summary}
 			content...
 		\end{summary}
