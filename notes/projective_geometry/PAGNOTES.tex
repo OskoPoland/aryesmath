@@ -35,6 +35,7 @@
 \newcommand{\la}{\langle}
 \newcommand{\ra}{\rangle}
 \newcommand{\im}{\text{im}\,}
+\newcommand{\todash}{\dashrightarrow}
 \DeclareMathOperator{\id}{\text{id}}
 \DeclareMathOperator{\rank}{\text{rk}}
 \DeclareMathOperator{\Frac}{\text{Frac}}
@@ -1274,6 +1275,9 @@ With this we go on to establish identical properties to those of affine varietie
 			\[
 			S_{1,2}(\Proj^1 \times \A^2) = S_{1,2}(\Proj^1 \times \Proj^2) \setminus \V(z_{00}, z_{10}).
 			\]
+			\begin{remark}
+				In genearl, a pair of closed quasiprojective varieties $X,Y$ is sent to the closed set $S_{m,n}(X\times Y)$. Similarly, open sets are sent to open sets where $S_{m,n} \cap (\V(\mcal{S}))^c$, as opposed to the regular case where the intersection is not with the complement but with the closed variety.
+			\end{remark}
 			\begin{newdef}
 				Let $F: X \to Y$ be a regular function. The graph of a regular function is the set 
 				\[
@@ -1392,5 +1396,117 @@ With this we go on to establish identical properties to those of affine varietie
 			\begin{summary}
 				The goal of this section was to establish the proposition that projections of products of closed and quasirojective varieties are closed under the projection map to the first coordinate. The proof is involved and the stategy is to show that a more general case $\Proj^m \times \A^n$ will imply the statement. This allows us to establish that closedness is an intrinsic property of quasiprojective varieities. Note that we previously established that closed subsets of quasiprojecive varieties mapped to closed subsets. So we are now globalizing this statement for a pair of isomorphic quasiprojective varieties. 
 			\end{summary}
+		\section{CH12 Culminating Topics}
+		\subsection{12.1 Rational Functions}
+		The goal of the following section is to build up the notion of birational equivalence. If we consider an isomorphism of quasiprojective varieties, we notice that the isomorphism is rather strict in the supposition that this function must be defined over all of the domain. Birational functions weaken this condition by defining an ''almost everywhere" presentation utilizing rational maps. What is fundamentally important is that birational equivalences preserve the rings of rational functions of varieties. We begin by presenting rational functions.
+		\begin{newdef}[Rational Function on QP Variety]
+			Let $X$ be a quasiprojective variety. A rational function on $X$ is an equivalence class of pairs $(U,F)$, where $U\subseteq X$ is a dense open subset and $F$ is a regular function on $U$, under the equivalence relation
+			\[
+			(U,F)\sim (V,G) \iff F(a)=G(a)\quad \forall a \in U \cap V
+			\]
+		\end{newdef}
+		I think the veracity of this equivalence relation is quite immediately checked thanks to the niceties of intersections. Similar to the presentation of regular functions, as rational function $F : X \todash K$ where we identify $K$ as the affine projection of $\Proj^1$.
+		Naturally we can define the ring of rational functions:
+		\begin{newdef}
+			Let $X$ be a quasiprojective variety. The ring of rational functions on $X$, denoted $K(X)$, is the $K$-algebra of all rational functions $F:X \todash K$. 
+		\end{newdef}
+		\begin{remark}
+			The unit here is kind of strange. Define $F: X \to K$ to be a regular function such that $F(X) = 1$ then any dense open subset must now agree with this global $(X,1)$ hence it is just the unit. Secondly the density requirement ensures that the intersection, which appears in the products of equivalence classes, is a non-empty open subset. If it were empty they we would be contradicting the density of the two chosen subsets. 
+		\end{remark}
+		Note that given an isomorphism of quasiprojective varieties $F : X \to Y$, then at the level of each pair $(U,G)$, where $U$ is a dense open subset, then the isomorphism of local $K$-algebras induced by the homomorphism raises to an isomorphism of rational rings of $X$ and $Y$. 
+		\begin{description}
+			\item[Example: ] In this example we want to justify that $K(\Proj^n) = K(x_1,\dots,x_n)$. Our goal will be to show that given a dense open subset $U\subseteq\Proj^n$ equipped with a regular function $F$ is $\sim$ to a pair with regular function given by a ratio of polynomials homogeous of the same degree.  
+			
+			Given any rational function on $\Proj^n$ with a regular representative $F : U \to K$ where $U$ is a dense open subset of $\Proj^n$. As we saw previously, there exist polynomials $f,g \in K[x_0,\dots,x_n]$ homogeneous of the same degree such that $F = f/g$ where $U \cap \V(g) = \emptyset$. Then, 
+			\[
+			(U, F) \sim (\Proj^n \setminus \V(g) , f/g)
+			\]
+			which we can see agrees on the interesection $U \cap (\Proj^n \setminus \V(g))$ establishing our first claim. 
+			
+			This allows us to identify $K(\Proj^n)$ with a subring of $K(x_0,\dots,x_n)$ and upon homogenizing each polynomial at $x_0$ we get a canonical isomorphism $K(\Proj^n) = K(x_1,\dots,x_n)$. Note that $\A^n$, a dense open subset of $\Proj^n$, has a ring of fractions identical to $K(x_1,\dots,x_n)$. 
+			\item[Example 2:] Let $X = \V(xy) \subseteq \Proj^2$ which is the union of two components $\V(x)$ and $\V(y)$. Define two rational functions $F: X \todash K$ and $G: X \todash K$ where 
+			\[
+			F([a:b:c]) = \frac{a}{c} \quad\text{and}\quad G([a:b:c]) =\frac{b}{c}.
+			\]
+			Observe that the domain of $F$ and $G$ is $X \setminus \V(z)$ which is dense as we are removing a finite number of points from a projective variety. Observe that the domain of the product $FG$ is also defined over $X\setminus \V(z)$, yet the ratio $ab/c$ will always vanish as $ab = 0$ for all points in $X$. Therefore the ring of rational functions on $X$ has zero divisors and is not a field. 
+		\end{description}
+		What is particularly useful is that the ring of rational functions of a quasiprojective variety can be used as a detetctor of irreducibility.
+		\begin{prop}
+			Let $X$ be a quasiprojective variety. The ring of rational function $K(X)$ is a field if and only if $X$ is an irreducible quasiprojective variety. 
+		\end{prop}
+		Before attempting a proof we notice the following if $X$ is reducible. Given a dense open subset $U \subseteq X$ and regular function $F$ representing an equivalence class $[(U,F)]$. If $K(X)$ were to be a field, then we should be able to take $U' = \{x \in U : F(x) \neq 0\}$ and define a new equivalence class $[(U', 1/F)]$. Yet as $X$ is reducible, $U'$ while non-empty and open is not guaranteed to be dense. 
+		
+		Looking back at our previous example, if we take $U = X \setminus \V(z)$ and set $U' = \{a \neq 0\} \cap U$, then we get 
+		\[
+		U' = \V(y) \cap U
+		\]
+		which is not dense in $X$. Therefore the equivalence class required to determine the multiplicative inverse will not be in the ring of fractions. 
+		\begin{proof}
+			$(\implies)$ Assume $X$ to be an irreducible quasirpojective variety. As $K(X)$ is already defined to be a commutative ring, in order to show that this is a field it remains to show that each equivalence class has a multiplicative inverse. Let $U\subseteq X$ be a dense open subset of $X$ and $F$ be a regular function on such that $[(U,F)] \neq 0$. Let $U' = \{x \in U : F(x) \neq 0\}$ and note that as $F(x) \neq 0$ for all $X$ by assumption then $U'$ is non-empty. It remains to show that $U'$ is open in $X$ to ensure that $U'$ is dense. 
+			
+			As $F$ is a regular function on an open subset $U$, then there exist polynomials $f,g$ homogeneous of the same degree such that $F = f/g$ such that $U \cap \V(g) = \emptyset$. Then $x \in U$ such that $F(x) = f(x)/g(x) \neq 0$ are exactly points $x \not \in \V(f)$ therefore 
+			\[
+			U' = U \setminus \V(f).
+			\]
+			Since $U'$ can be expressed as the intersection of two open subsets it must iself be open hence $U'$ is a non-empty open subset of $X$ and therefore dense. Then the rational function given by the representative $[(U', 1/F)]$ is well defined and the product 
+			\[
+			[(U,F)][(U',1/F)] = [(U \cap U', F\cdot 1/F)] = [(U \cap U', 1)] = [(U', 1)].
+			\]
+			Hence for any equivalence class we have a multiplicative inverse. 
+			
+			$(\impliedby)$ Assume that $K(X)$ is a field and suppose towards a contradiction that $X \subseteq \Proj^n $ is a reducible quasiprojective variety. Then there exists proper closed subsets $Y,Z$ of $X$ such that $X = Y \cup Z$. Consider a point $p \in Y \setminus Z$, and note that $p \not \in Z$ implies that $p \not \in X \cap \tilde Z$, where $\tilde Z$ is closed in $\Proj^n$. Therefore there exists a polynomial $f \in \I(\tilde Z)$ such that $f$ vanishes on all of $Z$ except at $p$. \note{?} Let $h$ be a polynomial of homogeneous degree equivalent to that of $f$ such that $h$ does not vanish uniformly on any irrducible component. \note{This is constructible, I have no clue as I have no clue apprently how to do anything.}. Then we have a regular function on $U = X \setminus \V(h)$ where 
+			\[
+			F(a) = \frac{f(a)}{h(a)} \quad \forall a \in U
+			\]
+			which vanishes exactly on $Z \cap U$. Construct identically a regular function $G$ such that $G$ is defined on $U = X \setminus \V(h)$ and vanishes on $Y \cap U$. Then these are both rational functions over the same domain hence their product $FG$ is well defined. Yet for $a \in X \setminus \V(h)$, if $a \in Y$ then $(FG)(a) = 0$ and if $a \in Z$ then $(FG)(a) = 0$ hence we have constructed two non-zero rational functions whose product is a zero function. Therefore $K(X)$ is not a field contradicting our assumption. 
+		\end{proof}
+		To show that this result makes any sense, we will show that the field of fractions of an irreducible Zariski-closed set is equivalent to the field of rational functions of the projective variety associated to it. 
+		\begin{prop}
+			Let $X_0 \subseteq \A^n$ be an irreducible closed set, and let $X = j_0(X_0) \subseteq \Proj^n$ be the corresponding quasiprojective variety. Then there is a canonical $K$-algebra isomorphism $K(X) = K(X_0)$. 
+		\end{prop}
+		\begin{proof}
+			Note that $K(X_0) = \Frac(K[X_0])$ then let $F_0/G_0$ be a rational function such that $F_0,G_0 \in K[X_0]$ and $G_0 \neq 0$. Let $F_0 = [f_0]$ and $G_0 = [g_0]$ with representatives $f_0,g_0 \in K[x_1,\dots,x_n]$. Let $f,g \in K[x_0,\dots,x_n]$ be homogeneous polynomials of the same degree that dehomogenize to $f_0$ and $g_0$ at $x_0$ respectively. Observe that 
+			\[
+			f/g : X \todash K
+			\]
+			is rational as the ratio $f/g$ is regular on $X\setminus\V(g)$. Then our isomorphism $\phi : K(X_0) \to K(X)$ where $F_0/G_0 \mapsto f/g$ chosen as above. 
+			\begin{description}
+				\item[Well-Defined:] Let $F_0', G_0'$ be an equivalent quotient such that $F_0'/G_0' = F_0/G_0$, then $F_0'G_0 = F_0G_0' \in K[X_0]$. Let $f_0', g_0' \in K[x_1,\dots,x_n]$ be polynomials such that $F_0' = [f_0']$ and $G_0' = [g_0']$ then the previous equivalence implies that $f_0'g_0 - f_0g_0' \in \I(X_0)$. Then the rational functions $f/g$ and $f'/g'$ agree on 
+				\[
+				(X \setminus \V(g)) \cup (X \setminus \V(g')) = X \setminus \V(gg')
+				\]
+				hence they are representatives of the same rational function. Therefore $\phi$ is well defined. 
+				\item[Injective:] Suppose that $\phi(F_0/G_0) = f/g = 0 \in K(X)$, then $f/g$ vanishes on a dense open set by definition. This implies that $f$ vanishes on $X$ which only happens if $F_0$ vanishes on $X_0$. Therefore $F_0/G_0 = 0\in K(X_0)$. 
+				\item[Surjective:] Let $F: X \todash K$ be a rational function on $X$. For $p$ in the domain of $F$ by regularity of there exists polynomials $f,g \in K[x_0,\dots,x_n]$ such that $p \not \in \V(g)$ and $F = f/g$ on $X \setminus \V(g)$. By dehomogenizing $f$ and $g$ we get $f_0,x_0 \in K[x_1,\dots,x_n]$ such that $\phi([f_0]/[g_0]) = F$. 
+			\end{description}
+		\end{proof}
+		\begin{prop}
+			Let $X$ be a quasiprojective variety, let $U\subseteq X$ be a dense open subvariety of $X$. Then $K(X) = K(U)$. 
+		\end{prop}
+		\begin{proof}
+			Let $U$ be a dense open subset, then a rational functino $F : U \todash K$ defined on $V \subseteq U$ gives to a rational function $F :X \todash K$ defined on $V \subseteq X$. Then this gives inclusion $K(U) \subseteq K(X)$. Let $G : X \todash K$ be a rational function, then for a dense subset $W \subseteq X$ the intersection $W \cap U$ is dense and open in $X$. Hence 
+			\[
+			(U,G) \sim (U \cap W, G|_{U \cap W}).
+			\]  
+			Since $U \cap W$ is dense in $U$ then $G$ can be viewed as a rational function $U \todash K$ hence $G \in K(U)$.
+		\end{proof}
+		With this we can define a rational map between quasiprojective varieties which will act as a slight generalization of a regular map.
+		\begin{newdef}
+			Let $X$ and $Y$ be quasiprojective varieties. A rational map $X \todash Y$ is an equivalence class of pairs $(U,F)$ where $U$ is a dense open subset of $X$ and $F : U \to Y$ is a regular map under the equivalence relation
+			\[
+			(U,F) \sim (V,G) \iff F(a) = G(a) \quad \forall a \in U \cap V
+			\]
+		\end{newdef}
+		With rational maps we can define our weak form of isomorphism. Quasiprojective varieties $X$ and $Y$ are considered birationally equivalent if there exist rational maps $F : X \todash Y$ and $G : Y \todash X$ such that $G \circ F = \id_X$ and $F \circ G = \id_Y$. Finally we arrive at the main result of birational equivalence. 
+		\begin{prop}
+			Let $X$ and $Y$ be quasiprojective varieties. If $X$ and $Y$ are birationally equivalent that $K(X)$ and $K(Y)$ are isomorphic as $K$-algebras.
+		\end{prop}
+		\begin{summary}
+			In this chaper we define a weaker form of equivalence called birational equivalence. A birational function is now an equivalence class of regular functions which agree on intersections of dense open sets. Like regular fucntions we can gather them into a ring. This ring is a field when the quasiprojective variety we are dealing with is irreducible. Finally we show that birational equivalence induces an isomorphism on the rings of rational functions. 
+		\end{summary}
+		\subsection{12.2 Dimension of Quasiprojective Varieties}
+		\begin{summary}
+			content...
+		\end{summary}
 	\end{document}
 	

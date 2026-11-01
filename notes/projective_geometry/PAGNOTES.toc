@@ -21,3 +21,6 @@
 \contentsline {subsection}{\numberline {3.6}11.6 Continuity of Regular Maps}{27}{subsection.3.6}%
 \contentsline {subsection}{\numberline {3.7}11.7 Products and Graphs}{28}{subsection.3.7}%
 \contentsline {subsection}{\numberline {3.8}11.8 Images of Projective Varieties}{29}{subsection.3.8}%
+\contentsline {section}{\numberline {4}CH12 Culminating Topics}{31}{section.4}%
+\contentsline {subsection}{\numberline {4.1}12.1 Rational Functions}{31}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}12.2 Dimension of Quasiprojective Varieties}{34}{subsection.4.2}%
