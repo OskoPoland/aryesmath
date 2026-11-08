@@ -1454,11 +1454,15 @@ With this we go on to establish identical properties to those of affine varietie
 			\]
 			Hence for any equivalence class we have a multiplicative inverse. 
 			
-			$(\impliedby)$ Assume that $K(X)$ is a field and suppose towards a contradiction that $X \subseteq \Proj^n $ is a reducible quasiprojective variety. Then there exists proper closed subsets $Y,Z$ of $X$ such that $X = Y \cup Z$. Consider a point $p \in Y \setminus Z$, and note that $p \not \in Z$ implies that $p \not \in X \cap \tilde Z$, where $\tilde Z$ is closed in $\Proj^n$. Therefore there exists a polynomial $f \in \I(\tilde Z)$ such that $f$ vanishes on all of $Z$ except at $p$. \note{?} Let $h$ be a polynomial of homogeneous degree equivalent to that of $f$ such that $h$ does not vanish uniformly on any irrducible component. \note{This is constructible, I have no clue as I have no clue apprently how to do anything.}. Then we have a regular function on $U = X \setminus \V(h)$ where 
+			$(\impliedby)$ Assume that $K(X)$ is a field and suppose towards a contradiction that $X \subseteq \Proj^n $ is a reducible quasiprojective variety. Then there exists proper closed subsets $Y,Z$ of $X$ such that $X = Y \cup Z$. Consider a point $p \in Y \setminus Z$, and note that $p \not \in Z$ implies that $p \not \in X \cap \tilde Z$, where $\tilde Z$ is closed in $\Proj^n$. Therefore there exists a polynomial $f \in \I(\tilde Z)$ such that $f$ vanishes on all of $Z$ except at $p$. Let $X_1,\dots,X_r$ be the irreducible components of $X$ and $p_1,\dots,p_r$ be points such that $p_i \in X_i$. For each $p_i$, observe that they live in the vanishing of a hyperplane $H_i$ given by $a_0x_0+\cdots a_nx_n$ of $\A^{n+1}$. Each $H_i$ defines a codimension-1 subvariety of $\A^{n+1}$, then the union 
 			\[
-			F(a) = \frac{f(a)}{h(a)} \quad \forall a \in U
+			H = \bigcup_{i=1}^r H_i
 			\]
-			which vanishes exactly on $Z \cap U$. Construct identically a regular function $G$ such that $G$ is defined on $U = X \setminus \V(h)$ and vanishes on $Y \cap U$. Then these are both rational functions over the same domain hence their product $FG$ is well defined. Yet for $a \in X \setminus \V(h)$, if $a \in Y$ then $(FG)(a) = 0$ and if $a \in Z$ then $(FG)(a) = 0$ hence we have constructed two non-zero rational functions whose product is a zero function. Therefore $K(X)$ is not a field contradicting our assumption. 
+			is a codimension-1 subvariety. Then there must exist a point in $\A^{n+1}\setminus H$ given by a hyperplane $\tilde H$ such that the defining linear polynomials doesn't vanish on $p_1,\dots,p_r$. Choose $h$ to be this defining linear polynomials, then we have a regular function on $U = X \setminus \V(h)$ where 
+			\[
+			F(a) = \frac{f(a)}{(h(a))^{\deg(f)}} \quad \forall a \in U
+			\]
+			which vanishes exactly on $Z \cap U$. The domain of this function is exactly $X \setminus \V(h^{\deg(f)})$ which vanishes on all but finitely many points of each irreducible component hence is dense in $X$. Construct identically a regular function $G$ such that $G$ is defined on $U = X \setminus \V(h)$ and vanishes on $Y \cap U$. Then these are both rational functions over the same domain hence their product $FG$ is well defined. Yet for $a \in X \setminus \V(h)$, if $a \in Y$ then $(FG)(a) = 0$ and if $a \in Z$ then $(FG)(a) = 0$ hence we have constructed two non-zero rational functions whose product is a zero function. Therefore $K(X)$ is not a field contradicting our assumption. 
 		\end{proof}
 		To show that this result makes any sense, we will show that the field of fractions of an irreducible Zariski-closed set is equivalent to the field of rational functions of the projective variety associated to it. 
 		\begin{prop}
@@ -1575,7 +1579,22 @@ With this we go on to establish identical properties to those of affine varietie
 			\]
 		\end{prop}
 		\begin{proof}
-			\note{exercise}
+			Let $W_0 = X$ and define $H_i = \V(f_i)$ and $P_j = \V(F_j)$ for all $0 \leq i \leq n$ and $0 \leq j \leq \ell$. Let $W_1 = W_0 \cap H_1$ and $Z \subseteq W_0$ be an irreducible component. For $p \in Z$, there exists a $U \subseteq X$ affine open such that $p \in U$ and $U$ open and dense in $W_0$, then $\dim(U) = \dim(W_0)$. Since $U \cap H_1 \subseteq U$, then 
+			\[
+			\dim(U\cap H_1) \geq \dim(U) - 1 = \dim(W_0) - 1 = \dim(X) - 1
+			\]
+			Repeating this process let $W_1 = W_0 \cap H_1$ and repeating this process we find 
+			\[
+			\dim(W_1) = \dim(W_0) - 1 = \dim(X) - 2.
+			\]
+			Then repeating this process for all $f_i$ we find that $\dim(W_{k-1}) = \dim(X) - k$ where 
+			\[
+			W_{k-1} = X \cap \bigcap_{i=1}^k H_i.
+			\]
+			Repeating this process for all $\V(F_i)$ we conclude that 
+			\[
+			\dim(Y) \geq \dim(X) - k - \ell.
+			\]
 		\end{proof}
 		Finally, we can go back to the land of projective varieties and give a lower bound on their dimension. 
 		\begin{prop}
@@ -1589,7 +1608,149 @@ With this we go on to establish identical properties to those of affine varietie
 			\note{exercise}
 		\end{proof}
 		\begin{summary}
-			content...
+			The goal of this chapter is to reestablish the theory of dimension with the slight generalization of quasiprojective varieties. To get the fundamental theorem of dimension theory, then we introduce the notion of a local hyperplane. For the local hyperplane we recover the FTDT conclusion. 
 		\end{summary}
+		\subsection{12.3 Local Rings and Tangent Spaces}
+		\begin{newdef}
+			Let $X$ be a quaisprojective variety with $a \in X$. The local ring of $X$ at $a$ denoted $K[X]_a$ is the set of equivalence classes of pairs $(U,F)$ where $U\subseteq X$ is dense open and $F \in K[U]$. Pairs $(U,F)$ and $(V,G)$ are related if and only if there exists an open set $W \subseteq U \cap V$ with $a \in W$ such that $F(b)= G(b)$ for all $b \in W$. 
+		\end{newdef}
+		\begin{remark}
+			Here we are now talking about germs of functions and essentially laying the foundation for the idea of a sheaf of regular functions on $X$. 
+		\end{remark}
+		This idea is abstracting the notion of working on an infinitesimally small neighborhood about a point $a$. We can view functions in $K[X]_a$ as location functions at $a$. Similar to the $K$-algebra of regular functions the operations are 
+		\[
+		(U,F) + (V,G) = (U \cap V, F + G) \quad (U,F)(V,G) = (U \cap V, FG) \quad \alpha(U,F) = (U,\alpha F)
+		\]
+		We might notice that the definition of local functions is almost identical to that of rational functions except we enforce this special subset containment. As a result they behave in a fundamentally similar way. That is local functions can be rerpesented as a quotient of polynomials just like rational functions. But before we dive into the process of defining $T_aX$ of a quasiprojective variety we have to ensure that the local ring is really local. That is we want to ensure that upon restricting to an open subvariety $U \subseteq X$ where $a \i U$ that the local ring at $a$ has not changed. 
+		\begin{prop}
+			Let $U$ be an open subvariety of quasiprojective variety $X$ where $a \in U$, then 
+			\[
+			K[U]_a = K[X]_a.
+			\]
+		\end{prop}
+		\begin{remark}
+			In the process of building a sheaf we start with a presheaf that requires the existence of a special restriction morphism. The exact one that we will talk about in this proof without explicitly presenting it. 
+		\end{remark}
+		\begin{proof}
+			There exists a canonical resitrction homomorphism 
+			\begin{align}
+				K[X]_a &\to K[U]_a \\
+				(V,F) &\mapsto (U \cap V, F|_{U \cap V})
+			\end{align}
+			which we will verify to be a bijection. To show injectivity consider that a pair $(V,F) = 0$ if an only if a local function vanishes on an open neighborhood of $a$. Since we are simply restricting then we know that zero is sent to zero. This function is of course automatically surjective because every element of $K[U]_a$ is automatically a restriction of an element of $K[X]_a$. 
+		\end{proof}
+		Since we aim to reduce the study of tangent spaces on quasiprojective varieties to understanding those on affine open subvarieties then it behooves us to understand what a local funciton on an affine variety looks like. 
+		\begin{prop}
+			Let $X$ be an affine variety with $a \in X$. Then
+			\begin{enumerate}
+				\item Every element of $K[X]_a$ an be represented as a quotient $F/G$ with $F,G \in K[X]$ and $G(a)\neq 0$.
+				\item To quotients $F/G$ and $F'/G'$ give rise to the same local function if and only if there exists an $H \in K[X]$ such that $H(a)\neq0$ and 
+				\[
+				H(FG'-GF') = 0 \in K[X].
+				\]
+			\end{enumerate}
+		\end{prop}
+		\begin{proof}
+			\begin{enumerate}
+				\item Since rings of regular function and rings of local functions are preseved under isomorphism it suffices to exhibit this for the case where $X$ is a closed subset of $\A^n_0$ of $\Proj^n$. Let $(U,H)$ be a representative in $K[X]_a$. By definition of a regular function there exist polynomials $f,g \in K[x_0,\dots,x_n]$ where $g(a) \neq 0$ and 
+				\[
+				H(a) = \frac{f(a)}{g(a)} \quad \forall a \in U\setminus \V(g).
+				\]
+				Define $F = f(x_0,x_1,\dots,x_n)/x_n^d$ and $G = g(x_0,x_1,\dots,x_n)/x_n^d$. It is clear that $F,G \in K[X]$ and do not vanish on $a$, then by definition 
+				\[
+				H(a) = \frac{F(a)}{G(a)} \quad \forall a \in U \setminus \V(g)
+				\]
+				therefore 
+				\[
+				(U,H) \sim (U \setminus \V(g), F/G)
+				\]
+				hence any representative of a local ring on an affine variety can be given by a quotient of regular functions on this affine variety. 
+				\item Suppose that $F/G$ and $F'/G'$ are quotients of regular functions giving rise to the same local funciton in $K[X]_a$. Then $FG' - F'G$ must vanish on some open neighborhood of  $a$, denoted $\V(FG'-F'G) \subseteq X$ i.e. this neighborhood is clopen. Then the intersection of this neighborhood with any irreducible component of $X$ is dense hence $FG' - F'G$ must vanish on any irreducible component containing $a$. Let $H$ be a regular function such that $H(a) \neq 0$ and $H$ vanishes on any irreducible component not containing $a$, then 
+				\[
+				H(FG' - F'G) = 0 \in K[X].
+				\]
+				Conversely suppose there exist regular function $F,F',G,G',H \in K[X]$ where $G,G'$, and $H$ don't vanish on $a$ and $H(FG' - F'G) = 0 \in K[X]$. The, 
+				\[
+				\frac{F(b)}{G(b)} = \frac{F'(b)}{G'(b)} \quad b \in X \setminus \V(GG'H)
+				\]
+				since $X \setminus \V(GG'H)$ is an open neighborhood of $a$, then these ratios give rise to the same local function in $K[X]_a$. 
+			\end{enumerate}
+		\end{proof}
+		\begin{prop}
+			Let $X$ be an affine variety with $a\in X$ and $J_a \subseteq K[X]_a$ is the ideal of local functions that vanish at $a$, then there exists a canonical vector space isomorphism 
+			\[
+			T_aX = (J_a/J_a^2)^\vee
+			\]
+		\end{prop}
+		Before launching into this proof observe that the ideal $I_a$ is the maximal ideal in the ring of regular functions on $X$, when $X$ is an affine variety, that vanish on $a$. More explicitly for a point $a \in \A^n$ the ideal is defined as 
+		\[
+		I_a = \la [x_1-a_1],\dots,[x_n-a_n]\ra \subseteq \frac{K[x_1,\dots,x_n]}{\I(X)}
+		\]
+		and
+		\[
+		I_a^2 = \la [(x_i - a_i)(x_j-a_j)] \; | \; 1 \leq i,j \leq n \ra \subseteq I_a.
+		\]
+		Then the unique, maximal ideal $J_a$ of $K[X]_a$ is quite a natural extension of this idea to the land of affine, in the projective sense, varieties. Since we have already established this isomorphism in the land of true affine we will aim to extend this isomorphism into the land of projective space. 
+		\begin{mydef}{Tangent Space of Quasiprojective Variety}
+			The tangent space at $a$ in a quasiprojective variety $X$ is the vector space
+			\[
+			T_aX = (J_a/J_a^2)^\vee.
+			\]
+		\end{mydef}
+		\begin{proof}
+			Since $X$ is affine and we have already established a vector space isomorphism 
+			\[
+			T_aX = (I_a/I_a^2)^\vee
+			\]
+			then it suffices to exhibit a vector space isomorphism 
+			\[
+			I_a/I_a^2 = J_a/J_a^2
+			\]
+			as duality will preserve isomorphism. To do this we will work with the natural restriction isomorphis as before which takes $F \in I_a$ and sends it to a local function $(U,F|_U)$. It suffices to show that this morphism is injective. Note that any local function in $K[X]_a$ can be expressed as a ratio $F/G$ of regular function $F,G \in K[X]$. Suppose that $F \in I_a$, which is equivalent to being in $J_a$ as $F$ vanishes on $a$. After scaling both $F$ and $G$ we can assume that $G(a) = 1$ which gives rise to the local function 
+			\[
+			\frac{1}{G} - 1 \in J_a.
+			\]
+			Then, 
+			\[
+			\frac{F}{G} - F = F\left(\frac{1}{G} - 1\right) \in J_a^2
+			\]
+			implying that $F/G - F \in J_a^2$ and in that $[F/G] = [F]$ in $J_a/J_a^2$. Hence the image of $[F]$ is the ratio $[F/G]$. To prove injectivity we will show that $I_a$ is sent to $J_a$. Suppose towards a contradiction that $F \in I_a$ restricts to a local function that lies in $J_a^2$. Since elements in $J_a^2$ are finite sums of local functions then there exists $G_i, G_i', H_i, H_i' \in K[X]$ such that $G_i(a) = G_i'(a) = 0$ and $H_i(a)=H_i'(a) \neq 0$ on some open subset $U$ containing $a$. Then,
+			\[
+			F(b) = \sum_{i=1}^m \frac{G_i(b)}{H_i(b)}\frac{G_i'(b)}{H_i'(b)} \quad b \in U
+			\]
+			and choose $H \in K[X]$ such that $H(a) \neq 0$ and $H$ vanishes on $X \setminus U$. Then the product $H(b)F(b)$ is defined for all $b \in U$. Upon clearing denominators we find 
+			\[
+			(H_1\cdots H_m)(H_1'\cdots H_m')H(b)F(b) = H(b)\sum_{i=1}^m G_i(b)G_i'(b) \in I_a^2
+			\]
+			and since $F$ is the only factor in $I_a$ it follows that $F \in I_a^2$ contradicting our assumption. Threfore the restriction morphism is a bijection and we are done. 
+		\end{proof}
+		\begin{mydef}{Smoothness}
+			Let $X$ be an irreducible quasiprojective variety with $a \in X$. We say that $X$ is smooth at $a$ if $\dim(T_aX) = \dim(X)$; otherwise we say that $X$ is singular at $a$. We say that $X$ is smooth at $a$ if it is smooth at every point $a \in X$; otherwise we say that $X$ is singular. 
+		\end{mydef}
+		Since tangent spaces are given by ideals of local rings and those local rings are equivalent when reduced to dense open subsets, i.e. affine varieties, then many of the intrinsic properties of smoothness are caried over. 
+		\begin{prop}
+			Let $X$ be an irreducibel quasiprojective variety with $a \in X$. Then, 
+			\[
+			\dim(T_aX) \geq \dim(X)
+			\]
+		\end{prop}
+		% The goal is to reduce to an affine irreducible affine variety and then simply apply the affine result. 
+		\begin{proof}
+			Let $a \in X$, then $a$ is non-zero in some component $a_i$ hence $Z = X \cap \A_i^n$ contains $a$. Since $Z$ is an irreducible affine variety 
+			\[
+			\dim(T_aZ) \geq \dim(Z) \tag{Lemma 7.23}.
+			\]
+			Since $Z$ is a dense open subset of $X$, then $T_aZ = T_aX$ and $\dim(Z) = \dim(X)$, hence 
+			\[
+			\dim(T_aX) \geq \dim(X).
+			\]
+		\end{proof}
+		\begin{summary}
+			The aim of this section was to redevelop the notion smoothness via the tangent space of a quasiprojective variety. The natural choice is to look locally at affine patches the problem is we aren't sure that the local picture we are getting is invariant on these tangent spaces. Instead we develop the notion of a local ring, which is preserved on dense open subsets. Then we can restablish the canonical vector space isomorphism that allows us to connect the tangent space of a variety to the dual of a quotient ideal. 
+		\end{summary}
+		\subsection{12.4 Blowups}
+		\subsection{12.5 Theorem on Fiber Dimensions}
+		\subsection{12.6 Lines on Surfaces}
+		\subsection{12.7 Lines on Smooth Cubic Surfaces}
 	\end{document}
 	

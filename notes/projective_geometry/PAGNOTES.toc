@@ -23,4 +23,9 @@
 \contentsline {subsection}{\numberline {3.8}11.8 Images of Projective Varieties}{29}{subsection.3.8}%
 \contentsline {section}{\numberline {4}CH12 Culminating Topics}{31}{section.4}%
 \contentsline {subsection}{\numberline {4.1}12.1 Rational Functions}{31}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}12.2 Dimension of Quasiprojective Varieties}{34}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.2}12.2 Dimension of Quasiprojective Varieties}{35}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}12.3 Local Rings and Tangent Spaces}{37}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}12.4 Blowups}{41}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}12.5 Theorem on Fiber Dimensions}{41}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}12.6 Lines on Surfaces}{41}{subsection.4.6}%
+\contentsline {subsection}{\numberline {4.7}12.7 Lines on Smooth Cubic Surfaces}{41}{subsection.4.7}%
