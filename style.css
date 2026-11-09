@@ -1,4 +1,8 @@
 /* Base styles for a simple GitHub Pages site */
+.unstyled {
+  all: revert;
+  color: black;
+}
 
 * {
   box-sizing: border-box;
